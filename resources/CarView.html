@@ -12,7 +12,7 @@
             <label for="brand">Marka:</label>
                 <input type="text" name="brand"></input><br/>
             <label for="model">Model:</label>
-                <input type="text" name="model"></input><br/>
+                <input type="text" name="phoneNumber"></input><br/>
             <label for="vintage">Rocznik:</label>
                 <input type="text" name="vintage"></input><br/>
             <input type="submit"></input>
@@ -20,8 +20,8 @@
         <ul th:each="car : ${cars}">
             <li>
                 <span th:text="${car.numberPlate}">Imię</span>
-                <span th:text="${car.brand}">nazwisko</span>
-                <span th:text="${car.model}">telefon</span>
+                <span th:text="${car.brand}">nazwisko</span> :
+                <span th:text="${car.model}">telefon</span>,
                 <span th:text="${car.vintage}">e-mail</span>
             </li>
         </ul>

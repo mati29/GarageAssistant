@@ -1,4 +1,4 @@
-package main.java.CarPackage;
+package CarPackage;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +9,7 @@ import javax.persistence.Id;
  * Created by Mati on 2016-10-23.
  */
 
-@Entity(name="carslist")
+@Entity
 public class Car {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
