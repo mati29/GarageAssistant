@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/myCars")
 public class CarController {
-    private CarRepository carRepository;
+    private CarRepository carRepository;//trzeba bedzie autowired user employee np.
 
     @Autowired
     public CarController(CarRepository carRepository) {
@@ -27,9 +28,14 @@ public class CarController {
         return "CarView";
     }
 
-    @RequestMapping(method=RequestMethod.POST)
+    @RequestMapping(method=RequestMethod.POST,params="userAction=save")
     public String submit(Car car) {
         carRepository.save(car);
-        return "redirect:/";
+        return "redirect:/myCars";
+    }
+
+    @RequestMapping(method=RequestMethod.POST,params="userAction=back")//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
+    public String back() {
+        return "redirect:/employeeDashboard";
     }
 }

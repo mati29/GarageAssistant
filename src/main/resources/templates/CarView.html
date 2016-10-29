@@ -15,7 +15,7 @@
                 <input type="text" name="model"></input><br/>
             <label for="vintage">Rocznik:</label>
                 <input type="text" name="vintage"></input><br/>
-            <input type="submit"></input>
+            <button type="submit" name="userAction" value="save">Save</button>
         </form>
         <ul th:each="car : ${cars}">
             <li>
@@ -25,5 +25,8 @@
                 <span th:text="${car.vintage}">e-mail</span>
             </li>
         </ul>
+        <form method="POST">
+            <button type="submit" name="userAction" value="back">Back</button>
+        </form>
     </body>
 </html>
