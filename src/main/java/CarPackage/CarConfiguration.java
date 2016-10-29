@@ -1,4 +1,4 @@
-package CarPackage;
+package main.java.CarPackage;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +7,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.sql.DataSource;
 
@@ -32,7 +33,7 @@ public class CarConfiguration {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
-        entityManagerFactoryBean.setPackagesToScan("CarPackage");
+        entityManagerFactoryBean.setPackagesToScan("main/java/CarPackage");
         return entityManagerFactoryBean;
     }
 
@@ -44,4 +45,5 @@ public class CarConfiguration {
         adapter.setDatabasePlatform("org.hibernate.dialect.PostgreSQLDialect");
         return adapter;
     }
+
 }

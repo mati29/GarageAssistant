@@ -1,4 +1,4 @@
-package CarPackage;
+package main.java.CarPackage;
 
 /**
  * Created by Mati on 2016-10-23.

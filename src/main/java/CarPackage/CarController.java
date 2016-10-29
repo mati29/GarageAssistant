@@ -1,4 +1,4 @@
-package CarPackage;
+package main.java.CarPackage;
 
 /**
  * Created by Mati on 2016-10-23.
@@ -27,6 +27,7 @@ public class CarController {
         return "CarView";
     }
 
+    @RequestMapping(method=RequestMethod.POST)
     public String submit(Car car) {
         carRepository.save(car);
         return "redirect:/";
