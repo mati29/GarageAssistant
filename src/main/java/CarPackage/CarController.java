@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/myCars")
@@ -28,14 +30,28 @@ public class CarController {
         return "CarView";
     }
 
-    @RequestMapping(method=RequestMethod.POST,params="userAction=save")
+    @RequestMapping(value="/addCar",method=RequestMethod.GET)
+    public String addCar(Model model) {
+        return "NewCar";
+    }
+
+    @RequestMapping(value="/addCar",method=RequestMethod.POST,params="userAction=save")
     public String submit(Car car) {
         carRepository.save(car);
         return "redirect:/myCars";
     }
 
-    @RequestMapping(method=RequestMethod.POST,params="userAction=back")//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
-    public String back() {
+    @RequestMapping(value="/addCar",method=RequestMethod.POST,params="userAction=back")
+    public String backToCar(Model model) {
+        if(model.containsAttribute("DASHBOARD")) {
+            return "redirect:/employeeDashboard";
+        }
+        else
+            return "redirect:/myCars";
+    }
+
+    @RequestMapping(method=RequestMethod.POST)//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
+    public String backToDashboard() {
         return "redirect:/employeeDashboard";
     }
 }

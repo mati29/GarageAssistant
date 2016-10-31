@@ -34,7 +34,8 @@ public class EmployeeController {
 
     @RequestMapping(method=RequestMethod.POST, params="employeeAction=addCar")
     public String addCar(Model model) {
-        return "redirect:/";
+        model.addAttribute("DASHBOARD");
+        return "redirect:/myCars/addCar";
     }
 
     @RequestMapping(method=RequestMethod.POST, params="employeeAction=archiveCars")

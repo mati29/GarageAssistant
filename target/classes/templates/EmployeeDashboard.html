@@ -6,7 +6,7 @@
     </head>
     <body>
         <h2>Employee Dashboard - WYBIERZ OPERACJE</h2>
-        <form method="POST">
+        <form method="POST" th:action="@{/employeeDashboard}">
             <button type="submit" name="employeeAction" value="checkMyCars">My cars</button>
             <button type="submit" name="employeeAction" value="addCar">Add new car</button>
             <button type="submit" name="employeeAction" value="archiveCars">Archive</button>

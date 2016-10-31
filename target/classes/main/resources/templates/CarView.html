@@ -1,22 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Spring Boot - Lista kontaktów</title>
+        <title>Baza samochodów - przegląd bazy</title>
         <link rel="stylesheet" th:href="@{/style.css}" />
     </head>
     <body>
-        <h2>Spring Boot - Kontakty</h2>
-        <form method="POST">
-            <label for="numberPlate">Tablica rejestracyjna:</label>
-                <input type="text" name="numberPlate"></input><br/>
-            <label for="brand">Marka:</label>
-                <input type="text" name="brand"></input><br/>
-            <label for="model">Model:</label>
-                <input type="text" name="model"></input><br/>
-            <label for="vintage">Rocznik:</label>
-                <input type="text" name="vintage"></input><br/>
-            <button type="submit" name="userAction" value="save">Save</button>
-        </form>
+        <h2>Baza samochodów</h2>
         <ul th:each="car : ${cars}">
             <li>
                 <span th:text="${car.numberPlate}">Imię</span>
@@ -25,7 +14,7 @@
                 <span th:text="${car.vintage}">e-mail</span>
             </li>
         </ul>
-        <form method="POST">
+        <form method="POST" th:action="@{/myCars}">
             <button type="submit" name="userAction" value="back">Back</button>
         </form>
     </body>
