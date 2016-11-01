@@ -15,10 +15,13 @@
                 <input type="text" name="model"></input><br/>
             <label for="vintage">Rocznik:</label>
                 <input type="text" name="vintage"></input><br/>
-            <button type="submit" name="userAction" value="save">Save</button>
+            <button type="submit" name="userSaveAction" value="save">Save</button>
         </form>
         <form method="POST" th:action="@{/myCars/addCar}">
-            <button type="submit" name="userAction" value="back">Back</button>
+            <div th:switch="${from}">
+                <p th:case="'overview'"><button type="submit" name="userBackAction" value="toOverview">Back</button></p>
+                <p th:case="'dashboard'"><button type="submit" name="userBackAction" value="toDashboard">Back</button></p>
+            </div>
         </form>
     </body>
 </html>

@@ -5,7 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +34,8 @@ public class EmployeeController {
 
 
     @RequestMapping(method=RequestMethod.POST, params="employeeAction=addCar")
-    public String addCar(Model model) {
-        model.addAttribute("DASHBOARD");
+    public String addCar(RedirectAttributes redirectAttrs) {
+        redirectAttrs.addFlashAttribute("from","dashboard");
         return "redirect:/myCars/addCar";
     }
 
