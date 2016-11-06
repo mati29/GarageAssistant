@@ -15,7 +15,8 @@ public class Account {
     private String username;
     private String password;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne
+    @JoinColumn(name = "client_id")
     private Client client;
 
     public void setId(Long id){

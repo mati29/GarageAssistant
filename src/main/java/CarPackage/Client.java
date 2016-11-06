@@ -20,8 +20,7 @@ public class Client {
     private int phoneNumber;
     private String email;
 
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @OneToOne(mappedBy = "client",cascade=CascadeType.ALL)
     private Account account;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
