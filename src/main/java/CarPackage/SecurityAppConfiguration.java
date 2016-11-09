@@ -33,6 +33,7 @@ public class SecurityAppConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .formLogin()
+                .loginPage("/login")
                 .and()
                 .httpBasic();
     }

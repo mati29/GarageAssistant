@@ -13,11 +13,13 @@ public class ClientController {
 
     private ClientRepository clientRepository;//trzeba bedzie autowired user employee np.
     private AccountRepository accountRepository;
+    private RolesRepository rolesRepository;
 
     @Autowired
-    public ClientController(ClientRepository clientRepository,AccountRepository accountRepository) {
+    public ClientController(ClientRepository clientRepository,AccountRepository accountRepository,RolesRepository rolesRepository) {
         this.clientRepository = clientRepository;
         this.accountRepository = accountRepository;
+        this.rolesRepository = rolesRepository;
     }
 
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="userRegistrationAction")
@@ -25,6 +27,7 @@ public class ClientController {
         Client clientRes = clientRepository.save(client);
         account.setClient(clientRes);
         accountRepository.save(account);
+        rolesRepository.save(new Roles(account.getUsername()));
         return "redirect:/";
     }
 

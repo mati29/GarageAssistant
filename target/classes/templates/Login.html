@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Spitter</title>
+        <link rel="stylesheet"
+              type="text/css"
+              th:href="@{/style.css}">
+        </link>
+    </head>
+    <body>
+            <div id="header"></div>
+        <div id="content">
+        <form name='f' th:action='@{/login}' method='POST'>
+            <table>
+                <tr><td>User:</td><td>
+                    <input type='text' name='username' value='' /></td></tr>
+                <tr><td>Password:</td>         <td>
+                    <input type='password' name='password'/></td></tr>
+                <tr><td colspan='2'>
+                    <button class="button small" type="submit" name="userLoginAction" value="rlogin">Log in</button></td></tr>
+            </table>   </form>
+        </div>
+        <div id="footer"></div>
+    </body>
+</html>

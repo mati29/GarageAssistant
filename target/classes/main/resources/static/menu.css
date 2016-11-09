@@ -10,7 +10,7 @@
     list-style: none outside none;
     margin: 40px auto;
     text-shadow: 0 -1px 3px #202020;
-    width: 980px;
+    width: 770px;
 
     /* border radius */
     -moz-border-radius:4px;
@@ -42,7 +42,7 @@
     float: left;
     height: 34px;
     position: relative;
-    width: 105px;
+    width: 150px;
 }
 #nav li:first-child {
     border-left: 0 none;

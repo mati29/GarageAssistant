@@ -16,6 +16,11 @@ public class GlobalController {
         return "Register";
     }
 
+    @RequestMapping(value="/login",method= RequestMethod.GET)
+    public String login(Model model) {
+        return "Login";
+    }
+
     @RequestMapping(method= RequestMethod.GET)
     public String mainView(Model model) {
         return "MainView";

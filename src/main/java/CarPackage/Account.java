@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Mati on 2016-11-05.
