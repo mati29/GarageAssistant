@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,8 @@ public class EmployeeController {
         //this.carRepository = carRepository;
     //} potem bedzie autowired ale user
 
-    @RequestMapping(method= RequestMethod.GET)
+    @Secured("ROLE_WORKER")
+    @RequestMapping(method=RequestMethod.GET)
     public String getEmployeeDashboard(Model model) {
         return "EmployeeDashboard";
     }

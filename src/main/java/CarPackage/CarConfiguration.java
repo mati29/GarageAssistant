@@ -7,7 +7,14 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.templateresolver.TemplateResolver;
 
 import javax.sql.DataSource;
 
@@ -15,7 +22,8 @@ import javax.sql.DataSource;
  * Created by Mati on 2016-10-25.
  */
 @Configuration
-public class CarConfiguration {
+@EnableGlobalMethodSecurity(securedEnabled = true)
+public class CarConfiguration extends GlobalMethodSecurityConfiguration{
     @Bean
     DataSource dataSource() {
         BasicDataSource dataSourceConfig = new BasicDataSource();
@@ -45,5 +53,38 @@ public class CarConfiguration {
         adapter.setDatabasePlatform("org.hibernate.dialect.PostgreSQLDialect");
         return adapter;
     }
+
+    /*@Bean public SpringTemplateEngine templateEngine(TemplateResolver templateResolver) {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+        templateEngine.addDialect(securityDialect());
+        return templateEngine;
+    }*/
+
+    @Bean
+    public SpringSecurityDialect securityDialect() {
+        return new SpringSecurityDialect();
+    }
+
+    /*@Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setPrefix("classpath:/templates/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML5");
+        resolver.setCacheable(false);
+        return resolver;
+    }
+
+    @Bean
+    public ThymeleafViewResolver viewResolver()
+    {
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine(templateResolver()));
+        //viewResolver.setOrder(1);
+        viewResolver.setCharacterEncoding("UTF-8");
+        return viewResolver;
+    }*/
+
 
 }
