@@ -10,15 +10,22 @@
     <body>
             <div id="header"></div>
         <div id="content">
-        <form name='f' th:action='@{/login}' method='POST'>
-            <table>
-                <tr><td>User:</td><td>
-                    <input type='text' name='username' value='' /></td></tr>
-                <tr><td>Password:</td>         <td>
-                    <input type='password' name='password'/></td></tr>
-                <tr><td colspan='2'>
-                    <button class="button small" type="submit" name="userLoginAction" value="login">Log in</button></td></tr>
-            </table>   </form>
+            <form name='f' th:action='@{/login}' method='POST'>
+                <table>
+                    <tr><td>User:</td><td>
+                        <input type='text' name='username' value='' /></td></tr>
+                    <tr><td>Password:</td>         <td>
+                        <input type='password' name='password'/></td></tr>
+                    <tr><td colspan='2'>
+                        <button class="button small" type="submit" name="userLoginAction" value="login">Log in</button></td></tr>
+                </table>
+            </form>
+            <form th:action='@{/}' method='POST'>
+                <table>
+                    <tr><td>
+                        <button class="button width" type="submit" name="userBackAction" value="back">Back to menu</button></td></tr>
+                </table>
+            </form>
         </div>
         <div id="footer"></div>
     </body>

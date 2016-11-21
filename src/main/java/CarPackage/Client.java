@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Mati on 2016-11-01.
@@ -24,7 +25,7 @@ public class Client {
     private Account account;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Commission> commissionList;
+    private Set<Commission> commissionSet;
 
     public Client(){
     }
@@ -69,12 +70,12 @@ public class Client {
         return this.email;
     }
 
-    public List<Commission> getCommissionList() {
-        return commissionList;
+    public Set<Commission> getCommissionSet() {
+        return commissionSet;
     }
 
-    public void setCommissionList(List<Commission> commissionList) {
-        this.commissionList = commissionList;
+    public void setCommissionSet(Set<Commission> commissionSet) {
+        this.commissionSet = commissionSet;
     }
 
     public void setAccount(Account account){

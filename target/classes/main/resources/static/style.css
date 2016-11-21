@@ -64,6 +64,11 @@ header h2{
     height: 40px;
     left: 15%;
  }
+ .button.width {
+     width: 90px;
+     height: 25px;
+     left: 8%;
+  }
 
 .button:hover {
     background: #4c4c4c;

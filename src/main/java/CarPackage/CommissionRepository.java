@@ -4,10 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created by Mati on 2016-11-05.
+ * Created by Mati on 2016-11-21.
  */
 @Repository
-public interface AccountRepository extends CrudRepository<Account, Long> {
-
-    Account findByUsername(String username);
+public interface CommissionRepository extends CrudRepository<Commission, Long> {
 }

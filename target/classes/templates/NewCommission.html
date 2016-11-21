@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Commission</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<header>
+    <h2>Complete commission field and press button Add</h2>
+</header>
+<form method="POST" th:action="@{/myCommission/addCommission}">
+    <label for="numberPlate">First Name:</label>
+    <input type="text" name="firstName"></input><br/>
+    <label for="brand">Last Name:</label>
+    <input type="text" name="lastName"></input><br/>
+    <label for="model">Phone number:</label>
+    <input type="text" name="phoneNumber"></input><br/>
+    <label for="vintage">Email:</label>
+    <input type="text" name="email"></input><br/>
+    <button class="button medium" type="submit" name="userAddCommissionAction" value="addCommission">Register!</button>
+</form>
+</body>
+</html>

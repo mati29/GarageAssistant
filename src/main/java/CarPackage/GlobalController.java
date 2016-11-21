@@ -25,5 +25,9 @@ public class GlobalController {
     public String mainView(Model model) {
         return "MainView";
     }
+    @RequestMapping(value="/",method=RequestMethod.POST,params="userBackAction")
+    public String back() {
+        return "redirect:/";
+    }
 
 }

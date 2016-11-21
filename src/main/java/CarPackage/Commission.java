@@ -9,7 +9,9 @@ import java.util.Date;
 @Entity(name="commission")
 public class Commission {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    //@GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="commission_id_seq")
+    @SequenceGenerator(name="commission_id_seq", sequenceName="commission_id_seq", allocationSize=1)
     private Long id;
     private Date term;
 
@@ -17,7 +19,16 @@ public class Commission {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @OneToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
+
     public Commission(){
+    }
+    public Commission(Client client,Car car,Date term){
+        this.client = client;
+        this.car = car;
+        this.term = term;
     }
 
     public void setId(Long id){
@@ -42,6 +53,14 @@ public class Commission {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Car getCar() {
+        return this.car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 
 }

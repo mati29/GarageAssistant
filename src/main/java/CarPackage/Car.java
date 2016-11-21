@@ -1,9 +1,6 @@
 package main.java.CarPackage;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by Mati on 2016-10-23.
@@ -18,6 +15,9 @@ public class Car {
     private String brand;
     private String model;
     private short vintage;
+
+    @OneToOne(mappedBy = "car",cascade=CascadeType.ALL)
+    private Commission commission;
     //next owner etc...
     //specify like engike, brakes bla, bla for mechanic
 
@@ -59,6 +59,13 @@ public class Car {
 
     public short getVintage(){
         return this.vintage;
+    }
+
+    public void setCommission(Commission commission){
+        this.commission = commission;
+    }
+    public Commission getCommision(){
+        return this.commission;
     }
 
     @Override

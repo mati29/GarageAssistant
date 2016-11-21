@@ -18,6 +18,7 @@
     <li><a th:href="@{/login}">Log in</a></li>
     <li sec:authorize="hasRole('ROLE_WORKER')"><a th:href="@{/employeeDashboard}">Dashboard</a></li>
     <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/clientDashboard}">Dashboard</a></li>
+    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" method="POST">Log out</a></li>
     <li><a class="hsubs" href="#">Contact</a></li>
     <li><a href="#">Next feature</a></li>
 </ul>
