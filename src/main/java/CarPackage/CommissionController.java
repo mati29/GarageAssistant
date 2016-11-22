@@ -2,6 +2,7 @@ package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -36,11 +37,11 @@ public class CommissionController {
         Car car = carRepository.save(newCar);
         java.util.Date term = Calendar.getInstance().getTime();
         commissionRepository.save(new Commission(client,car,term));
-        return "/addCommission";
+        return "redirect:/myCommission/addCommission";
     }
 
     @RequestMapping(value="/addCommission",method= RequestMethod.GET)
-    public String commissions(Car newCar, Principal principal ) {
+    public String commissions(Model model) {
         return "NewCommission";
     }
 }

@@ -39,4 +39,11 @@ public class ClientController {
         return "ClientDashboard";
     }
 
+    @Secured("ROLE_USER")
+    @RequestMapping(value="/clientDashboard",method=RequestMethod.POST, params="clientAction=addCommission")
+    public String addCar(Model model) {
+        return "redirect:/myCommission/addCommission";
+    }
+
+
 }

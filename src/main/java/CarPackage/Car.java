@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Entity(name="carslist")
 public class Car {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="car_id_seq")
+    @SequenceGenerator(name="car_id_seq", sequenceName="car_id_seq", allocationSize=1)
     private Long id;
     private String numberPlate;
     private String brand;

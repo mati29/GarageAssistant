@@ -9,15 +9,15 @@
     <h2>Complete commission field and press button Add</h2>
 </header>
 <form method="POST" th:action="@{/myCommission/addCommission}">
-    <label for="numberPlate">First Name:</label>
-    <input type="text" name="firstName"></input><br/>
-    <label for="brand">Last Name:</label>
-    <input type="text" name="lastName"></input><br/>
-    <label for="model">Phone number:</label>
-    <input type="text" name="phoneNumber"></input><br/>
-    <label for="vintage">Email:</label>
-    <input type="text" name="email"></input><br/>
-    <button class="button medium" type="submit" name="userAddCommissionAction" value="addCommission">Register!</button>
+    <label for="numberPlate">Plate number:</label>
+    <input type="text" name="numberPlate"></input><br/>
+    <label for="brand">Brand:</label>
+    <input type="text" name="brand"></input><br/>
+    <label for="model">Model:</label>
+    <input type="text" name="model"></input><br/>
+    <label for="vintage">Vintage:</label>
+    <input type="text" name="vintage"></input><br/>
+    <button class="button medium" type="submit" name="userAddCommissionAction" value="addCommission">Add!</button>
 </form>
 </body>
 </html>
