@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Baza samochodów - przegląd bazy</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<h2>Baza samochodów</h2>
+<ul th:each="commission : ${commissions}">
+    <li>
+        <span th:text="${commission.id}">Imię</span>
+        <span th:text="${commission.term}">nazwisko</span>
+        <form method="POST" th:action="@{/myCommission}">
+            <button type="submit" name="userSelectAction" value="selectCommission">Add car</button>
+        </form>
+    </li>
+</ul>
+<form method="POST" th:action="@{/myCommission}">
+    <button type="submit" name="userAddAction" value="addNewCar">Add car</button>
+    <button type="submit" name="userBackAction" value="toMyCars">Back</button>
+</form>
+</body>
+</html>

@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Mati on 2016-11-21.
@@ -29,6 +32,16 @@ public class CommissionController {
         this.accountRepository = accountRepository;
     }
 
+    @RequestMapping(method=RequestMethod.GET)
+    public String getCommission(Map<String, Object> model, Principal principal){
+        String username = principal.getName();//to chyba autowired dać
+        Account account = accountRepository.findByUsername(username);
+        Client client = clientRepository.findOne(account.getClient().getId());//to całe
+        Set<Commission> clientCommissionSet = client.getCommissionSet();
+        model.put("commissions", clientCommissionSet);
+        return "CommissionsView";
+    }
+
     @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="userAddCommissionAction")
     public String addCommission(Car newCar, Principal principal ) {
         String username = principal.getName();
@@ -43,5 +56,15 @@ public class CommissionController {
     @RequestMapping(value="/addCommission",method= RequestMethod.GET)
     public String commissions(Model model) {
         return "NewCommission";
+    }
+
+    @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="userSelectAction=selectCommission")
+    public String selectCommission(Commission commission, Principal principal , Model model) {
+        //String username = principal.getName();
+       // Account account = accountRepository.findByUsername(username);
+        //Client client = clientRepository.findOne(account.getClient().getId());
+        Commission singleCommission = commissionRepository.findOne(commission.getId());
+        model.addAttribute("commission",singleCommission);
+        return "CommissionSingleView";
     }
 }
