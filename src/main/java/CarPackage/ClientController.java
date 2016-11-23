@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.security.Principal;
+import java.util.Map;
+
 /**
  * Created by Mati on 2016-11-01.
  */
@@ -43,6 +46,11 @@ public class ClientController {
     @RequestMapping(value="/clientDashboard",method=RequestMethod.POST, params="clientAction=addCommission")
     public String addCar(Model model) {
         return "redirect:/myCommission/addCommission";
+    }
+
+    @RequestMapping(value="/clientDashboard",method= RequestMethod.POST,params="clientAction=checkMyCommission")
+    public String getCommission(Model model) {
+        return "redirect:/myCommission";
     }
 
 

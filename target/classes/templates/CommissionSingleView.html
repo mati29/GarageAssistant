@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Commission review - single commission</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<h2>Single commission checking</h2>
+<ul>
+    <li>Number plate:<br />
+        <span th:text="${commission.car.numberPlate}"></span><br />
+        Brand:<br />
+        <span th:text="${commission.car.brand}"></span><br />
+        Model:<br />
+        <span th:text="${commission.car.model}"></span><br />
+        Vintage:<br />
+        <span th:text="${commission.car.vintage}"></span><br />
+    </li>
+    <form method="POST" th:action="@{/myCommission}">
+        <button type="submit" name="clientBackAction" value="toMyCommission">Back</button>
+    </form>
+</ul>
+</body>
+</html>

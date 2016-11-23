@@ -3,9 +3,13 @@ package main.java.CarPackage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Calendar;
 import java.util.List;
@@ -58,13 +62,18 @@ public class CommissionController {
         return "NewCommission";
     }
 
-    @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="userSelectAction=selectCommission")
-    public String selectCommission(Commission commission, Principal principal , Model model) {
+    @RequestMapping(/*value="/addCommission", */method= RequestMethod.POST,params="userSelectAction=selectCommission")
+    public String selectCommission(@Valid @ModelAttribute("commissionSended") Commission commission, BindingResult result, Principal principal , Model model) {
         //String username = principal.getName();
        // Account account = accountRepository.findByUsername(username);
         //Client client = clientRepository.findOne(account.getClient().getId());
         Commission singleCommission = commissionRepository.findOne(commission.getId());
         model.addAttribute("commission",singleCommission);
         return "CommissionSingleView";
+    }
+
+    @RequestMapping(method=RequestMethod.POST,params="clientBackAction=toMyCommission")
+    public String backToCar() {
+        return "redirect:/myCommission";
     }
 }
