@@ -17,6 +17,13 @@
     <input type="text" name="model"></input><br/>
     <label for="vintage">Vintage:</label>
     <input type="text" name="vintage"></input><br/>
+    <label for="vintage">Choose mechanic:</label>
+    <select name="ftpId" >
+        <option th:each="employee : ${employees}"
+                th:value="${employee}"
+                th:text="${employee.lastname)}">
+        </option>
+    </select>
     <button class="button medium" type="submit" name="userAddCommissionAction" value="addCommission">Add!</button>
 </form>
 </body>

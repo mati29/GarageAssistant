@@ -2,6 +2,7 @@ package main.java.CarPackage;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by Mati on 2016-11-01.
@@ -22,6 +23,9 @@ public class Commission {
     @OneToOne
     @JoinColumn(name = "car_id")
     private Car car;
+
+    @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)
+    private Set<Repair> repairSet;
 
     public Commission(){
     }
@@ -53,6 +57,14 @@ public class Commission {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Set<Repair> getRepairSet() {
+        return this.repairSet;
+    }
+
+    public void setRepairSet(Set<Repair> repairSet) {
+        this.repairSet = repairSet;
     }
 
     public Car getCar() {

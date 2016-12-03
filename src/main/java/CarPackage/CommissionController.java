@@ -27,13 +27,15 @@ public class CommissionController {
     private ClientRepository clientRepository;
     private CommissionRepository commissionRepository;
     private AccountRepository accountRepository;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
-    public CommissionController(AccountRepository accountRepository,CarRepository carRepository,ClientRepository clientRepository,CommissionRepository commissionRepository) {
+    public CommissionController(AccountRepository accountRepository,CarRepository carRepository,ClientRepository clientRepository,CommissionRepository commissionRepository,EmployeeRepository employeeRepository) {
         this.carRepository = carRepository;
         this.clientRepository = clientRepository;
         this.commissionRepository = commissionRepository;
         this.accountRepository = accountRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @RequestMapping(method=RequestMethod.GET)
@@ -58,7 +60,9 @@ public class CommissionController {
     }
 
     @RequestMapping(value="/addCommission",method= RequestMethod.GET)
-    public String commissions(Model model) {
+    public String commissions(Map<String, Object> model) {
+        Set<Employee> employees = employeeRepository.findByPosition("mechanic");
+        model.put("employees", employees);
         return "NewCommission";
     }
 

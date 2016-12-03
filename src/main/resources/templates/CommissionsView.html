@@ -8,13 +8,15 @@
 <h2>Commission base</h2>
 <ul th:each="commission : ${commissions}">
     <li>
-        <span th:text="${commission.id}">Imię</span>
-        <span th:text="${commission.term}">nazwisko</span>
+        ID of commission:<br />
+        <span th:text="${commission.id}"></span><br />
+        Term of sign commission:<br />
+        <span th:text="${commission.term}"></span><br />
         <form action="#" method="POST" th:action="@{/myCommission}" th:object="${commission}">
             <input type="hidden" name="id" th:value="${commission.id}" />
             <input type="hidden" name="term" th:value="${commission.term}" />
             <input type="hidden" name="car" th:value="${commission.car}" />
-            <button type="submit" name="userSelectAction" value="selectCommission">Add car</button>
+            <button type="submit" name="userSelectAction" value="selectCommission">Check commission</button>
         </form>
     </li>
 </ul>
