@@ -5,7 +5,7 @@ import javax.persistence.*;
 /**
  * Created by Mati on 2016-12-03.
  */
-@Entity(name="employee")
+@Entity(name="repair")
 public class Repair {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="client_id_seq")

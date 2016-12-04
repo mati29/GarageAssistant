@@ -24,7 +24,7 @@ public class Commission {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @OneToMany(mappedBy = "commission", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "commission",cascade = CascadeType.ALL)
     private Set<Repair> repairSet;
 
     public Commission(){

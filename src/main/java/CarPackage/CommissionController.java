@@ -59,9 +59,9 @@ public class CommissionController {
         return "redirect:/myCommission/addCommission";
     }
 
-    @RequestMapping(value="/addCommission",method= RequestMethod.GET)
+   @RequestMapping(value="/addCommission",method= RequestMethod.GET)
     public String commissions(Map<String, Object> model) {
-        Set<Employee> employees = employeeRepository.findByPosition("mechanic");
+        Set<Employee> employees = employeeRepository.findByPost("mechanic");
         model.put("employees", employees);
         return "NewCommission";
     }

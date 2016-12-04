@@ -21,7 +21,7 @@
     <select name="ftpId" >
         <option th:each="employee : ${employees}"
                 th:value="${employee}"
-                th:text="${employee.lastname)}">
+                th:text="${employee.lastName}">
         </option>
     </select>
     <button class="button medium" type="submit" name="userAddCommissionAction" value="addCommission">Add!</button>
