@@ -15,6 +15,7 @@ public class Commission {
     @SequenceGenerator(name="commission_id_seq", sequenceName="commission_id_seq", allocationSize=1)
     private Long id;
     private Date term;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -29,10 +30,11 @@ public class Commission {
 
     public Commission(){
     }
-    public Commission(Client client,Car car,Date term){
+    public Commission(Client client,Car car,Date term,String description){
         this.client = client;
         this.car = car;
         this.term = term;
+        this.description = description;
     }
 
     public void setId(Long id){
@@ -49,6 +51,14 @@ public class Commission {
 
     public Date getTerm(){
         return this.term;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public String getDescription(){
+        return this.description;
     }
 
     public Client getClient() {

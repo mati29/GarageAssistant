@@ -17,7 +17,9 @@
     <input type="text" name="model"></input><br/>
     <label for="vintage">Vintage:</label>
     <input type="text" name="vintage"></input><br/>
-    <label for="vintage">Choose mechanic:</label>
+    <label for="description">Description of failure:</label>
+    <input type="text" name="description"></input><br/>
+    <label for="employee">Choose mechanic:</label>
     <select name="employeeId" >
         <option th:each="employee : ${employees}"
                 th:value="${employee.id}"

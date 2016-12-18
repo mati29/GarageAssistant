@@ -51,13 +51,13 @@ public class CommissionController {
     }
 
     @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="userAddCommissionAction")
-    public String addCommission(Car newCar, Long employeeId,Principal principal ) {
+    public String addCommission(Car newCar,String description, Long employeeId,Principal principal ) {
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);
         Client client = clientRepository.findOne(account.getClient().getId());
         Car car = carRepository.save(newCar);
         java.util.Date term = Calendar.getInstance().getTime();
-        Commission newCommission = new Commission(client,car,term);
+        Commission newCommission = new Commission(client,car,term,description);
         commissionRepository.save(newCommission);
         if(employeeId!=1){
             Employee employeeToRepair = employeeRepository.findOne(employeeId);
