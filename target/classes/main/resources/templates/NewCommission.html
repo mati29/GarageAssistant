@@ -18,9 +18,9 @@
     <label for="vintage">Vintage:</label>
     <input type="text" name="vintage"></input><br/>
     <label for="vintage">Choose mechanic:</label>
-    <select name="ftpId" >
+    <select name="employeeId" >
         <option th:each="employee : ${employees}"
-                th:value="${employee}"
+                th:value="${employee.id}"
                 th:text="${employee.lastName}">
         </option>
     </select>

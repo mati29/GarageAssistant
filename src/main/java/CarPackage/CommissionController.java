@@ -28,14 +28,16 @@ public class CommissionController {
     private CommissionRepository commissionRepository;
     private AccountRepository accountRepository;
     private EmployeeRepository employeeRepository;
+    private RepairRepository repairRepository;
 
     @Autowired
-    public CommissionController(AccountRepository accountRepository,CarRepository carRepository,ClientRepository clientRepository,CommissionRepository commissionRepository,EmployeeRepository employeeRepository) {
+    public CommissionController(AccountRepository accountRepository,CarRepository carRepository,ClientRepository clientRepository,CommissionRepository commissionRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository) {
         this.carRepository = carRepository;
         this.clientRepository = clientRepository;
         this.commissionRepository = commissionRepository;
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
+        this.repairRepository = repairRepository;
     }
 
     @RequestMapping(method=RequestMethod.GET)
@@ -49,13 +51,22 @@ public class CommissionController {
     }
 
     @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="userAddCommissionAction")
-    public String addCommission(Car newCar, Principal principal ) {
+    public String addCommission(Car newCar, Long employeeId,Principal principal ) {
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);
         Client client = clientRepository.findOne(account.getClient().getId());
         Car car = carRepository.save(newCar);
         java.util.Date term = Calendar.getInstance().getTime();
-        commissionRepository.save(new Commission(client,car,term));
+        Commission newCommission = new Commission(client,car,term);
+        commissionRepository.save(newCommission);
+        if(employeeId!=1){
+            Employee employeeToRepair = employeeRepository.findOne(employeeId);
+            //employeeToRepair.addRepair()
+            Repair newRepair = new Repair();
+            newRepair.setEmployee(employeeToRepair);
+            newRepair.setCommission(newCommission);
+            repairRepository.save(newRepair);
+        }
         return "redirect:/myCommission/addCommission";
     }
 

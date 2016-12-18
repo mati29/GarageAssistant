@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Entity(name="repair")
 public class Repair {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="client_id_seq")
-    @SequenceGenerator(name="client_id_seq", sequenceName="client_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="repair_id_seq")
+    @SequenceGenerator(name="repair_id_seq", sequenceName="repair_id_seq", allocationSize=1)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "employee_id")
