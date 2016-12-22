@@ -68,7 +68,7 @@ public class CommissionController {
             newRepair.setCommission(newCommission);
             repairRepository.save(newRepair);
         }
-        return "redirect:/myCommission/addCommission";
+        return "redirect:/myCommission";
     }
 
    @RequestMapping(value="/addCommission",method= RequestMethod.GET)
@@ -88,20 +88,16 @@ public class CommissionController {
         return "CommissionSingleView";
     }
 
-    @RequestMapping(value="/addCommission",method=RequestMethod.POST,params="clientBackAction=toMyCommission")
+    @RequestMapping(method=RequestMethod.POST,params="clientBackAction=toMyCommission")//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
     public String backToCommission() {
         return "redirect:/myCommission";
     }
 
-    @RequestMapping(value="/addCommission",method=RequestMethod.POST,params="clientBackAction=toMyDashboard")
-    public String backToCar() {
+    @RequestMapping(method=RequestMethod.POST,params="clientBackAction=toMyDashboard")//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
+    public String backToDashboard() {
         return "redirect:/clientDashboard";
     }
 
-    @RequestMapping(method=RequestMethod.POST,params="clientBackAction")//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
-    public String back() {
-        return "redirect:/clientDashboard";
-    }
 
     @RequestMapping(method=RequestMethod.POST,params="clientAddAction")
     public String addNewCar(RedirectAttributes redirectAttrs) {
