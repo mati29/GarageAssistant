@@ -16,13 +16,13 @@
             <input type="hidden" name="id" th:value="${commission.id}" />
             <input type="hidden" name="term" th:value="${commission.term}" />
             <input type="hidden" name="car" th:value="${commission.car}" />
-            <button type="submit" name="userSelectAction" value="selectCommission">Check commission</button>
+            <button type="submit" name="clientSelectAction" value="selectCommission">Check commission</button>
         </form>
     </li>
 </ul>
 <form method="POST" th:action="@{/myCommission}">
-    <button type="submit" name="userAddAction" value="addNewCar">Add car</button>
-    <button type="submit" name="userBackAction" value="toMyCars">Back</button>
+    <button type="submit" name="clientAddAction" value="addNewCommission">Add commission</button>
+    <button type="submit" name="clientBackAction" value="toMyDashboard">Back</button>
 </form>
 </body>
 </html>

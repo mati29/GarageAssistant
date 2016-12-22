@@ -20,6 +20,10 @@ public class Account {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @OneToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
     public void setId(Long id){
         this.id = id;
     }
@@ -50,5 +54,13 @@ public class Account {
 
     public Client getClient(){
         return this.client;
+    }
+
+    public void setEmployee(Employee employee){
+        this.employee = employee;
+    }
+
+    public Employee getEmployee(){
+        return this.employee;
     }
 }

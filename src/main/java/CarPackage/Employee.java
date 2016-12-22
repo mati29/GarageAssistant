@@ -26,6 +26,9 @@ public class Employee {//extends Client{
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private Set<Repair> repairSet;
 
+    @OneToOne(mappedBy = "employee",cascade=CascadeType.ALL)
+    private Account account;
+
     public Employee(){
     }
 

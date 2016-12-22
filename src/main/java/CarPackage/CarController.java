@@ -3,8 +3,11 @@ package main.java.CarPackage;
 /**
  * Created by Mati on 2016-10-23.
  */
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,17 +24,28 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/myCars")
 public class CarController {
     private CarRepository carRepository;//trzeba bedzie autowired user employee np.
-
+    private AccountRepository accountRepository;
+    private EmployeeRepository employeeRepository;
+    private RepairRepository repairRepository;
     @Autowired
-    public CarController(CarRepository carRepository) {
+    public CarController(CarRepository carRepository,AccountRepository accountRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository) {
         this.carRepository = carRepository;
+        this.accountRepository = accountRepository;
+        this.employeeRepository = employeeRepository;
+        this.repairRepository = repairRepository;
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    public String getCars(Map<String, Object> model) {
-        List<Car> cars = carRepository.findAll();
-        model.put("cars", cars);
-        return "CarView";
+    public String getRepairs(Map<String, Object> model,Principal principal) {
+        String username = principal.getName();//to chyba autowired dać
+        Account account = accountRepository.findByUsername(username);
+        Employee employee = employeeRepository.findOne(account.getEmployee().getId());
+        Set<Repair> repairSet = employee.getRepairSet();//repairRepository.findByEmployee(employee.getId());
+        model.put("repairs",repairSet);
+        //List<Car> cars = carRepository.findAll();
+        //model.put("cars", cars);//rep nie car
+        //return "CarView";
+        return "RepairsView";
     }
 
     @RequestMapping(value="/addCar",method=RequestMethod.GET)

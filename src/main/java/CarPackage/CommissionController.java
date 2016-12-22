@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -50,7 +51,7 @@ public class CommissionController {
         return "CommissionsView";
     }
 
-    @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="userAddCommissionAction")
+    @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="clientAddAction=addCommission")
     public String addCommission(Car newCar,String description, Long employeeId,Principal principal ) {
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);
@@ -77,7 +78,7 @@ public class CommissionController {
         return "NewCommission";
     }
 
-    @RequestMapping(/*value="/addCommission", */method= RequestMethod.POST,params="userSelectAction=selectCommission")
+    @RequestMapping(/*value="/addCommission", */method= RequestMethod.POST,params="clientSelectAction=selectCommission")
     public String selectCommission(@Valid @ModelAttribute("commissionSended") Commission commission, BindingResult result, Principal principal , Model model) {
         //String username = principal.getName();
        // Account account = accountRepository.findByUsername(username);
@@ -87,8 +88,24 @@ public class CommissionController {
         return "CommissionSingleView";
     }
 
-    @RequestMapping(method=RequestMethod.POST,params="clientBackAction=toMyCommission")
-    public String backToCar() {
+    @RequestMapping(value="/addCommission",method=RequestMethod.POST,params="clientBackAction=toMyCommission")
+    public String backToCommission() {
         return "redirect:/myCommission";
+    }
+
+    @RequestMapping(value="/addCommission",method=RequestMethod.POST,params="clientBackAction=toMyDashboard")
+    public String backToCar() {
+        return "redirect:/clientDashboard";
+    }
+
+    @RequestMapping(method=RequestMethod.POST,params="clientBackAction")//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
+    public String back() {
+        return "redirect:/clientDashboard";
+    }
+
+    @RequestMapping(method=RequestMethod.POST,params="clientAddAction")
+    public String addNewCar(RedirectAttributes redirectAttrs) {
+        redirectAttrs.addFlashAttribute("from","overview");
+        return "redirect:/myCommission/addCommission";
     }
 }

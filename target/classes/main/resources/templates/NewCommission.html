@@ -26,7 +26,12 @@
                 th:text="${employee.lastName}">
         </option>
     </select>
-    <button class="button medium" type="submit" name="userAddCommissionAction" value="addCommission">Add!</button>
+        <button class="button medium" type="submit" name="clientAddAction" value="addCommission">Add!</button>
+        <button type="submit" name="userAction" value="back">Back</button>
+        <div th:switch="${from}">
+            <p th:case="'overview'"><button type="submit" name="clientBackAction" value="toMyCommission">Back</button></p>
+            <p th:case="'dashboard'"><button type="submit" name="clientBackAction" value="toMyDashboard">Back</button></p>
+        </div>
 </form>
 </body>
 </html>

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Map;
@@ -44,7 +45,8 @@ public class ClientController {
 
     @Secured("ROLE_USER")
     @RequestMapping(value="/clientDashboard",method=RequestMethod.POST, params="clientAction=addCommission")
-    public String addCar(Model model) {
+    public String addCommission(RedirectAttributes redirectAttrs) {
+        redirectAttrs.addFlashAttribute("from","dashboard");
         return "redirect:/myCommission/addCommission";
     }
 

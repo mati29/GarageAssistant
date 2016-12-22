@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Repairs - review base</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<h2>My repair base</h2>
+<ul th:each="repair : ${repairs}">
+    <li>
+        ID of repair:<br />
+        <span th:text="${repair.id}"></span><br />
+        <form action="#" method="POST" th:action="@{/myRepair}" th:object="${repair}">
+            <button type="submit" name="userSelectAction" value="selectRepair">Check repair</button>
+        </form>
+    </li>
+</ul>
+<form method="POST" th:action="@{/myRepairs}">
+    <button type="submit" name="userAddAction" value="addNewRepair">Add Repair</button>
+    <button type="submit" name="userBackAction" value="toMyDashboard">Back</button>
+</form>
+</body>
+</html>

@@ -29,9 +29,9 @@ public class EmployeeController {
         return "EmployeeDashboard";
     }
 
-    @RequestMapping(method=RequestMethod.POST, params="employeeAction=checkMyCars")
+    @RequestMapping(method=RequestMethod.POST, params="employeeAction=checkMyRepairs")
     public String checkMyCars(Model model) {
-        return "redirect:/myCars";
+        return "redirect:/myRepairs";
     }
 
 
