@@ -11,12 +11,22 @@ public class Repair {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="repair_id_seq")
     @SequenceGenerator(name="repair_id_seq", sequenceName="repair_id_seq", allocationSize=1)
     private Long id;
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
     @ManyToOne
     @JoinColumn(name = "commission_id")
     private Commission commission;
+
+    public Repair(){}
+
+    public Repair(Employee employee,Commission commission,String description){
+        this.employee = employee;
+        this.commission = commission;
+        this.description = description;
+    }
 
     public Long getId(){
         return this.id;
@@ -35,5 +45,11 @@ public class Repair {
     }
     public void setCommission(Commission commission){
         this.commission = commission;
+    }
+    public void setDescription(String description){
+        this.description = description;
+    }
+    public String getDescription(){
+        return this.description;
     }
 }

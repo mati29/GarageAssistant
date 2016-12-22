@@ -58,14 +58,12 @@ public class CommissionController {
         Client client = clientRepository.findOne(account.getClient().getId());
         Car car = carRepository.save(newCar);
         java.util.Date term = Calendar.getInstance().getTime();
-        Commission newCommission = new Commission(client,car,term,description);
+        Commission newCommission = new Commission(client,car,term);
         commissionRepository.save(newCommission);
         //if(employeeId!=1){default roztrzygnie admin jednakze repair dodaje
             Employee employeeToRepair = employeeRepository.findOne(employeeId);
             //employeeToRepair.addRepair()
-            Repair newRepair = new Repair();
-            newRepair.setEmployee(employeeToRepair);
-            newRepair.setCommission(newCommission);
+            Repair newRepair = new Repair(employeeToRepair,newCommission,description);
             repairRepository.save(newRepair);
         //}
         return "redirect:/myCommission";

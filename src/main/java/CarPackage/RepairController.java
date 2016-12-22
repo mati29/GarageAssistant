@@ -65,10 +65,8 @@ public class RepairController {
         Commission commissionNeedRepair = commissionRepository.findOne(commissionId);
         //if(employeeId!=1){inaczej gdy employee==1 admin przydzieli
         Employee employeeToRepair = employeeRepository.findOne(employeeId);
-        Repair newRepair = new Repair();
-        newRepair.setEmployee(employeeToRepair);
-        newRepair.setCommission(commissionNeedRepair);
+        Repair newRepair = new Repair(employeeToRepair,commissionNeedRepair,description);
         repairRepository.save(newRepair);
-        return "redirect:/myRepair";//zmienic tez od wejscia zaleznie
+        return "redirect:/myRepairs";//zmienic tez od wejscia zaleznie
     }
 }
