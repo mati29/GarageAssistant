@@ -60,18 +60,18 @@ public class CommissionController {
         java.util.Date term = Calendar.getInstance().getTime();
         Commission newCommission = new Commission(client,car,term,description);
         commissionRepository.save(newCommission);
-        if(employeeId!=1){
+        //if(employeeId!=1){default roztrzygnie admin jednakze repair dodaje
             Employee employeeToRepair = employeeRepository.findOne(employeeId);
             //employeeToRepair.addRepair()
             Repair newRepair = new Repair();
             newRepair.setEmployee(employeeToRepair);
             newRepair.setCommission(newCommission);
             repairRepository.save(newRepair);
-        }
+        //}
         return "redirect:/myCommission";
     }
 
-   @RequestMapping(value="/addCommission",method= RequestMethod.GET)
+    @RequestMapping(value="/addCommission",method= RequestMethod.GET)
     public String commissions(Map<String, Object> model) {
         Set<Employee> employees = employeeRepository.findByPost("mechanic");
         model.put("employees", employees);
@@ -100,7 +100,7 @@ public class CommissionController {
 
 
     @RequestMapping(method=RequestMethod.POST,params="clientAddAction")
-    public String addNewCar(RedirectAttributes redirectAttrs) {
+    public String addNewCommission(RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("from","overview");
         return "redirect:/myCommission/addCommission";
     }

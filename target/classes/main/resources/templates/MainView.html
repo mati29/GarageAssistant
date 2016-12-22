@@ -14,8 +14,8 @@
 </header>
 
 <ul id="nav">
-    <li><a th:href="@{/registration}">Register</a></li>
-    <li><a th:href="@{/login}">Log in</a></li>
+    <li sec:authorize="isAnonymous()"><a th:href="@{/registration}">Register</a></li>
+    <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Log in</a></li>
     <li sec:authorize="hasRole('ROLE_WORKER')"><a th:href="@{/employeeDashboard}">Dashboard</a></li>
     <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/clientDashboard}">Dashboard</a></li>
     <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" method="POST">Log out</a></li>

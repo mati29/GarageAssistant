@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,16 +16,18 @@ import java.util.Set;
 @Controller
 @RequestMapping("/myRepairs")
 public class RepairController {
-    private CarRepository carRepository;//trzeba bedzie autowired user employee np.
+    //private CarRepository carRepository;//trzeba bedzie autowired user employee np.
     private AccountRepository accountRepository;
     private EmployeeRepository employeeRepository;
     private RepairRepository repairRepository;
+    private CommissionRepository commissionRepository;
     @Autowired
-    public RepairController(CarRepository carRepository,AccountRepository accountRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository) {
-        this.carRepository = carRepository;
+    public RepairController(CarRepository carRepository,AccountRepository accountRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository,CommissionRepository commissionRepository) {
+        //this.carRepository = carRepository;
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.repairRepository = repairRepository;
+        this.commissionRepository = commissionRepository;
     }
 
     @RequestMapping(method= RequestMethod.GET)
@@ -43,5 +46,29 @@ public class RepairController {
     @RequestMapping(method=RequestMethod.POST,params="userBackAction")//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
     public String back() {
         return "redirect:/employeeDashboard";
+    }
+
+    @RequestMapping(value="/addRepair",method= RequestMethod.GET)
+    public String repairs(Map<String, Object> model,Principal principal) {
+        Set<Employee> employees = employeeRepository.findAll();
+        model.put("employees", employees);
+        String username = principal.getName();
+        Account account = accountRepository.findByUsername(username);
+        Employee employee = employeeRepository.findOne(account.getEmployee().getId());
+        Set<Repair> repairSet = employee.getRepairSet();
+        model.put("repairs",repairSet);
+        return "NewRepair";
+    }
+
+    @RequestMapping(value="/addRepair", method= RequestMethod.POST,params="employeeAddAction=addRepair")
+    public String addRepair(Long commissionId,String description, Long employeeId,Principal principal) {
+        Commission commissionNeedRepair = commissionRepository.findOne(commissionId);
+        //if(employeeId!=1){inaczej gdy employee==1 admin przydzieli
+        Employee employeeToRepair = employeeRepository.findOne(employeeId);
+        Repair newRepair = new Repair();
+        newRepair.setEmployee(employeeToRepair);
+        newRepair.setCommission(commissionNeedRepair);
+        repairRepository.save(newRepair);
+        return "redirect:/myRepair";//zmienic tez od wejscia zaleznie
     }
 }

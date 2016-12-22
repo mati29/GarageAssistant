@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Commission</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<header>
+    <h2>Complete commission field and press button Add</h2>
+</header>
+<form method="POST" th:action="@{/myRepairs/addRepair}">
+    <label for="commission">Choose commission to enhance repair:</label>
+    <select name="commissionId" >
+        <option th:each="repair : ${repairs}"
+                th:value="${repair.commission.id}"
+                th:text="${repair.commission.car.numberPlate}">
+        </option>
+    </select>
+    <label for="description">Description of failure to resolve:</label>
+    <input type="text" name="description"></input><br/>
+    <label for="employee">Choose worker:</label>
+    <select name="employeeId" >
+        <option th:each="employee : ${employees}"
+                th:value="${employee.id}"
+                th:text="${employee.lastName}">
+        </option>
+    </select>
+    <button class="button medium" type="submit" name="employeeAddAction" value="addRepair">Add!</button>
+</form>
+<form method="POST" th:action="@{/myCommission}">
+    <div th:switch="${from}">
+        <p th:case="'overview'"><button type="submit" name="clientBackAction" value="toMyCommission">Back</button></p>
+        <p th:case="'dashboard'"><button type="submit" name="clientBackAction" value="toMyDashboard">Back</button></p>
+    </div>
+</form>
+</body>
+</html>

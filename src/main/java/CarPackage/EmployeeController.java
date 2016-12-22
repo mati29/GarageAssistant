@@ -35,10 +35,10 @@ public class EmployeeController {
     }
 
 
-    @RequestMapping(method=RequestMethod.POST, params="employeeAction=addCar")
-    public String addCar(RedirectAttributes redirectAttrs) {
+    @RequestMapping(method=RequestMethod.POST, params="employeeAction=addRepair")
+    public String addRepair(RedirectAttributes redirectAttrs) {
         redirectAttrs.addFlashAttribute("from","dashboard");
-        return "redirect:/myCars/addCar";
+        return "redirect:/myRepairs/addRepair";
     }
 
     @RequestMapping(method=RequestMethod.POST, params="employeeAction=archiveCars")

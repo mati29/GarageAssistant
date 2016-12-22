@@ -15,4 +15,5 @@ import java.util.Set;
 interface EmployeeRepository extends CrudRepository<Employee, Long> {
     //@Query(value = "select e.id,e.firstName,e.lastName,e.phoneNumber,e.email,e.post from employee e where e.post = :post",nativeQuery = true)
     Set<Employee> findByPost(/*@Param("post")*/ String post);
+    Set<Employee> findAll();
 }
