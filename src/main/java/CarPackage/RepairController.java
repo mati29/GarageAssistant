@@ -2,9 +2,13 @@ package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Calendar;
 import java.util.Map;
@@ -68,5 +72,15 @@ public class RepairController {
         Repair newRepair = new Repair(employeeToRepair,commissionNeedRepair,description);
         repairRepository.save(newRepair);
         return "redirect:/myRepairs";//zmienic tez od wejscia zaleznie
+    }
+
+    @RequestMapping(method= RequestMethod.POST,params="employeeSelectAction=selectRepair")
+    public String selectCommission(@Valid @ModelAttribute("repairSended") Repair repair, BindingResult result, Principal principal , Model model) {
+        //String username = principal.getName();
+        // Account account = accountRepository.findByUsername(username);
+        //Client client = clientRepository.findOne(account.getClient().getId());
+        Repair singleRepair = repairRepository.findOne(repair.getId());
+        model.addAttribute("repair",singleRepair);
+        return "RepairSingleView";
     }
 }

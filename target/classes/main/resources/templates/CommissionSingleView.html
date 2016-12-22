@@ -15,8 +15,6 @@
         <span th:text="${commission.car.model}"></span><br />
         Vintage:<br />
         <span th:text="${commission.car.vintage}"></span><br />
-        Description:<br />
-        <span th:text="${commission.description}"></span><br />
     </li>
     <form method="POST" th:action="@{/myCommission}">
         <button type="submit" name="clientBackAction" value="toMyCommission">Back</button>

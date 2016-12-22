@@ -10,8 +10,9 @@
     <li>
         ID of repair:<br />
         <span th:text="${repair.id}"></span><br />
-        <form action="#" method="POST" th:action="@{/myRepair}" th:object="${repair}">
-            <button type="submit" name="userSelectAction" value="selectRepair">Check repair</button>
+        <form action="#" method="POST" th:action="@{/myRepairs}" th:object="${repair}">
+            <input type="hidden" name="id" th:value="${repair.id}" />
+            <button type="submit" name="employeeSelectAction" value="selectRepair">Check repair</button>
         </form>
     </li>
 </ul>
