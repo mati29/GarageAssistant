@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -82,5 +83,21 @@ public class RepairController {
         Repair singleRepair = repairRepository.findOne(repair.getId());
         model.addAttribute("repair",singleRepair);
         return "RepairSingleView";
+    }
+
+    @RequestMapping(method=RequestMethod.POST,params="employeeAddAction")
+    public String addNewRepair(RedirectAttributes redirectAttrs) {
+        redirectAttrs.addFlashAttribute("from","overview");
+        return "redirect:/myRepairs/addRepair";
+    }
+
+    @RequestMapping(method=RequestMethod.POST,params="employeeBackAction=toMyRepairs")
+    public String backToRepairs() {
+        return "redirect:/myRepairs";
+    }
+
+    @RequestMapping(method=RequestMethod.POST,params="employeeBackAction=toMyDashboard")
+    public String backToDashboard() {
+        return "redirect:/employeeDashboard";
     }
 }

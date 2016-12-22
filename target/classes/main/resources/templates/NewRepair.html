@@ -27,10 +27,10 @@
     </select>
     <button class="button medium" type="submit" name="employeeAddAction" value="addRepair">Add!</button>
 </form>
-<form method="POST" th:action="@{/myCommission}">
+<form method="POST" th:action="@{/myRepairs}">
     <div th:switch="${from}">
-        <p th:case="'overview'"><button type="submit" name="clientBackAction" value="toMyCommission">Back</button></p>
-        <p th:case="'dashboard'"><button type="submit" name="clientBackAction" value="toMyDashboard">Back</button></p>
+        <p th:case="'overview'"><button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button></p>
+        <p th:case="'dashboard'"><button type="submit" name="employeeBackAction" value="toMyDashboard">Back</button></p>
     </div>
 </form>
 </body>
