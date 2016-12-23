@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Parts</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<header>
+    <h2>Complete requested field and press button Add part(s)</h2>
+</header>
+<form method="POST" th:action="@{/store/addPart}">
+    <label for="model">Model:</label>
+    <input type="text" name="model"></input><br/>
+    <label for="brand">Brand:</label>
+    <input type="text" name="brand"></input><br/>
+    <label for="type">Choose type of new part:</label>
+    <select name="type" >
+        <option th:each="part : ${parts}"
+                th:value="${part}"
+                th:text="${part}">
+        </option>
+    </select>
+    <label for="amount">Amount:</label>
+    <input type="number" step="1" name="amount"></input><br/>
+    <label for="price">Price:</label>
+    <input type="number" step="0.01" name="price"></input><br/>
+    <button class="button medium" type="submit" name="employeeAddAction" value="addPart">Add part(s)</button>
+</form>
+<form method="POST" th:action="@{/myCommission}">
+    <div th:switch="${from}">
+        <p th:case="'overview'"><button type="submit" name="clientBackAction" value="toMyCommission">Back</button></p>
+        <p th:case="'dashboard'"><button type="submit" name="clientBackAction" value="toMyDashboard">Back</button></p>
+    </div>
+</form>
+</body>
+</html>

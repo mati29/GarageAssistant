@@ -41,9 +41,9 @@ public class EmployeeController {
         return "redirect:/myRepairs/addRepair";
     }
 
-    @RequestMapping(method=RequestMethod.POST, params="employeeAction=archiveCars")
-    public String archiveCars(Model model) {
-        return "redirect:/";
+    @RequestMapping(method=RequestMethod.POST, params="employeeAction=addPart")
+    public String addPartStore(Model model) {
+        return "redirect:/store/addPart";
     }
 
 

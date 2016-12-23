@@ -4,3 +4,5 @@
 *.class
 *.class
 target/classes/main/java/CarPackage/Repair.class
+*.class
+*.class
