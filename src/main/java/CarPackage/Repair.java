@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Mati on 2016-12-03.
@@ -19,6 +20,9 @@ public class Repair {
     @ManyToOne
     @JoinColumn(name = "commission_id")
     private Commission commission;
+
+    @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL)
+    private Set<Part> partSet;
 
     public Repair(){}
 
@@ -45,6 +49,12 @@ public class Repair {
     }
     public void setCommission(Commission commission){
         this.commission = commission;
+    }
+    public Set<Part> getPartSet(){
+        return this.partSet;
+    }
+    public void setPartSet(Set<Part> partSet){
+        this.partSet = partSet;
     }
     public void setDescription(String description){
         this.description = description;
