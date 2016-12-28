@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Commission</title>
+</head>
+<body>
+<header>
+    <h2>Choose type of part</h2>
+</header>
+<form action="#" method="POST" th:action="@{/myRepairs/evaluate}" th:object="${listPartRepair}">
+    <ul th:each="partToRepair : ${listPartRepair.partRepair}">
+            <select th:name="|partRepair[${partToRepair.index}].value|" >
+                <option th:each="part : ${parts}"
+                        th:value="${part}"
+                        th:text="${part}">
+                </option>
+            </select>
+    </ul>
+    <button class="button medium" type="submit" name="employeeEvaluateAction" value="saveEvaluate">Save evaluation</button>
+</form>
+</body>
+</html>

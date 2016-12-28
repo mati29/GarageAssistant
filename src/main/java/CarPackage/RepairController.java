@@ -7,32 +7,37 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Calendar;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Mati on 2016-12-18.
  */
 @Controller
 @RequestMapping("/myRepairs")
+@SessionAttributes("selectedRepairId")
 public class RepairController {
     //private CarRepository carRepository;//trzeba bedzie autowired user employee np.
     private AccountRepository accountRepository;
     private EmployeeRepository employeeRepository;
     private RepairRepository repairRepository;
     private CommissionRepository commissionRepository;
+    private PartRepository partRepository;
+    private StoreRepository storeRepository;
+
     @Autowired
-    public RepairController(CarRepository carRepository,AccountRepository accountRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository,CommissionRepository commissionRepository) {
+    public RepairController(CarRepository carRepository,AccountRepository accountRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository,CommissionRepository commissionRepository,PartRepository partRepository,StoreRepository storeRepository) {
         //this.carRepository = carRepository;
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.repairRepository = repairRepository;
         this.commissionRepository = commissionRepository;
+        this.partRepository = partRepository;
+        this.storeRepository = storeRepository;
     }
 
     @RequestMapping(method= RequestMethod.GET)
@@ -82,6 +87,9 @@ public class RepairController {
         //Client client = clientRepository.findOne(account.getClient().getId());
         Repair singleRepair = repairRepository.findOne(repair.getId());
         model.addAttribute("repair",singleRepair);
+        if(!model.containsAttribute("selectedRepairId")) {
+            model.addAttribute("selectedRepairId", singleRepair.getId());
+        }
         return "RepairSingleView";
     }
 
@@ -100,4 +108,50 @@ public class RepairController {
     public String backToDashboard() {
         return "redirect:/employeeDashboard";
     }
+
+    @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=startEvaluate")
+    public String startevaluate(Map<String, Object> model) {
+        return "StartEvaluateRepair";
+    }
+
+    @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=continueEvaluate")
+    public String continueevaluate(Map<String, Object> model,int count) {
+        ArrayList<SinglePart> fieldToFill = new ArrayList<SinglePart>();
+        //String[] fieldToFill = new String[count];
+        for(int i=0;i<count;i++)fieldToFill.add(new SinglePart("",i));
+        ListPartRepair listPartRepair = new ListPartRepair();
+        listPartRepair.setPartRepair(fieldToFill);
+        model.put("listPartRepair",listPartRepair);
+        Set<String> parts = new HashSet<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
+        model.put("parts", parts);
+        return "EvaluateRepair";
+    }
+
+    @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=saveEvaluate")
+    public String saveevaluate(@ModelAttribute("listPartRepair") ListPartRepair listPartRepair,/*BindingResult result,*/@ModelAttribute("selectedRepairId") Long selectedRepairId) {
+        Repair repair = repairRepository.findOne(selectedRepairId);
+        Set<Part> partSet = new HashSet<Part>();
+        for(int i=0;i<listPartRepair.getPartRepair().size();i++) {
+            Store store;
+            switch(listPartRepair.getPartRepair().get(i).value){
+                case "Empty": store = storeRepository.findOne((long)1);break;
+                case "Engine": store = storeRepository.findOne((long)2);break;
+                case "Transmission": store = storeRepository.findOne((long)3);break;
+                case "Tires": store = storeRepository.findOne((long)4);break;
+                case "Body": store = storeRepository.findOne((long)5);break;
+                case "Lights": store = storeRepository.findOne((long)6);break;
+                case "Equipment": store = storeRepository.findOne((long)7);break;
+                case "Brakes": store = storeRepository.findOne((long)8);break;
+                default: store = null;
+            }
+            Part newPart = new Part(repair,store);
+            partRepository.save(newPart);
+            partSet.add(newPart);
+        }
+        repair.setPartSet(partSet);
+        repairRepository.save(repair);
+        //jeszcze wydobyc id z repaira a jego przesylac jakos albo autowired i juz
+        return "redirect:/myRepairs";
+    }
+
 }

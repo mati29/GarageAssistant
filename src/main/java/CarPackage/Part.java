@@ -17,8 +17,14 @@ public class Part {
     @JoinColumn(name = "repair_id")
     private Repair repair;
     @ManyToOne
-    @JoinColumn(name = "partstore_id")
+    @JoinColumn(name = "store_id")
     private Store store;
+
+    public Part(){}
+    public Part(Repair repair,Store store){
+        this.repair = repair;
+        this.store = store;
+    }
 
     public void setId(Long id){
         this.id = id;

@@ -19,6 +19,9 @@
     <li>Need to repair - description:<br />
         <span th:text="${repair.description}"></span><br />
     </li>
+    <form method="POST" th:action="@{/myRepairs/evaluate}">
+        <button type="submit" name="employeeEvaluateAction" value="startEvaluate">Evaluate Repair</button>
+    </form>
     <form method="POST" th:action="@{/myRepairs}">
         <button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button>
     </form>

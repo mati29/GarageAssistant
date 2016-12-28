@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Commission</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<header>
+    <h2>Please enter number of part, we need to resolve repair</h2>
+</header>
+<form method="POST" th:action="@{/myRepairs/evaluate}">
+    <label for="count">Amount:</label>
+    <input type="number" step="1" name="count"></input><br/>
+    <button class="button medium" type="submit" name="employeeEvaluateAction" value="continueEvaluate">Add!</button>
+</form>
+</body>
+</html>
