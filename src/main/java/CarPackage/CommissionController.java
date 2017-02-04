@@ -12,10 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Mati on 2016-11-21.
@@ -30,15 +27,19 @@ public class CommissionController {
     private AccountRepository accountRepository;
     private EmployeeRepository employeeRepository;
     private RepairRepository repairRepository;
+    private StoreRepository storeRepository;
+    private PartRepository partRepository;
 
     @Autowired
-    public CommissionController(AccountRepository accountRepository,CarRepository carRepository,ClientRepository clientRepository,CommissionRepository commissionRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository) {
+    public CommissionController(AccountRepository accountRepository,CarRepository carRepository,ClientRepository clientRepository,CommissionRepository commissionRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository,StoreRepository storeRepository,PartRepository partRepository) {
         this.carRepository = carRepository;
         this.clientRepository = clientRepository;
         this.commissionRepository = commissionRepository;
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.repairRepository = repairRepository;
+        this.storeRepository = storeRepository;
+        this.partRepository = partRepository;
     }
 
     @RequestMapping(method=RequestMethod.GET)
@@ -102,4 +103,56 @@ public class CommissionController {
         redirectAttrs.addFlashAttribute("from","overview");
         return "redirect:/myCommission/addCommission";
     }
+
+    @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=evaluateCommission")
+    public String evaluateCommission(@Valid @ModelAttribute Commission commission, BindingResult result, Principal principal , Model model) {
+        //String username = principal.getName();
+        // Account account = accountRepository.findByUsername(username);
+        //Client client = clientRepository.findOne(account.getClient().getId());
+        Commission singleCommission = commissionRepository.findOne(commission.getId());
+        Set<Repair> repairSet = singleCommission.getRepairSet();
+        Set<Part> neededParts = new HashSet<>();
+        Set<Set<Store>> allToChoose = new HashSet<>();
+        for(Repair repair : repairSet){
+            neededParts.addAll(repair.getPartSet());
+        }//odejmuje amount -1 i gdy 0 kasuje z bazy dla store
+        for(Part part : neededParts){
+            Set<Store> storeSet = new HashSet<>();
+            switch(part.getStore().getType()){
+                case "EMPTY": storeSet = storeRepository.findByType("Empty");break;
+                case "ENGINE": storeSet = storeRepository.findByType("Engine");break;
+                case "TRANSMISSION": storeSet = storeRepository.findByType("Transmission");break;
+                case "TIRES": storeSet = storeRepository.findByType("Tires");break;
+                case "BODY": storeSet = storeRepository.findByType("Body");break;
+                case "LIGHTS": storeSet = storeRepository.findByType("Lights");break;
+                case "EQUIPMENT": storeSet = storeRepository.findByType("Equipment");break;
+                case "BRAKES": storeSet = storeRepository.findByType("Brakes");break;
+                default: storeSet = null;
+            }
+            allToChoose.add(storeSet);
+        }
+        ArrayList<ChangePart> changeParts = new ArrayList<>();
+        for(Part part : neededParts) {
+            ChangePart partToChange = new ChangePart();
+            partToChange.setPartId(part.getId());
+            changeParts.add(partToChange);
+        }
+        ClientChoosenPart clientChoosePart = new ClientChoosenPart();
+        clientChoosePart.setChosenPart(changeParts);
+        model.addAttribute("clientChoosePart",clientChoosePart);
+        model.addAttribute("stores",allToChoose);
+        return "ClientEvaluation";
+    }
+
+    @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=saveEvaluate")
+    public String saveEvaluate(@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart, BindingResult result) {
+        for(ChangePart part:clientChoosePart.chosenPart){
+            Part partToSave = partRepository.findOne(part.getPartId());
+            Store storeToChange = storeRepository.findOne(part.getStoreId());
+            partToSave.setStore(storeToChange);
+            partRepository.save(partToSave);
+        }
+        return "redirect:/myCommission";
+    }
+
 }

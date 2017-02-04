@@ -29,6 +29,12 @@ public class Store {
     public void setPartSet(Set<Part> partSet){
         this.partSet = partSet;
     }
+    public void setId(Long Id){
+        this.id = id;
+    }
+    public Long getId(){
+        return this.id;
+    }
     public void setType(String type){
         this.type = type;
     }
