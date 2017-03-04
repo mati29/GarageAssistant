@@ -131,6 +131,9 @@ public class CommissionController {
             }
             allToChoose.add(storeSet);
         }
+        //if(allToChoose.isEmpty()) logika dla późniejszego zastosowania gdy dodatkowe czesci do wybrania
+        //ale wkladam nulle wiec moze nie zadziala
+        //plus przemyslec jak oznaczyc te wybrane czesci od strony pracowniczej
         ArrayList<ChangePart> changeParts = new ArrayList<>();
         for(Part part : neededParts) {
             ChangePart partToChange = new ChangePart();

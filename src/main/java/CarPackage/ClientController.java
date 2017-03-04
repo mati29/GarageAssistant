@@ -30,9 +30,8 @@ public class ClientController {
 
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="userRegistrationAction")
     public String addClient(Client client,Account account) {//ew.potem inne employee od role zalezne..
-        Client clientRes = clientRepository.save(client);
-        account.setClient(clientRes);
-        accountRepository.save(account);
+        client.setAccount(account);
+        clientRepository.save(client);
         rolesRepository.save(new Roles(account.getUsername()));
         return "redirect:/";
     }
