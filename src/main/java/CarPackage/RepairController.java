@@ -145,7 +145,7 @@ public class RepairController {
                 default: store = null;
             }
             Part newPart = new Part(repair,store);
-            partRepository.save(newPart);
+            //partRepository.save(newPart);//być może niekoniecznie potrzebne refactor
             partSet.add(newPart);
         }
         repair.setPartSet(partSet);
