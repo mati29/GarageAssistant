@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Repair is done</title>
+</head>
+<body>
+    <form name="RedirectForm" th:action="@{/myRepairs/repair}" method="post">
+        <button type="submit" name="employeeRepairAction" value="makeRepair">Repair Done</button>
+        <!--<noscript>
+            <input type="submit" value="Auto Redirect" />
+        </noscript>-->
+    </form>
+    <!--<script type="text/javascript">
+
+            $(document).ready(function() {
+                document.RedirectForm.submit();
+            });
+
+    </script>-->
+</body>
+</html>

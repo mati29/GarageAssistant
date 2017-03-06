@@ -12,6 +12,7 @@ public class Part {
     @SequenceGenerator(name="part_id_seq", sequenceName="part_id_seq", allocationSize=1)
 
     private Long id;
+    private boolean resolved;
 
     @ManyToOne
     @JoinColumn(name = "repair_id")
@@ -32,6 +33,14 @@ public class Part {
 
     public Long getId(){
         return this.id;
+    }
+
+    public void setResolved(boolean resolved){
+        this.resolved = resolved;
+    }
+
+    public boolean getResolved(){
+        return this.resolved;
     }
 
     public Repair getRepair(){

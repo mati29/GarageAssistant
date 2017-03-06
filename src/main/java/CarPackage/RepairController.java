@@ -87,9 +87,7 @@ public class RepairController {
         //Client client = clientRepository.findOne(account.getClient().getId());
         Repair singleRepair = repairRepository.findOne(repair.getId());
         model.addAttribute("repair",singleRepair);
-        if(!model.containsAttribute("selectedRepairId")) {
-            model.addAttribute("selectedRepairId", singleRepair.getId());
-        }
+        model.addAttribute("selectedRepairId", singleRepair.getId());
         return "RepairSingleView";
     }
 
@@ -152,6 +150,29 @@ public class RepairController {
         repairRepository.save(repair);
         //jeszcze wydobyc id z repaira a jego przesylac jakos albo autowired i juz
         return "redirect:/myRepairs";
+    }
+
+    @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=makeRepair")
+    public String makeRepair(Map<String, Object> model,@ModelAttribute("selectedRepairId") Long selectedRepairId) {
+        Repair repair = repairRepository.findOne(selectedRepairId);
+        Set<Part> parts = repair.getPartSet();
+        Set<Part> partToRepair = new HashSet<>();
+        parts.stream().filter(p -> p.getStore().getId()>8 && p.getResolved()==false).forEach(p->partToRepair.add(p));
+        if(partToRepair.isEmpty())
+            model.put("NeedRepair","N");
+        else{
+            model.put("NeedRepair","Y");
+            model.put("parts", partToRepair);
+        }
+        return "RepairInProgress";
+    }
+
+    @RequestMapping(value="/repairDone",method= RequestMethod.POST,params="employeeRepairAction=RepairDone")
+    public String doneRepair(Map<String, Object> model,@ModelAttribute("part") Part repairPart) {
+        Part repairedPart = partRepository.findOne(repairPart.getId());
+        repairedPart.setResolved(true);
+        partRepository.save(repairedPart);
+        return "RepairIsDone";
     }
 
 }
