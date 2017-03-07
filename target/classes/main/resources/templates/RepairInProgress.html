@@ -10,15 +10,17 @@
 <div th:switch="${NeedRepair}">
     <p th:case="'Y'">
     <ul th:each="part : ${parts}">
-        <form action="#" method="POST" th:action="@{/myRepairs/repairDone}" th:object="${part}">
+        <form action="#" method="POST" th:action="@{/myRepairs/repair}" th:object="${part}">
             <span th:text="${part.store.model}"></span><br />
             <input type="hidden" th:name="part" th:value="${part.id}" />
-            <button class="button medium" type="submit" name="employeeRepairAction" value="RepairDone">Repair</button>
+            <button class="button medium" type="submit" name="employeeRepairAction" value="makeRepair">Repair</button>
         </form>
     </ul>
     </p>
-    <p th:case="'N'">No Repairs Needed<button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button></p>
+    <p th:case="'N'">No repairs needed at the time</p>
 </div>
-
+<form method="POST" th:action="@{/myRepairs}">
+    <button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button>
+</form>
 </body>
 </html>

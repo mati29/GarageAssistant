@@ -153,7 +153,12 @@ public class RepairController {
     }
 
     @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=makeRepair")
-    public String makeRepair(Map<String, Object> model,@ModelAttribute("selectedRepairId") Long selectedRepairId) {
+    public String makeRepair(Map<String, Object> model,@ModelAttribute("selectedRepairId") Long selectedRepairId,@ModelAttribute("part") Part repairPart) {
+        if(null!=repairPart.getId()){
+            Part repairedPart = partRepository.findOne(repairPart.getId());
+            repairedPart.setResolved(true);
+            partRepository.save(repairedPart);
+        }
         Repair repair = repairRepository.findOne(selectedRepairId);
         Set<Part> parts = repair.getPartSet();
         Set<Part> partToRepair = new HashSet<>();
@@ -167,12 +172,12 @@ public class RepairController {
         return "RepairInProgress";
     }
 
-    @RequestMapping(value="/repairDone",method= RequestMethod.POST,params="employeeRepairAction=RepairDone")
+    /*@RequestMapping(value="/repairDone",method= RequestMethod.POST,params="employeeRepairAction=RepairDone")
     public String doneRepair(Map<String, Object> model,@ModelAttribute("part") Part repairPart) {
         Part repairedPart = partRepository.findOne(repairPart.getId());
         repairedPart.setResolved(true);
         partRepository.save(repairedPart);
         return "RepairIsDone";
-    }
+    }*/
 
 }
