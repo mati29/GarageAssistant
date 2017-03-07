@@ -46,7 +46,9 @@ public class RepairController {
         Account account = accountRepository.findByUsername(username);
         Employee employee = employeeRepository.findOne(account.getEmployee().getId());
         Set<Repair> repairSet = employee.getRepairSet();//repairRepository.findByEmployee(employee.getId());
-        model.put("repairs",repairSet);
+        Set<Repair> repairToComplete = new HashSet<>();
+        repairSet.stream().filter(r -> r.getAccomplish() == false).forEach(r->repairToComplete.add(r));//to avoid complete repair again
+        model.put("repairs",repairToComplete);
         //List<Car> cars = carRepository.findAll();
         //model.put("cars", cars);//rep nie car
         //return "CarView";
@@ -172,12 +174,22 @@ public class RepairController {
         return "RepairInProgress";
     }
 
-    /*@RequestMapping(value="/repairDone",method= RequestMethod.POST,params="employeeRepairAction=RepairDone")
-    public String doneRepair(Map<String, Object> model,@ModelAttribute("part") Part repairPart) {
-        Part repairedPart = partRepository.findOne(repairPart.getId());
-        repairedPart.setResolved(true);
-        partRepository.save(repairedPart);
-        return "RepairIsDone";
-    }*/
+    @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=repairDone")
+    public String doneRepair(Map<String, Object> model,@ModelAttribute("repair") Repair selectedRepair) {
+        Repair repairedPart = repairRepository.findOne(selectedRepair.getId());
+        Set<Part> anyToComplete = new HashSet<>();
+        repairedPart.getPartSet().stream().filter(p -> p.getResolved() == false).forEach(p -> anyToComplete.add(p));
+        if(anyToComplete.isEmpty()) {
+            repairedPart.setAccomplish(true);
+            repairRepository.save(repairedPart);
+            return "redirect:/myRepairs";
+        }
+        else{
+            model.put("repair",repairedPart);
+            model.put("selectedRepairId", repairedPart.getId());
+            model.put("complete","notAllPartComplete");
+            return "RepairSingleView";
+        }
+    }
 
 }

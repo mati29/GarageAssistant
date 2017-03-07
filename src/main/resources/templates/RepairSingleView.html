@@ -6,6 +6,9 @@
 </head>
 <body>
 <h2>Single repair checking</h2>
+<div th:switch="${complete}">
+    <p th:case="'notAllPartComplete'"><h4>To complete repair, all part need to be done!</h4></p>
+</div>
 <ul>Car description
     <li>Number plate:<br />
         <span th:text="${repair.commission.car.numberPlate}"></span><br />
@@ -24,6 +27,10 @@
     </form>
     <form method="POST" th:action="@{/myRepairs/repair}">
         <button type="submit" name="employeeRepairAction" value="makeRepair">Make Repair</button>
+    </form>
+    <form method="POST" th:action="@{/myRepairs/repair}" th:object="${repair}">
+        <input type="hidden" name="repair" th:value="${repair.id}" />
+        <button type="submit" name="employeeRepairAction" value="repairDone">Complete Repair</button>
     </form>
     <form method="POST" th:action="@{/myRepairs}">
         <button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button>

@@ -13,6 +13,7 @@ public class Repair {
     @SequenceGenerator(name="repair_id_seq", sequenceName="repair_id_seq", allocationSize=1)
     private Long id;
     private String description;
+    private boolean accomplish;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
@@ -37,6 +38,12 @@ public class Repair {
     }
     public void setId(Long id){
         this.id = id;
+    }
+    public boolean getAccomplish(){
+        return this.accomplish;
+    }
+    public void setAccomplish(boolean accomplish){
+        this.accomplish = accomplish;
     }
     public Employee getEmployee(){
         return this.employee;
