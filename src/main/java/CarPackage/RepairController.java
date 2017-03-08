@@ -158,8 +158,12 @@ public class RepairController {
     public String makeRepair(Map<String, Object> model,@ModelAttribute("selectedRepairId") Long selectedRepairId,@ModelAttribute("part") Part repairPart) {
         if(null!=repairPart.getId()){
             Part repairedPart = partRepository.findOne(repairPart.getId());
-            repairedPart.setResolved(true);
-            partRepository.save(repairedPart);
+            if(repairedPart.getStore().getAmount()>=1) {
+                repairedPart.getStore().setAmount(repairedPart.getStore().getAmount()-1);
+                repairedPart.setResolved(true);
+                partRepository.save(repairedPart);
+            }
+            else model.put("storeEmpty","Y");
         }
         Repair repair = repairRepository.findOne(selectedRepairId);
         Set<Part> parts = repair.getPartSet();

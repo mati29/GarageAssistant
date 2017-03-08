@@ -4,23 +4,26 @@
     <title>Repair in progress</title>
 </head>
 <body>
-<header>
-    <h2>Make repair on part need to change</h2>
-</header>
-<div th:switch="${NeedRepair}">
-    <p th:case="'Y'">
-    <ul th:each="part : ${parts}">
-        <form action="#" method="POST" th:action="@{/myRepairs/repair}" th:object="${part}">
-            <span th:text="${part.store.model}"></span><br />
-            <input type="hidden" th:name="part" th:value="${part.id}" />
-            <button class="button medium" type="submit" name="employeeRepairAction" value="makeRepair">Repair</button>
-        </form>
-    </ul>
-    </p>
-    <p th:case="'N'">No repairs needed at the time</p>
-</div>
-<form method="POST" th:action="@{/myRepairs}">
-    <button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button>
-</form>
+    <header>
+        <h2>Make repair on part need to change</h2>
+    </header>
+    <div th:switch="${storeEmpty}">
+        <p th:case="'Y'">Part not available in store</p>
+    </div>
+    <div th:switch="${NeedRepair}">
+        <p th:case="'Y'">
+        <ul th:each="part : ${parts}">
+            <form action="#" method="POST" th:action="@{/myRepairs/repair}" th:object="${part}">
+                <span th:text="${part.store.model}"></span><br />
+                <input type="hidden" th:name="part" th:value="${part.id}" />
+                <button class="button medium" type="submit" name="employeeRepairAction" value="makeRepair">Repair</button>
+            </form>
+        </ul>
+        </p>
+        <p th:case="'N'">No repairs needed at the time</p>
+    </div>
+    <form method="POST" th:action="@{/myRepairs}">
+        <button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button>
+    </form>
 </body>
 </html>
