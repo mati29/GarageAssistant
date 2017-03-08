@@ -88,6 +88,11 @@ public class CommissionController {
         //Client client = clientRepository.findOne(account.getClient().getId());
         Commission singleCommission = commissionRepository.findOne(commission.getId());
         model.addAttribute("commission",singleCommission);
+        //need refactor number of part in variable no 1-8
+        Set<Part> partToEvaluate = new HashSet<>();
+        singleCommission.getRepairSet().stream().forEach(r -> r.getPartSet().stream().forEach((p) -> {if(p.getStore().getId()<=8 && p.getStore().getId()>=1){partToEvaluate.add(p);} }));
+        if(!partToEvaluate.isEmpty())
+            model.addAttribute("evaluateNeeded","true");
         return "CommissionSingleView";
     }
 

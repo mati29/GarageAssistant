@@ -18,7 +18,10 @@
     </li>
     <form action="#" method="POST" th:action="@{/myCommission/evaluate}" th:object="${commission}">
         <input type="hidden" name="id" th:value="${commission.id}" />
-        <button type="submit" name="clientEvaluateAction" value="evaluateCommission">Evaluate</button>
+        <div th:switch="${evaluateNeeded}">
+            <button type="submit" name="clientEvaluateAction" th:case="'true'" value="evaluateCommission">Evaluate</button>
+            <button type="submit" name="clientEvaluateAction" th:case="*" value="evaluateCommission" th:disabled="disabled">Evaluate</button>
+        </div>
     </form>
     <form method="POST" th:action="@{/myCommission}">
         <button type="submit" name="clientBackAction" value="toMyCommission">Back</button>
