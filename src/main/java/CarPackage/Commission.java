@@ -27,6 +27,9 @@ public class Commission {
     @OneToMany(mappedBy = "commission",cascade = CascadeType.ALL)
     private Set<Repair> repairSet;
 
+    @OneToOne(mappedBy = "commission",cascade = CascadeType.ALL)
+    private Bill bill;
+
     public Commission(){
     }
     public Commission(Client client,Car car,Date term){
