@@ -30,7 +30,11 @@ public class ClientController {
 
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="userRegistrationAction")
     public String addClient(Client client,Account account) {//ew.potem inne employee od role zalezne..
+        Settings settings = new Settings();
+        settings.setClient(client);
+        account.setClient(client);
         client.setAccount(account);
+        client.setSettings(settings);//new functionality
         clientRepository.save(client);
         rolesRepository.save(new Roles(account.getUsername()));
         return "redirect:/";
@@ -52,6 +56,11 @@ public class ClientController {
     @RequestMapping(value="/clientDashboard",method= RequestMethod.POST,params="clientAction=checkMyCommission")
     public String getCommission(Model model) {
         return "redirect:/myCommission";
+    }
+
+    @RequestMapping(value="/clientDashboard",method=RequestMethod.POST, params="clientAction=accountSettings")
+    public String checkSettings(Model model) {
+        return "redirect:/settings";
     }
 
 

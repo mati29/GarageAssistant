@@ -21,6 +21,10 @@ public class Client {
     private int phoneNumber;
     private String email;
 
+
+    @OneToOne(mappedBy = "client",cascade=CascadeType.ALL)
+    private Settings settings;
+
     @OneToOne(mappedBy = "client",cascade=CascadeType.ALL)
     private Account account;
 
@@ -84,5 +88,13 @@ public class Client {
 
     public Account getAccount(){
         return this.account;
+    }
+
+    public void setSettings(Settings settings){
+        this.settings = settings;
+    }
+
+    public Settings getSettings(){
+        return this.settings;
     }
 }
