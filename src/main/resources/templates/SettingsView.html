@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User settings</title>
+</head>
+<body>
+<header>
+    <h2>Please check square to set option</h2>
+    <h6>some could be enabled after demand</h6>
+</header>
+    <form action="#" method="POST" th:action="@{/settings}" th:object="${setting}">
+        <div>
+            <input type="checkbox" th:checked="${setting.autoMechanic}" th:name="autoMechanic"/> Automatic mechanic choose
+        </div>
+        <div>
+            <input type="checkbox" th:checked="${setting.autoPart}" th:name="autoPart"/> Automatic part choose
+        </div>
+        <div th:if="${setting.additionalService} == true">
+            <input type="checkbox" th:checked="checked" th:disabled="disabled" /> Additional Service
+        </div>
+        <div th:if="${setting.additionalService} == false">
+            <input type="checkbox" th:checked="${setting.additionalServiceDemand}" th:name="additionalServiceDemand"/> Additional Service
+        </div>
+        <div th:if="${setting.callExtraPart} == true">
+            <input type="checkbox" th:checked="checked" th:disabled="disabled" /> Call extra part
+        </div>
+        <div th:if="${setting.callExtraPart} == false">
+            <input type="checkbox" th:checked="${setting.callExtraPartDemand}" th:name="callExtraPartDemand"/> Call extra part
+        </div>
+        <button class="button medium" type="submit" name="clientSettingsAction" value="setOption">Save Option</button>
+    </form>
+    <!--tylko dodac raz zacheckowane nie mozna usunąć z tych vipowskich-->
+</body>
+</html>
