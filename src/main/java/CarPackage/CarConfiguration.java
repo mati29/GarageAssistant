@@ -66,6 +66,8 @@ public class CarConfiguration extends GlobalMethodSecurityConfiguration{
         return new SpringSecurityDialect();
     }
 
+
+
     /*@Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();

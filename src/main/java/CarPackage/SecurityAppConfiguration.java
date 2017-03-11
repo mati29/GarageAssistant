@@ -35,6 +35,7 @@ public class SecurityAppConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                //.successHandler(afterLogging())
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -55,6 +56,11 @@ public class SecurityAppConfiguration extends WebSecurityConfigurerAdapter {
     @Bean(name="passwordEncoder")
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AfterLogging afterLogging(){
+        return new AfterLogging();
     }
 
 }

@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.*;
@@ -43,12 +41,13 @@ public class CommissionController {
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    public String getCommission(Map<String, Object> model, Principal principal){
+    public String getCommission(Map<String, Object> model, Principal principal,HttpServletRequest request){
         String username = principal.getName();//to chyba autowired dać
         Account account = accountRepository.findByUsername(username);
         Client client = clientRepository.findOne(account.getClient().getId());//to całe
         Set<Commission> clientCommissionSet = client.getCommissionSet();
         model.put("commissions", clientCommissionSet);
+        //String additionalService = request.getSession().getAttribute("AS").toString();
         return "CommissionsView";
     }
 
