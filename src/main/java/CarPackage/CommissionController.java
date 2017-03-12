@@ -86,7 +86,7 @@ public class CommissionController {
     }
 
     @RequestMapping(/*value="/addCommission", */method= RequestMethod.POST,params="clientSelectAction=selectCommission")
-    public String selectCommission(@Valid @ModelAttribute("commissionSended") Commission commission, BindingResult result, Principal principal , Model model) {
+    public String selectCommission(@Valid @ModelAttribute("commissionSended") Commission commission, BindingResult result, Principal principal , Model model,HttpServletRequest request) {
         //String username = principal.getName();
        // Account account = accountRepository.findByUsername(username);
         //Client client = clientRepository.findOne(account.getClient().getId());
@@ -97,6 +97,9 @@ public class CommissionController {
         singleCommission.getRepairSet().stream().forEach(r -> r.getPartSet().stream().forEach((p) -> {if(p.getStore().getId()<=8 && p.getStore().getId()>=1){partToEvaluate.add(p);} }));
         if(!partToEvaluate.isEmpty())
             model.addAttribute("evaluateNeeded","true");
+        boolean autoPart = (boolean)request.getSession().getAttribute("AP");
+        if(autoPart)
+            model.addAttribute("AP",autoPart);
         return "CommissionSingleView";
     }
 

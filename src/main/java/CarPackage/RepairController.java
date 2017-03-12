@@ -128,7 +128,7 @@ public class RepairController {
     }
 
     @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=saveEvaluate")
-    public String saveevaluate(@ModelAttribute("listPartRepair") ListPartRepair listPartRepair,/*BindingResult result,*/@ModelAttribute("selectedRepairId") Long selectedRepairId) {
+    public String saveevaluate(@ModelAttribute("listPartRepair") ListPartRepair listPartRepair,/*BindingResult result,*/@ModelAttribute("selectedRepairId") Long selectedRepairId,Model model) {
         Repair repair = repairRepository.findOne(selectedRepairId);
         Set<Part> partSet = new HashSet<Part>();
         for(int i=0;i<listPartRepair.getPartRepair().size();i++) {
@@ -151,6 +151,47 @@ public class RepairController {
         repair.setPartSet(partSet);
         repairRepository.save(repair);
         //jeszcze wydobyc id z repaira a jego przesylac jakos albo autowired i juz
+        if(true==repair.getCommission().getClient().getSettings().getAutoPart()) {
+            Set<Set<Store>> allToChoose = new HashSet<>();
+            for(Part singlePart : repair.getPartSet()){
+                Set<Store> storeSet = new HashSet<>();
+                switch(singlePart.getStore().getType()){
+                    case "EMPTY": storeSet = storeRepository.findByType("Empty");break;
+                    case "ENGINE": storeSet = storeRepository.findByType("Engine");break;
+                    case "TRANSMISSION": storeSet = storeRepository.findByType("Transmission");break;
+                    case "TIRES": storeSet = storeRepository.findByType("Tires");break;
+                    case "BODY": storeSet = storeRepository.findByType("Body");break;
+                    case "LIGHTS": storeSet = storeRepository.findByType("Lights");break;
+                    case "EQUIPMENT": storeSet = storeRepository.findByType("Equipment");break;
+                    case "BRAKES": storeSet = storeRepository.findByType("Brakes");break;
+                    default: storeSet = null;
+                }
+                allToChoose.add(storeSet);
+            }
+            ArrayList<ChangePart> changeParts = new ArrayList<>();
+            for(Part part : repair.getPartSet()) {
+                ChangePart partToChange = new ChangePart();
+                partToChange.setPartId(part.getId());
+                changeParts.add(partToChange);
+            }
+            ClientChoosenPart clientChoosePart = new ClientChoosenPart();
+            clientChoosePart.setChosenPart(changeParts);
+            model.addAttribute("clientChoosePart",clientChoosePart);
+            model.addAttribute("stores",allToChoose);
+            return "EmployeeEvaluation";
+        }
+        else
+            return "redirect:/myRepairs";
+    }
+
+    @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="EmployeeEvaluateAction=saveRepair")
+    public String saveRepair(@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart, BindingResult result) {
+        for(ChangePart part:clientChoosePart.chosenPart){
+            Part partToSave = partRepository.findOne(part.getPartId());
+            Store storeToChange = storeRepository.findOne(part.getStoreId());
+            partToSave.setStore(storeToChange);
+            partRepository.save(partToSave);
+        }
         return "redirect:/myRepairs";
     }
 
