@@ -41,42 +41,47 @@ public class CommissionController {
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    public String getCommission(Map<String, Object> model, Principal principal,HttpServletRequest request){
+    public String getCommission(Map<String, Object> model, Principal principal){
         String username = principal.getName();//to chyba autowired dać
         Account account = accountRepository.findByUsername(username);
         Client client = clientRepository.findOne(account.getClient().getId());//to całe
         Set<Commission> clientCommissionSet = client.getCommissionSet();
         model.put("commissions", clientCommissionSet);
-        //String additionalService = request.getSession().getAttribute("AS").toString();
         return "CommissionsView";
     }
 
     @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="clientAddAction=addCommission")
-    public String addCommission(Car newCar,String description, Long employeeId,Principal principal ) {
+    public String addCommission(Car newCar,String description, Long employeeId,Principal principal,HttpServletRequest request) {
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);
         Client client = clientRepository.findOne(account.getClient().getId());
-        //Car car = carRepository.save(newCar);//tu zmiana rep. moze nie
         java.util.Date term = Calendar.getInstance().getTime();
         Commission newCommission = new Commission(client,newCar,term);
-        //commissionRepository.save(newCommission);//i tu chyba
         newCar.setCommission(newCommission);
-        //\\carRepository.save(newCar);
-        //if(employeeId!=1){default roztrzygnie admin jednakze repair dodaje
-            Employee employeeToRepair = employeeRepository.findOne(employeeId);
-            //employeeToRepair.addRepair()
-            Repair newRepair = new Repair(employeeToRepair,newCommission,description);
-            //repairRepository.save(newRepair);
-        //}
+        boolean autoMechanic = (boolean)request.getSession().getAttribute("AM");
+        Employee employeeToRepair;
+        if(autoMechanic){
+            employeeToRepair = employeeRepository.findOne(1L);
+        }
+        else {
+            employeeToRepair = employeeRepository.findOne(employeeId);
+        }
+        Repair newRepair = new Repair(employeeToRepair,newCommission,description);
         newCommission.setRepairSet(new HashSet<Repair>(Arrays.asList(newRepair)));//bo na start 1 naprawa ogolna pracownik rozdzielie ew.
         carRepository.save(newCar);
         return "redirect:/myCommission";
     }
 
     @RequestMapping(value="/addCommission",method= RequestMethod.GET)
-    public String commissions(Map<String, Object> model) {
-        Set<Employee> employees = employeeRepository.findByPost("mechanic");
-        model.put("employees", employees);
+    public String commissions(Map<String, Object> model,HttpServletRequest request) {
+        boolean autoMechanic = (boolean)request.getSession().getAttribute("AM");
+        if(autoMechanic){
+            model.put("AM", autoMechanic);
+        }
+        else {
+            Set<Employee> employees = employeeRepository.findByPost("mechanic");
+            model.put("employees", employees);
+        }
         return "NewCommission";
     }
 

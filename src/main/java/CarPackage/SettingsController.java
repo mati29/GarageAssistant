@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;
@@ -54,18 +55,26 @@ public class SettingsController {
     }
 
     @RequestMapping(method= RequestMethod.POST,params="clientSettingsAction=setOption")
-    public String setOption(@ModelAttribute("setting")Settings settings, Principal principal){
+    public String setOption(@ModelAttribute("setting")Settings settings, Principal principal,HttpServletRequest request){
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);
         Settings settingClient = account.getClient().getSettings();
-        if(settings.getAdditionalServiceDemand()!=settingClient.getAdditionalServiceDemand())
+        if(settings.getAdditionalServiceDemand()!=settingClient.getAdditionalServiceDemand()) {
             settingClient.setAdditionalServiceDemand(settings.getAdditionalServiceDemand());
-        if(settings.getCallExtraPartDemand()!=settingClient.getCallExtraPartDemand())
+            request.getSession().setAttribute("AS",settingClient.getAdditionalServiceDemand());
+        }
+        if(settings.getCallExtraPartDemand()!=settingClient.getCallExtraPartDemand()) {
             settingClient.setCallExtraPartDemand(settings.getCallExtraPartDemand());
-        if(settings.getAutoMechanic()!=settingClient.getAutoMechanic())
+            request.getSession().setAttribute("EP",settingClient.getCallExtraPartDemand());
+        }
+        if(settings.getAutoMechanic()!=settingClient.getAutoMechanic()) {
             settingClient.setAutoMechanic(settings.getAutoMechanic());
-        if(settings.getAutoPart()!=settingClient.getAutoPart())
+            request.getSession().setAttribute("AM",settingClient.getAutoMechanic());
+        }
+        if(settings.getAutoPart()!=settingClient.getAutoPart()) {
             settingClient.setAutoPart(settings.getAutoPart());
+            request.getSession().setAttribute("AP",settingClient.getAutoPart());
+        }
         settingsRepository.save(settingClient);
         return "redirect:/settings";
     }

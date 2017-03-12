@@ -19,13 +19,18 @@
     <input type="text" name="vintage"></input><br/>
     <label for="description">Description of failure:</label>
     <input type="text" name="description"></input><br/>
-    <label for="employee">Choose mechanic:</label>
-    <select name="employeeId" >
-        <option th:each="employee : ${employees}"
-                th:value="${employee.id}"
-                th:text="${employee.lastName}">
-        </option>
-    </select>
+    <div th:if="${AM} == true">
+        <p>Mechanic will be choose automatically.</p>
+    </div>
+    <div th:unless="${AM} == true">
+        <label for="employee">Choose mechanic:</label>
+        <select name="employeeId" >
+            <option th:each="employee : ${employees}"
+                    th:value="${employee.id}"
+                    th:text="${employee.lastName}">
+            </option>
+        </select>
+    </div>
         <button class="button medium" type="submit" name="clientAddAction" value="addCommission">Add!</button>
 </form>
 <form method="POST" th:action="@{/myCommission}">
