@@ -134,7 +134,7 @@ public class RepairController {
         for(int i=0;i<listPartRepair.getPartRepair().size();i++) {
             Store store;
             switch(listPartRepair.getPartRepair().get(i).value){
-                case "Empty": store = storeRepository.findOne((long)1);break;
+                //case "Empty": store = storeRepository.findOne((long)1);break; bzdura
                 case "Engine": store = storeRepository.findOne((long)2);break;
                 case "Transmission": store = storeRepository.findOne((long)3);break;
                 case "Tires": store = storeRepository.findOne((long)4);break;
@@ -156,7 +156,7 @@ public class RepairController {
             for(Part singlePart : repair.getPartSet()){
                 Set<Store> storeSet = new HashSet<>();
                 switch(singlePart.getStore().getType()){
-                    case "EMPTY": storeSet = storeRepository.findByType("Empty");break;
+                    //case "EMPTY": storeSet = storeRepository.findByType("Empty");break;
                     case "ENGINE": storeSet = storeRepository.findByType("Engine");break;
                     case "TRANSMISSION": storeSet = storeRepository.findByType("Transmission");break;
                     case "TIRES": storeSet = storeRepository.findByType("Tires");break;
@@ -166,6 +166,7 @@ public class RepairController {
                     case "BRAKES": storeSet = storeRepository.findByType("Brakes");break;
                     default: storeSet = null;
                 }
+                storeSet.add(storeRepository.findByType("EMPTY").iterator().next());//na rzecz obslugi pustego
                 allToChoose.add(storeSet);
             }
             ArrayList<ChangePart> changeParts = new ArrayList<>();
@@ -187,10 +188,12 @@ public class RepairController {
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="EmployeeEvaluateAction=saveRepair")
     public String saveRepair(@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart, BindingResult result) {
         for(ChangePart part:clientChoosePart.chosenPart){
-            Part partToSave = partRepository.findOne(part.getPartId());
-            Store storeToChange = storeRepository.findOne(part.getStoreId());
-            partToSave.setStore(storeToChange);
-            partRepository.save(partToSave);
+            if(part.getStoreId()!=1) {//obsługa emptowego/defaultowego
+                Part partToSave = partRepository.findOne(part.getPartId());
+                Store storeToChange = storeRepository.findOne(part.getStoreId());
+                partToSave.setStore(storeToChange);
+                partRepository.save(partToSave);
+            }
         }
         return "redirect:/myRepairs";
     }

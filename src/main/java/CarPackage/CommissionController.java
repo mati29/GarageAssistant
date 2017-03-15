@@ -121,7 +121,7 @@ public class CommissionController {
     }
 
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=evaluateCommission")
-    public String evaluateCommission(@Valid @ModelAttribute Commission commission, BindingResult result, Principal principal , Model model) {
+    public String evaluateCommission(@Valid @ModelAttribute Commission commission, BindingResult result, Principal principal , Model model,HttpServletRequest request) {
         //String username = principal.getName();
         // Account account = accountRepository.findByUsername(username);
         //Client client = clientRepository.findOne(account.getClient().getId());
@@ -130,12 +130,13 @@ public class CommissionController {
         Set<Part> neededParts = new HashSet<>();
         Set<Set<Store>> allToChoose = new HashSet<>();
         for(Repair repair : repairSet){
-            neededParts.addAll(repair.getPartSet());
+            //neededParts.addAll(repair.getPartSet());
+            repair.getPartSet().stream().forEach((p) -> {if(p.getStore().getId()<=8 && p.getStore().getId()>=1){neededParts.add(p);} });
         }//odejmuje amount -1 i gdy 0 kasuje z bazy dla store
         for(Part part : neededParts){
             Set<Store> storeSet = new HashSet<>();
             switch(part.getStore().getType()){
-                case "EMPTY": storeSet = storeRepository.findByType("Empty");break;
+                //case "EMPTY": storeSet = storeRepository.findByType("Empty");break; głupota to dodatkowe
                 case "ENGINE": storeSet = storeRepository.findByType("Engine");break;
                 case "TRANSMISSION": storeSet = storeRepository.findByType("Transmission");break;
                 case "TIRES": storeSet = storeRepository.findByType("Tires");break;
@@ -145,6 +146,10 @@ public class CommissionController {
                 case "BRAKES": storeSet = storeRepository.findByType("Brakes");break;
                 default: storeSet = null;
             }
+            storeSet.add(storeRepository.findByType("EMPTY").iterator().next());//na rzecz obslugi pustego
+            boolean extraPart = (boolean)request.getSession().getAttribute("EP");
+            if(extraPart)
+                storeSet.add(storeRepository.findByType("UNIQUE").iterator().next());
             allToChoose.add(storeSet);
         }
         //if(allToChoose.isEmpty()) logika dla późniejszego zastosowania gdy dodatkowe czesci do wybrania
@@ -164,12 +169,45 @@ public class CommissionController {
     }
 
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=saveEvaluate")
-    public String saveEvaluate(@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart, BindingResult result) {
+    public String saveEvaluate(@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart, BindingResult result,Model model) {
+        //WAZNE TERAZ ZMIANA TYPU NA UNIQUEPARTLIST I UNIQUEPART DZIEKI TEMU NIE ZGUBIE PARTID I MODEL I BRAND LATWIEJ
+        //DODAC PARTID W HIDDEN TEZ ZMIANA NAZW WSZYSTKICH W FRONTENDZIE
+        UniquePartList uniquePartList = new UniquePartList();
+        ArrayList<UniquePart> uniqueParts = new ArrayList<>();
         for(ChangePart part:clientChoosePart.chosenPart){
-            Part partToSave = partRepository.findOne(part.getPartId());
-            Store storeToChange = storeRepository.findOne(part.getStoreId());
-            partToSave.setStore(storeToChange);
-            partRepository.save(partToSave);
+            if(part.getStoreId()!=1 && part.getStoreId()!=0) {//obsługa emptowego/defaultowego
+                Part partToSave = partRepository.findOne(part.getPartId());
+                Store storeToChange = storeRepository.findOne(part.getStoreId());
+                partToSave.setStore(storeToChange);
+                partRepository.save(partToSave);
+            }
+            if(part.getStoreId()==0){
+                Part partToSearch = partRepository.findOne(part.getPartId());
+                UniquePart uniquePart = new UniquePart();
+                uniquePart.setTypeOfStore(partToSearch.getStore().getId().intValue());
+                uniquePart.setPartId(part.getPartId().intValue());
+                uniqueParts.add(uniquePart);
+            }
+        }
+        if(!uniqueParts.isEmpty()){
+            uniquePartList.setUniqueParts(uniqueParts);
+            model.addAttribute("uniquePartList",uniquePartList);
+            return "UniquePartRequirement";
+        }
+        return "redirect:/myCommission";
+    }
+
+    @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=addUnique")
+    public String addUnique(@ModelAttribute("uniquePartList") UniquePartList uniquePartList, BindingResult result,Model model) {
+        for(UniquePart uniquePart:uniquePartList.getUniqueParts()){
+            Part partToUnification = partRepository.findOne((long)uniquePart.getPartId());
+            Store uniqueStoreToAdd = new Store();
+            uniqueStoreToAdd.setBrand(uniquePart.getBrand());
+            uniqueStoreToAdd.setModel(uniquePart.model);
+            String type = storeRepository.findOne((long)uniquePart.getTypeOfStore()).getType();
+            uniqueStoreToAdd.setType(type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase());
+            partToUnification.setStore(uniqueStoreToAdd);
+            storeRepository.save(uniqueStoreToAdd);
         }
         return "redirect:/myCommission";
     }

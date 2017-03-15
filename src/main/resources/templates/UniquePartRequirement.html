@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Unique part screen</title>
+</head>
+<body>
+<header>
+    <h2>Please write model of unique part which you demand</h2>
+</header>
+<form action="#" method="POST" th:action="@{/myCommission/evaluate}" th:object="${uniquePartList}">
+    <ul th:each="uniquePart,iter : ${uniquePartList.uniqueParts}">
+        <input type="hidden" th:name="|uniqueParts[${iter.index}].partId|" th:value="${uniquePartList.uniqueParts[__${iter.index}__].partId}" />
+        <input type="hidden" th:name="|uniqueParts[${iter.index}].typeOfStore|" th:value="${uniquePartList.uniqueParts[__${iter.index}__].typeOfStore}" />
+        <div th:switch="${uniquePartList.uniqueParts[__${iter.index}__].typeOfStore}">
+            <p th:case="2">
+                Engine
+            </p>
+            <p th:case="3">
+                Transmission
+            </p>
+            <p th:case="4">
+                Tires
+            </p>
+            <p th:case="5">
+                Body
+            </p>
+            <p th:case="6">
+                Lights
+            </p>
+            <p th:case="7">
+                Equipment
+            </p>
+            <p th:case="8">
+                Brakes
+            </p>
+        </div>
+        <input type="text" th:name="|uniqueParts[${iter.index}].brand|">Write model of unique part</input>
+        <input type="text" th:name="|uniqueParts[${iter.index}].model|">Write brand of unique part</input>
+    </ul>
+    <button class="button medium" type="submit" name="clientEvaluateAction" value="addUnique">Send ask for part</button>
+</form>
+</body>
+</html>
