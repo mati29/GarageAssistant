@@ -202,6 +202,10 @@ public class RepairController {
     public String makeRepair(Map<String, Object> model,@ModelAttribute("selectedRepairId") Long selectedRepairId,@ModelAttribute("part") Part repairPart) {
         if(null!=repairPart.getId()){
             Part repairedPart = partRepository.findOne(repairPart.getId());
+            if(repairedPart.getStore().getType().matches("[A-Z]+")) {//it's unique then
+                //repairedPart.getStore().setPrice(repairedPart.getStore().getPrice()); already set in front end
+                repairedPart.getStore().setAmount(1);
+            }
             if(repairedPart.getStore().getAmount()>=1) {
                 repairedPart.getStore().setAmount(repairedPart.getStore().getAmount()-1);
                 repairedPart.setResolved(true);
@@ -222,7 +226,13 @@ public class RepairController {
         return "RepairInProgress";
     }
 
-    @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=repairDone")
+    @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=saveUnique")
+    public String saveUniquePart(Map<String, Object> model,@ModelAttribute("selectedRepairId") Long selectedRepairId,@ModelAttribute("part") Part repairPart) {
+        model.put("part",repairPart);
+        return "UniquePartOrder";
+    }
+
+        @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=repairDone")
     public String doneRepair(Map<String, Object> model,@ModelAttribute("repair") Repair selectedRepair) {
         Repair repairedPart = repairRepository.findOne(selectedRepair.getId());
         Set<Part> anyToComplete = new HashSet<>();

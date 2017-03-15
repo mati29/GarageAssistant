@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Repair in progress</title>
+</head>
+<body>
+<header>
+    <h2>Make repair on part need to change</h2>
+</header>
+<form action="#" method="POST" th:action="@{/myRepairs/repair}" th:object="${part}">
+        <span th:text="${part.store.model}"></span><br />
+        <input type="text" th:field="${part.store.price}">Please give a price of part</input>
+        <input type="hidden" th:name="part" th:value="${part.id}" />
+        <button class="button medium" type="submit" name="employeeRepairAction" value="makeRepair">Repair</button>
+</form>
+</body>
+</html>

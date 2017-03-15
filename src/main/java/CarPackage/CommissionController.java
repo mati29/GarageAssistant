@@ -204,8 +204,7 @@ public class CommissionController {
             Store uniqueStoreToAdd = new Store();
             uniqueStoreToAdd.setBrand(uniquePart.getBrand());
             uniqueStoreToAdd.setModel(uniquePart.model);
-            String type = storeRepository.findOne((long)uniquePart.getTypeOfStore()).getType();
-            uniqueStoreToAdd.setType(type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase());
+            uniqueStoreToAdd.setType(storeRepository.findOne((long)uniquePart.getTypeOfStore()).getType());
             partToUnification.setStore(uniqueStoreToAdd);
             storeRepository.save(uniqueStoreToAdd);
         }
