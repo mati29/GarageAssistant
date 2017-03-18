@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Map;
 
@@ -42,7 +43,11 @@ public class ClientController {
 
     @Secured("ROLE_USER")
     @RequestMapping(value="/clientDashboard",method=RequestMethod.GET)
-    public String getClientDashboard(Model model) {
+    public String getClientDashboard(Model model,HttpServletRequest request) {
+        /*if(null!=request.getSession().getAttribute("AS")) {
+            boolean additionalService = (boolean) request.getSession().getAttribute("AS");
+            model.addAttribute("AS",additionalService);
+        }*///do późniejszego updatu
         return "ClientDashboard";
     }
 
@@ -63,5 +68,9 @@ public class ClientController {
         return "redirect:/settings";
     }
 
+    @RequestMapping(value="/clientDashboard",method=RequestMethod.POST, params="clientAction=specialCommission")
+    public String specialCommission(Model model) {
+        return "redirect:/myCommission/specialCommission";
+    }
 
 }

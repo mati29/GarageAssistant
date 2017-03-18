@@ -51,7 +51,7 @@ public class CommissionController {
     }
 
     @RequestMapping(value="/addCommission", method= RequestMethod.POST,params="clientAddAction=addCommission")
-    public String addCommission(Car newCar,String description, Long employeeId,Principal principal,HttpServletRequest request) {
+    public String addCommission(Car newCar,String description,String specialService, Long employeeId,Principal principal,HttpServletRequest request) {
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);
         Client client = clientRepository.findOne(account.getClient().getId());
@@ -68,6 +68,24 @@ public class CommissionController {
         }
         Repair newRepair = new Repair(employeeToRepair,newCommission,description);
         newCommission.setRepairSet(new HashSet<Repair>(Arrays.asList(newRepair)));//bo na start 1 naprawa ogolna pracownik rozdzielie ew.
+        if(specialService!=""){
+            List<String> addPart = Arrays.asList(specialService.split(","));
+            Set<Part> partSet = new HashSet<>();
+            for(String stringPart:addPart){
+                Part part = new Part();
+                    Store store = new Store();
+                    String[] brandModel = stringPart.split(" ");
+                if(brandModel.length==2) {
+                    store.setBrand(brandModel[0]);
+                    store.setModel(brandModel[1]);
+                    storeRepository.save(store);
+                    part.setStore(store);
+                    part.setRepair(newRepair);
+                    partSet.add(part);
+                }
+            }
+            newRepair.setPartSet(partSet);
+        }
         carRepository.save(newCar);
         return "redirect:/myCommission";
     }
@@ -82,6 +100,8 @@ public class CommissionController {
             Set<Employee> employees = employeeRepository.findByPost("mechanic");
             model.put("employees", employees);
         }
+        boolean additionalService = (boolean) request.getSession().getAttribute("AS");
+            model.put("AS",additionalService);
         return "NewCommission";
     }
 

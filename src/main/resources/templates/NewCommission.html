@@ -1,6 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        function addPart(part){
+            // Number of inputs to create
+            var number = document.getElementById("part").value;
+            // Container <div> where dynamic content will be placed
+            var container = document.getElementById("additionalSection");
+            // Clear previous contents of the container
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            for (i=0;i<number;i++){
+                // Append a node with a random text
+                container.appendChild(document.createTextNode("Part " + (i+1)));
+                container.appendChild(document.createElement("br"));
+                // Create an <input> element, set its type and name attributes
+                 container.appendChild(document.createTextNode("Brand"));
+                 container.appendChild(document.createElement("br"));
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "brand" + i;
+                container.appendChild(input);
+                // Append a line break
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createTextNode("Model"));
+                container.appendChild(document.createElement("br"));
+                var input2 = document.createElement("input");
+                input2.type = "text";
+                input2.name = "model" + i;
+                container.appendChild(input2);
+            }
+                container.appendChild(document.createElement("br"));
+                var button = document.createElement("input");
+                button.type = "button";
+                button.value = "Approve";
+                button.addEventListener('click',extendDescription,false)
+                container.appendChild(button);
+        }
+        function extendDescription(){
+            var container = document.getElementById("additionalSection");
+            if (container.hasChildNodes()) {
+                specialService = document.getElementById('specialService').value;
+                for(i = j = 0; i < container.childNodes.length; i++)
+                if(container.childNodes[i].nodeName == 'INPUT'){
+                j++;
+                var input = container.childNodes[i];
+                if(j%2==0)
+                specialService = specialService+" "+input.value;
+                else
+                specialService = specialService+","+input.value;
+                }
+                console.log(specialService);
+                document.getElementById('specialService').value = specialService;
+            }
+        }
+         /*]]>*/
+    </script>
     <title>Commission</title>
     <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
@@ -18,7 +75,8 @@
     <label for="vintage">Vintage:</label>
     <input type="text" name="vintage"></input><br/>
     <label for="description">Description of failure:</label>
-    <input type="text" name="description"></input><br/>
+    <input type="text" name="description" id="description"></input><br/>
+    <input type="hidden" name="specialService" id="specialService" />
     <div th:if="${AM} == true">
         <p>Mechanic will be choose automatically.</p>
     </div>
@@ -33,6 +91,10 @@
     </div>
         <button class="button medium" type="submit" name="clientAddAction" value="addCommission">Add!</button>
 </form>
+<br/>If you want to demand some additional part,<br/> please write number of it then click GENERATE<br/>
+<input type="text" th:id="part" th:name="part" value="" th:if="${AS}"/><br />
+<button type="submit"  th:if="${AS}" th:onclick="'addPart(\'' + ${part} + '\');'">GENERATE</button><br/>
+<div id="additionalSection"/>
 <form method="POST" th:action="@{/myCommission}">
     <div th:switch="${from}">
         <p th:case="'overview'"><button type="submit" name="clientBackAction" value="toMyCommission">Back</button></p>
