@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<h2>Employee Dashboard - Choose operation</h2>
+<form method="POST" th:action="@{/employeeDashboard}">
+    <button type="submit" name="adminAction" value="addEmployee">Create another admin or employee account</button>
+    <button type="submit" name="adminAction" value="setFreeCommission">Set commission to employee</button>
+    <button type="submit" name="adminAction" value="addExtraRight">Add extra right to client</button>
+    <button type="submit" name="adminAction" value="calculateCommission">Calculate bill for commission</button>
+</form>
+</body>
+</html>

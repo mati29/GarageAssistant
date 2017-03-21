@@ -1,17 +1,13 @@
 package main.java.CarPackage;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
 import javax.persistence.*;
 import java.util.Set;
 
 /**
- * Created by Mati on 2016-12-03.
+ * Created by Mati on 2017-03-21.
  */
-@Entity(name="employee")
-//@Inheritance(strategy= InheritanceType.JOINED)
-public class Employee {//extends Client{
+@Entity(name="admin")
+public class Admin {
 
     @Id
     //@GeneratedValue(strategy= GenerationType.AUTO)
@@ -21,16 +17,13 @@ public class Employee {//extends Client{
     private String firstName;
     private String lastName;
     private int phoneNumber;
-    private int salary;
     private String email;
     private String post;
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private Set<Repair> repairSet;
 
     @OneToOne(mappedBy = "employee",cascade=CascadeType.ALL)
     private Account account;
 
-    public Employee(){
+    public Admin(){
     }
 
     public void setId(Long id){
@@ -65,14 +58,6 @@ public class Employee {//extends Client{
         return this.phoneNumber;
     }
 
-    public int setSalary(int salary){
-        return this.salary = salary;
-    }
-
-    public int getSalary(){
-        return this.salary;
-    }
-
     public void setEmail(String email){
         this.email = email;
     }
@@ -88,14 +73,4 @@ public class Employee {//extends Client{
     public String getPost(){
         return this.post;
     }
-
-    public Set<Repair> getRepairSet() {
-        return repairSet;
-    }
-
-    public void setRepairSet(Set<Repair> repairSet) {
-        this.repairSet = repairSet;
-    }
-
-
 }

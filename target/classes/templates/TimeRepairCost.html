@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Repair time-cost</title>
+</head>
+<body>
+<header>
+    <h2>Please give how much of hours you spend on repair.</h2>
+</header>
+<form action="#" method="POST" th:action="@{/myRepairs/repair}" th:object="${repair}">
+    <input type="text" th:id="hours" th:name="hours" value=""/><br />
+    <input type="hidden" name="id" th:value="${repair.id}" />
+    <button class="button medium" type="submit" name="employeeRepairAction" value="timeEvaluate">Add!</button>
+</form>
+</body>
+</html>

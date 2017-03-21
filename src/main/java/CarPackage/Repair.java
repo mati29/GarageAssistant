@@ -14,6 +14,7 @@ public class Repair {
     private Long id;
     private String description;
     private boolean accomplish;
+    private int hours;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
@@ -33,6 +34,12 @@ public class Repair {
         this.description = description;
     }
 
+    public int getHours(){
+        return this.hours;
+    }
+    public void setHours(int hours){
+        this.hours = hours;
+    }
     public Long getId(){
         return this.id;
     }
