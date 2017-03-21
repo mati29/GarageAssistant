@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Mati on 2016-11-21.
@@ -74,7 +75,7 @@ public class CommissionController {
             for(String stringPart:addPart){
                 Part part = new Part();
                     Store store = new Store();
-                    String[] brandModel = stringPart.split(" ");
+                    String[] brandModel = stringPart.split(":");
                 if(brandModel.length==2) {
                     store.setBrand(brandModel[0]);
                     store.setModel(brandModel[1]);
@@ -120,6 +121,9 @@ public class CommissionController {
         boolean autoPart = (boolean)request.getSession().getAttribute("AP");
         if(autoPart)
             model.addAttribute("AP",autoPart);
+        boolean additionalService = (boolean)request.getSession().getAttribute("AS");
+        if(additionalService)
+            model.addAttribute("AS",additionalService);
         return "CommissionSingleView";
     }
 
@@ -230,5 +234,42 @@ public class CommissionController {
         }
         return "redirect:/myCommission";
     }
+
+    @RequestMapping(value="/specialService", method= RequestMethod.POST,params="clientSpecialAction=specialService")
+    public String additionalService(@Valid @ModelAttribute Commission commission,Model model,Principal principal) {
+        Set<String> parts = new HashSet<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
+        model.addAttribute("partsType", parts);
+        model.addAttribute("commission",commission);
+        return "AdditionalService";
+    }
+
+    @RequestMapping(value="/specialService", method= RequestMethod.POST,params="clientSpecialAction=saveSpecialService")
+    public String specialSave(@Valid @ModelAttribute Commission commission,String partString,Model model,Principal principal) {
+        //Narazie może dorobie wybór pracownika i opisu co i jak zrobione
+        Commission commissionToDo = commissionRepository.findOne(commission.getId());
+        Repair newRepair = new Repair(employeeRepository.findOne(1L),commissionToDo,"Additional Work Needed");
+        commissionToDo.getRepairSet().add(newRepair);//styka?
+        List<String> addPart = Arrays.asList(partString.split(","));
+        Set<Part> partSet = new HashSet<>();
+        for(String stringPart:addPart){
+            Part part = new Part();
+            Store store = new Store();
+            List<String> brandModel = new ArrayList<String>(Arrays.asList(stringPart.split(":")));
+            brandModel.get(0).replace(" ","");
+            if(brandModel.size()==3) {
+                store.setType(brandModel.get(0));
+                store.setModel(brandModel.get(1));
+                store.setBrand(brandModel.get(2));
+                storeRepository.save(store);
+                part.setStore(store);
+                part.setRepair(newRepair);
+                partSet.add(part);
+            }
+        }
+        newRepair.setPartSet(partSet);
+        repairRepository.save(newRepair);
+        return "redirect:/myCommission";
+    }
+
 
 }

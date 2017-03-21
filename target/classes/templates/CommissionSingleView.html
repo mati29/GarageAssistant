@@ -24,6 +24,10 @@
                 <button type="submit" name="clientEvaluateAction" th:case="*" value="evaluateCommission" th:disabled="disabled">Evaluate</button>
             </div>
         </form>
+        <form method="POST" th:action="@{/myCommission/specialService}" th:if="${AS}">
+            <input type="hidden" name="id" th:value="${commission.id}" />
+            <button type="submit" name="clientSpecialAction" value="specialService">Addition Service</button>
+        </form>
     </div>
     <form method="POST" th:action="@{/myCommission}">
         <button type="submit" name="clientBackAction" value="toMyCommission">Back</button>

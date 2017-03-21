@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        function drawPart(partCount,partsType){
+
+            var partsTypeArray = [];
+            var singleType = "";
+            for(var i=0; i<=partsType.length; i++) {
+               if(partsType[i]==","){
+                 partsTypeArray.push(singleType);
+                 singleType = "";
+               }
+               else if(partsType[i]=="]")
+                 partsTypeArray.push(singleType);
+               else if(partsType[i]!="[")
+                 singleType = singleType + partsType[i];
+            }
+            // Number of inputs to create
+            var number = document.getElementById("partCount").value;
+            // Container <div> where dynamic content will be placed
+            var container = document.getElementById("additionalPartSection");
+            // Clear previous contents of the container
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            for (i=0;i<number;i++){
+                // Append a node with a random text
+                container.appendChild(document.createTextNode("Part " + (i+1)));
+                container.appendChild(document.createElement("br"));
+
+                var selectList = document.createElement("select");
+                selectList.name = "Type" + i;
+                container.appendChild(selectList);
+                container.appendChild(document.createElement("br"));
+                //Create and append the options
+                for (var l = 0; l < partsTypeArray.length; l++) {
+                    var option = document.createElement("option");
+                    option.value = partsTypeArray[l];
+                    option.text = partsTypeArray[l];
+                    selectList.appendChild(option);
+                }
+                // Create an <input> element, set its type and name attributes
+                 container.appendChild(document.createTextNode("Brand"));
+                 container.appendChild(document.createElement("br"));
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "brand" + i;
+                container.appendChild(input);
+                // Append a line break
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createTextNode("Model"));
+                container.appendChild(document.createElement("br"));
+                var input2 = document.createElement("input");
+                input2.type = "text";
+                input2.name = "model" + i;
+                container.appendChild(input2);
+                container.appendChild(document.createElement("br"));
+            }
+                container.appendChild(document.createElement("br"));
+                var button = document.createElement("input");
+                button.type = "button";
+                button.value = "Approve";
+                button.addEventListener('click',appendParts,false)
+                container.appendChild(button);
+        }
+        function appendParts(){
+            var container = document.getElementById("additionalPartSection");
+            if (container.hasChildNodes()) {
+                var partString = "";
+                for(i = j = 0; i < container.childNodes.length; i++){
+                        if(container.childNodes[i].nodeName == 'SELECT'){
+                            partString = partString +" "+container.childNodes[i].options[container.childNodes[i].selectedIndex].text;
+                        }
+                        else if(container.childNodes[i].nodeName == 'INPUT'){
+
+                        j++;
+                        var input = container.childNodes[i];
+
+                        if(j%2==0)
+                            partString = partString+":"+input.value+",";
+                        else
+                            partString = partString+":"+input.value;
+                        }
+                }
+                console.log(partString);
+                document.getElementById('partString').value = partString;
+                var button = document.createElement("input");
+                button.type = "submit";
+                button.value = "saveSpecialService";
+                button.name = "clientSpecialAction";
+                var buttonContainer = document.getElementById("buttonSection");
+                buttonContainer.appendChild(button);
+            }
+        }
+         /*]]>*/
+    </script>
+    <title>Commission</title>
+</head>
+<body>
+<header>
+    <h2>Add additional part</h2>
+</header>
+<input type="text" th:id="partCount" th:name="partCount" value=""/><br />
+<button type="submit"  th:onclick="|drawPart('${partCount}', '${partsType}')|">Add part description</button><br/>
+<div id="additionalPartSection"/>
+<form action="#" method="POST" th:action="@{/myCommission/specialService}" th:object="${partString}">
+    <input type="hidden" th:name="partString" th:id="partString" />
+    <input type="hidden" name="id" th:value="${commission.id}" />
+    <div id="buttonSection"/>
+</form>
+</body>
+</html>
