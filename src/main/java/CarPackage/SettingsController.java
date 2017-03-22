@@ -2,11 +2,13 @@ package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;
@@ -77,5 +79,18 @@ public class SettingsController {
         }
         settingsRepository.save(settingClient);
         return "redirect:/settings";
+    }
+
+    @RequestMapping(method= RequestMethod.POST,params="adminSettingsAction=setExtraRight")
+    public String setExtraRight(@ModelAttribute("clients") ListClient clients/*, BindingResult bindingResult*/) {
+        clients.getClientList().forEach(c->    {
+                                            Client client = clientRepository.findOne(c.getId());
+                                            if(client.getSettings().getAdditionalService())
+                                                client.getSettings().setAdditionalServiceDemand(false);
+                                            if(client.getSettings().getCallExtraPart())
+                                                client.getSettings().setCallExtraPartDemand(false);
+                                            clientRepository.save(client);
+                                            });
+        return "redirect:/adminDashboard";
     }
 }

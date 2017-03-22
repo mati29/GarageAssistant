@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Unique part screen</title>
+</head>
+<body>
+<header>
+    <h2>Please write model of unique part which you demand</h2>
+</header>
+<form action="#" method="POST" th:action="@{/settings}" th:object="${clients}">
+    <ul th:each="client,iter : *{clientList}">
+        <input type="hidden" th:field="*{clientList[__${iter.index}__].id}" />
+        <input type="hidden" th:field="*{clientList[__${iter.index}__].settings}" />
+        <br/>ID of client:<br />
+        <span th:text="${client.id}"></span><br />
+        <input type="checkbox" th:checked="${client.settings.additionalService}" th:field="*{clientList[__${iter.index}__].settings.additionalService}"/> Additional Service<br />
+        <input type="checkbox" th:checked="${client.settings.callExtraPart}" th:field="*{clientList[__${iter.index}__].settings.callExtraPart}"/> Call extra part<br />
+    </ul>
+    <button class="button medium" type="submit" name="adminSettingsAction" value="setExtraRight">Save extra right</button>
+</form>
+</body>
+</html>

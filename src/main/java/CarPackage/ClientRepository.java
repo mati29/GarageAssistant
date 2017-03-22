@@ -7,12 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface ClientRepository extends CrudRepository<Client,Long>{
 
-    List<Client> findAll();
+    ArrayList<Client> findAll();
     //Client findOne(Long id);
 
     //@Override
