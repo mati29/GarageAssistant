@@ -7,13 +7,13 @@ import java.util.List;
  * Created by Mati on 2017-03-22.
  */
 public class ListClient {
-    public ArrayList<Client> clientList;
+    public List<Client> clientList;
 
-    public ArrayList<Client> getClientList() {
+    public List<Client> getClientList() {
         return clientList;
     }
 
-    public void setClientList(ArrayList<Client> clientList) {
+    public void setClientList(List<Client> clientList) {
         this.clientList = clientList;
     }
 }

@@ -50,11 +50,10 @@ public class AdminController {
 
     @RequestMapping(method= RequestMethod.POST,params="adminAction=addExtraRight")
     public String addExtraRight(Model model) {
-        ArrayList<Client> clients = clientRepository.findAll();//mozna by na ilosc kupic itd. rozwijanie
-        List<Client> client2 = clients.stream().filter(c -> c.getSettings().getAdditionalServiceDemand() || c.getSettings().getCallExtraPartDemand()).collect(Collectors.toList());
-        ArrayList<Client> clients3 = new ArrayList<>(client2);
+        List<Client> clients = clientRepository.findAll();//mozna by na ilosc kupic itd. rozwijanie
+        clients = clients.stream().filter(c -> c.getSettings().getAdditionalServiceDemand() || c.getSettings().getCallExtraPartDemand()).collect(Collectors.toList());
         ListClient clientsList = new ListClient();
-        clientsList.setClientList(clients3);
+        clientsList.setClientList(clients);
         model.addAttribute("clients",clientsList);
         return "ExtraRightPanel";
     }
