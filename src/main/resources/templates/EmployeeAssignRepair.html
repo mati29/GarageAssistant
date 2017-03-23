@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Assign repair to employee</title>
+</head>
+<body>
+<header>
+    <h2>Please choose repair and assign employee</h2>
+</header>
+<form action="#" method="POST" th:action="@{/myRepairs/setEmployee}" th:object="${repairs}">
+    <ul th:each="repair,iter : *{repairList}">
+        <input type="hidden" th:field="*{repairList[__${iter.index}__].id}" />
+        <br/>ID of client:<br />
+        <span th:text="${repair.id}"></span><br />
+        <br/>Please choose employee to assign:<br />
+        <select th:field="*{repairList[__${iter.index}__].employee}" >
+            <option th:each="employee : ${employees}"
+                    th:value="${employee.id}"
+                    th:text="${employee.lastName}">
+            </option>
+        </select><br />
+    </ul>
+    <button class="button medium" type="submit" name="adminRepairAction" value="setEmployee">Set Repairs with assign</button>
+</form>
+</body>
+</html>

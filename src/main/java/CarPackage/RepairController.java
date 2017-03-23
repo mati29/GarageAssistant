@@ -261,4 +261,16 @@ public class RepairController {
         return "redirect:/myRepairs";
     }
 
+    @RequestMapping(value="/setEmployee",method= RequestMethod.POST,params="adminRepairAction=setEmployee")
+    public String setEmployee(Map<String, Object> model,@ModelAttribute("repairs") ListRepair repairs){
+        repairs.getRepairList().forEach(r->    {
+            Repair repair = repairRepository.findOne(r.getId());
+            if(r.getEmployee().getId()!=1L) {
+                repair.setEmployee(employeeRepository.findOne(r.getEmployee().getId()));
+                repairRepository.save(repair);
+            }
+        });
+        return "redirect:/adminDashboard";
+    }
+
 }

@@ -58,4 +58,15 @@ public class AdminController {
         return "ExtraRightPanel";
     }
 
+    @RequestMapping(method= RequestMethod.POST,params="adminAction=setFreeRepair")
+    public String setFreeCommission(Model model) {
+        List<Repair> repairsToAssign = repairRepository.findByEmployeeId(1L);
+        Set<Employee> readyEmployees = employeeRepository.findByPost("mechanic");
+        ListRepair repairList = new ListRepair();
+        repairList.setRepairList(repairsToAssign);
+        model.addAttribute("repairs", repairList);
+        model.addAttribute("employees", readyEmployees);
+        return "EmployeeAssignRepair";
+    }
+
 }

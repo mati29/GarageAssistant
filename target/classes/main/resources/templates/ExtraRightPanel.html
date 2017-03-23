@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Unique part screen</title>
+    <title>Set extra right to client</title>
 </head>
 <body>
 <header>
-    <h2>Please write model of unique part which you demand</h2>
+    <h2>Choose user and set right</h2>
 </header>
 <form action="#" method="POST" th:action="@{/settings}" th:object="${clients}">
     <ul th:each="client,iter : *{clientList}">

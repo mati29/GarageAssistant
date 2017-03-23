@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Mati on 2017-03-22.
  */
 public class ListClient {
-    public List<Client> clientList;
+    public List<Client> clientList;//na privaty czy bedzie
 
     public List<Client> getClientList() {
         return clientList;
