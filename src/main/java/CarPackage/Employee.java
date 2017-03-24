@@ -97,5 +97,13 @@ public class Employee {//extends Client{
         this.repairSet = repairSet;
     }
 
+    public Account getAccount(){
+        return this.account;
+    }
+
+    public void setAccount(Account account){
+        this.account=account;
+    }
+
 
 }

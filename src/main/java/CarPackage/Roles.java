@@ -12,9 +12,11 @@ public class Roles {
     @SequenceGenerator(name="roles_id_seq", sequenceName="roles_id_seq", allocationSize=1)
     private Long id;
     private String username;
+    private String role;
 
-    Roles(String username){
+    Roles(String username,String role){
         this.username = username;
+        this.role = role;
     }
 
     public void setId(Long id){
@@ -31,6 +33,14 @@ public class Roles {
 
     public String getUsername(){
         return this.username;
+    }
+
+    public void setRole(String role){
+        this.role = role;
+    }
+
+    public String getRole(){
+        return this.role;
     }
 
 }

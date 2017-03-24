@@ -29,18 +29,6 @@ public class ClientController {
         this.rolesRepository = rolesRepository;
     }
 
-    @RequestMapping(value="/registration",method= RequestMethod.POST,params="userRegistrationAction")
-    public String addClient(Client client,Account account) {//ew.potem inne employee od role zalezne..
-        Settings settings = new Settings();
-        settings.setClient(client);
-        account.setClient(client);
-        client.setAccount(account);
-        client.setSettings(settings);//new functionality
-        clientRepository.save(client);
-        rolesRepository.save(new Roles(account.getUsername()));
-        return "redirect:/";
-    }
-
     @Secured("ROLE_USER")
     @RequestMapping(value="/clientDashboard",method=RequestMethod.GET)
     public String getClientDashboard(Model model,HttpServletRequest request) {

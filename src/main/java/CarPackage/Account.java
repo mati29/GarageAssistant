@@ -15,6 +15,7 @@ public class Account {
     private Long id;
     private String username;
     private String password;
+    private boolean enabled;
 
     @OneToOne
     @JoinColumn(name = "client_id")
@@ -23,6 +24,10 @@ public class Account {
     @OneToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
+
+    @OneToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
 
     public void setId(Long id){
         this.id = id;
@@ -62,5 +67,21 @@ public class Account {
 
     public Employee getEmployee(){
         return this.employee;
+    }
+
+    public void setAdmin(Admin admin){
+        this.admin = admin;
+    }
+
+    public Admin getAdmin(){
+        return this.admin;
+    }
+
+    public void setEnabled(boolean enabled){
+        this.enabled = enabled;
+    }
+
+    public boolean getEnabled(){
+        return this.enabled;
     }
 }

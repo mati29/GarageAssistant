@@ -1,6 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        function addSpecialField(){
+            var e = document.getElementById("userType");
+            var userType = e.options[e.selectedIndex].value;
+            var container = document.getElementById("additionalFieldSection");
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createTextNode("Post"));
+            var input = document.createElement("input");
+                input.type = "text";
+                input.name = "post";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                if(userType=="ADMIN"){
+                    container.appendChild(document.createElement("br"));
+                    var button = document.createElement("input");
+                    button.type = "submit";
+                    button.name = "adminRegistrationAction";
+                    button.value = "registerAdmin";
+                    container.appendChild(button);
+                    container.appendChild(document.createElement("br"));
+                }
+                if(userType=="EMPLOYEE"){
+                    container.appendChild(document.createElement("br"));
+                    container.appendChild(document.createTextNode("Salary"));
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.name = "salary";
+                    container.appendChild(input);
+                    container.appendChild(document.createElement("br"));
+                    var button = document.createElement("input");
+                    button.type = "submit";
+                    button.name = "adminRegistrationAction";
+                    button.value = "registerEmployee";
+                    container.appendChild(button);
+                    container.appendChild(document.createElement("br"));
+                }
+            }
+         /*]]>*/
+    </script>
     <title>Registration</title>
     <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
@@ -21,7 +61,24 @@
     <input type="text" name="username"></input><br/>
     <label for="password">Password:</label>
     <input type="text" name="password"></input><br/>
+    <div th:if="${addedByAdmin}">
+    <br/>If you want to add special user (Employee, Admin),<br/> please choose it from list and click 'Set'<br/>
+    <select th:id="userType" >
+        <option th:value="EMPLOYEE"
+                th:text="Employee">
+        </option>
+        <option th:value="ADMIN"
+                th:text="Admin">
+        </option>
+    </select><br />
+    </div>
+    <div th:id="additionalFieldSection">
+    </div>
+    <div th:if="${addedByAdmin}">
+        If you want to add simple client press "Register!" button
+    </div>
     <button class="button medium" type="submit" name="userRegistrationAction" value="register">Register!</button>
 </form>
+<button th:id="userType" type="submit" th:onclick="'addSpecialField();'">Set</button><br/>
 </body>
 </html>

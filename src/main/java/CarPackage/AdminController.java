@@ -69,4 +69,10 @@ public class AdminController {
         return "EmployeeAssignRepair";
     }
 
+    @RequestMapping(method= RequestMethod.POST,params="adminAction=addAccount")
+    public String addAccount(Model model) {
+        model.addAttribute("addedByAdmin",true);
+        return "Register";
+    }
+
 }

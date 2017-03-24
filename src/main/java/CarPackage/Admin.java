@@ -20,7 +20,7 @@ public class Admin {
     private String email;
     private String post;
 
-    @OneToOne(mappedBy = "employee",cascade=CascadeType.ALL)
+    @OneToOne(mappedBy = "admin",cascade=CascadeType.ALL)
     private Account account;
 
     public Admin(){
@@ -72,5 +72,13 @@ public class Admin {
 
     public String getPost(){
         return this.post;
+    }
+
+    public void setAccount(Account account){
+        this.account = account;
+    }
+
+    public Account getAccount(){
+        return this.account;
     }
 }
