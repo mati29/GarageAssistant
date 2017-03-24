@@ -75,4 +75,15 @@ public class AdminController {
         return "Register";
     }
 
+    @RequestMapping(method= RequestMethod.POST,params="adminAction=confirmAccount")
+    public String confirmAccount(Model model) {
+        List<Account> accounts = accountRepository.findByEnabled(false);
+        List<Client> clients = new ArrayList<>();
+        ListClient clientList = new ListClient();
+        accounts.stream().forEach(a-> clients.add(a.getClient()));
+        clientList.setClientList(clients);
+        model.addAttribute("clients",clientList);
+        return "ConfirmPanel";
+    }
+
 }

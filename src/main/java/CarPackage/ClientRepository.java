@@ -15,9 +15,4 @@ import java.util.Set;
 public interface ClientRepository extends CrudRepository<Client,Long>{
 
     ArrayList<Client> findAll();
-    //Client findOne(Long id);
-
-    //@Override
-    //@Query(value = "SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?0", nativeQuery = true)
-    //<S extends Client> S save(S s);
 }

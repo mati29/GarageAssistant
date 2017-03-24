@@ -38,6 +38,7 @@
                     container.appendChild(button);
                     container.appendChild(document.createElement("br"));
                 }
+                document.getElementById("setField").disabled = true;
             }
          /*]]>*/
     </script>
@@ -79,6 +80,6 @@
     </div>
     <button class="button medium" type="submit" name="userRegistrationAction" value="register">Register!</button>
 </form>
-<button type="submit" th:onclick="'addSpecialField();'">Set</button><br/>
+<button th:id="setField" th:if="${addedByAdmin}" type="submit" th:onclick="'addSpecialField();'">Set</button><br/>
 </body>
 </html>

@@ -62,4 +62,13 @@ public class RegistrationController {
         rolesRepository.save(new Roles(account.getUsername(),UserType.Admin.toString()));
         return "redirect:/";
     }
+
+    @RequestMapping(value="/registration",method= RequestMethod.POST,params="adminConfirmAction=setEnable")
+    public String setEnable(ListClient clients) {
+        clients.getClientList().stream().filter(c -> c.getAccount().getEnabled()==true)
+                .forEach(c -> {Client client = clientRepository.findOne(c.getId());
+                               client.getAccount().setEnabled(true);
+                               clientRepository.save(client);});
+        return "redirect:/";
+    }
 }

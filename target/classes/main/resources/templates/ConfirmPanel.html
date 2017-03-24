@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Enable client accounts</title>
+</head>
+<body>
+<header>
+    <h2>Please choose client and enable his account</h2>
+</header>
+<form action="#" method="POST" th:action="@{/registration}" th:object="${clients}">
+    <ul th:each="client,iter : *{clientList}">
+        <input type="hidden" th:field="*{clientList[__${iter.index}__].id}" />
+        <br/>ID of client:<br />
+        <span th:text="${client.id}"></span><br />
+        <br/>Please choose enable value to client:<br />
+        <select th:field="*{clientList[__${iter.index}__].account.enabled}" >
+            <option th:value="false"
+                    th:text="False">
+            </option>
+            <option th:value="true"
+                    th:text="True">
+            </option>
+        </select><br />
+    </ul>
+    <button class="button medium" type="submit" name="adminConfirmAction" value="setEnable">Set account enable</button>
+</form>
+</body>
+</html>
