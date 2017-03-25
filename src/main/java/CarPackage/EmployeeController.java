@@ -49,6 +49,6 @@ public class EmployeeController {
 
     @RequestMapping(method=RequestMethod.POST, params="employeeAction=checkStore")
     public String checkStore(Model model) {
-        return "redirect:/";
+        return "redirect:/store";
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,4 +13,5 @@ import java.util.Set;
  */
 public interface StoreRepository extends CrudRepository<Store, Long> {
     public Set<Store> findByType(String type);
+    public List<Store> findAll();
 }

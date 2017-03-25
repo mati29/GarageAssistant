@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Store View</title>
+</head>
+<body>
+<table>
+    <tr>
+        <form method="POST" th:action="@{/store}" th:object="${stores}">
+            <input type="hidden" th:field="*{storeList}" />
+            <td><button type="submit" name="employeeSortAction" value="sortById">Id</button></td>
+            <td><button type="submit" name="employeeSortAction" value="sortByType">Type</button></td>
+            <td><button type="submit" name="employeeSortAction" value="sortByModel">Model</button></td>
+            <td><button type="submit" name="employeeSortAction" value="sortByBrand">Brand</button></td>
+            <td><button type="submit" name="employeeSortAction" value="sortByPrice">Price</button></td>
+            <td><button type="submit" name="employeeSortAction" value="sortByAmount">Amount</button></td>
+        </form>
+    </tr>
+    <div id="storeTable">
+    <ul th:each="store,iter : ${stores.storeList}">
+        <tr>
+            <td><span name="id" th:text="${store.id}"></span></td>
+            <td><span th:text="${store.type}"></span></td>
+            <td><span th:text="${store.model}"></span></td>
+            <td><span th:text="${store.brand}"></span></td>
+            <td><span th:text="${store.price}"></span></td>
+            <td><span th:text="${store.amount}"></span></td>
+        </tr>
+    </ul>
+    </div>
+</table>
+</body>
+</html>

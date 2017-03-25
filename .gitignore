@@ -10,3 +10,4 @@ target/classes/main/java/CarPackage/Repair.class
 *.class
 *.class
 target/classes/main/java/CarPackage/Client.class
+*.class
