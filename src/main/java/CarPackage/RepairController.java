@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -128,9 +126,10 @@ public class RepairController {
     }
 
     @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=saveEvaluate")
-    public String saveevaluate(@ModelAttribute("listPartRepair") ListPartRepair listPartRepair,/*BindingResult result,*/@ModelAttribute("selectedRepairId") Long selectedRepairId,Model model) {
+    public String saveevaluate(ListImage picture, @ModelAttribute("listPartRepair") ListPartRepair listPartRepair/*,BindingResult result*/,@ModelAttribute("selectedRepairId") Long selectedRepairId, Model model) {
         Repair repair = repairRepository.findOne(selectedRepairId);
         Set<Part> partSet = new HashSet<Part>();
+        Set<Image> imageSet = new HashSet<Image>();
         for(int i=0;i<listPartRepair.getPartRepair().size();i++) {
             Store store;
             switch(listPartRepair.getPartRepair().get(i).value){
@@ -144,10 +143,13 @@ public class RepairController {
                 case "Brakes": store = storeRepository.findOne((long)8);break;
                 default: store = null;
             }
+            Image newImage = new Image(repair,store);
+            newImage.setPath(ImageSaver.saveImage(picture.getImageList().get(i),newImage,i));
+            imageSet.add(newImage);
             Part newPart = new Part(repair,store);
-            //partRepository.save(newPart);//być może niekoniecznie potrzebne refactor
             partSet.add(newPart);
         }
+        repair.setImageSet(imageSet);
         repair.setPartSet(partSet);
         repairRepository.save(repair);
         //jeszcze wydobyc id z repaira a jego przesylac jakos albo autowired i juz

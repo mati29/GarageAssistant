@@ -9,6 +9,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -144,6 +147,21 @@ public class CommissionController {
         return "redirect:/myCommission/addCommission";
     }
 
+    @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=needToRepair")
+    public String needToRepair(@Valid @ModelAttribute Commission commission, BindingResult result, Principal principal , Model model,HttpServletRequest request) {
+        Commission singleCommission = commissionRepository.findOne(commission.getId());
+        Set<Repair> repairSet = singleCommission.getRepairSet();
+        Set<Image> images = new HashSet<Image>();
+        //repairSet.stream().forEach(r -> images.addAll(r.getImageSet()));
+        for(Repair r:repairSet){
+            for(Image i:r.getImageSet()){
+                images.add(i);
+            }
+        }
+        model.addAttribute("images",images);
+        return "ImagesOfDamage";
+    }
+
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=evaluateCommission")
     public String evaluateCommission(@Valid @ModelAttribute Commission commission, BindingResult result, Principal principal , Model model,HttpServletRequest request) {
         //String username = principal.getName();
@@ -269,6 +287,17 @@ public class CommissionController {
         newRepair.setPartSet(partSet);
         repairRepository.save(newRepair);
         return "redirect:/myCommission";
+    }
+
+    @RequestMapping(value = "/images/{imageName}")
+    @ResponseBody
+    public byte[] getImage(@PathVariable(value = "imageName") String imageName) throws IOException {
+
+        String directory = new File("images").getAbsolutePath();
+        String[] fileandFileType = imageName.split("`");
+        File serverFile = new File(directory+File.separator+fileandFileType[0]+"."+fileandFileType[1]);
+
+        return Files.readAllBytes(serverFile.toPath());
     }
 
 

@@ -23,6 +23,7 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<Part> partSet;
 
+
     public Set<Part> getPartSet(){
         return this.partSet;
     }
@@ -64,5 +65,7 @@ public class Store {
     }
     public double getPrice(){
         return this.price;
+    }
+    }
     }
 }

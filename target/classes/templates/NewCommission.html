@@ -91,7 +91,9 @@
     </div>
         <button class="button medium" type="submit" name="clientAddAction" value="addCommission">Add!</button>
 </form>
-<br/>If you want to demand some additional part,<br/> please write number of it then click GENERATE<br/>
+<label th:if="${AS}">
+    <br/>If you want to demand some additional part,<br/> please write number of it then click GENERATE<br/>
+</label>
 <input type="text" th:id="part" th:name="part" value="" th:if="${AS}"/><br />
 <button type="submit"  th:if="${AS}" th:onclick="'addPart(\'' + ${part} + '\');'">GENERATE</button><br/>
 <div id="additionalSection"/>

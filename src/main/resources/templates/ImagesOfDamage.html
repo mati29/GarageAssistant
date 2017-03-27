@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Image 0f failure</title>
+</head>
+<body>
+<header>
+    <h2>List of failure that need to be handle</h2>
+</header>
+    <ul th:each="image,iter : ${images}">
+        <br/>Type of part need repair:<br />
+        <span th:text="${image.store.type}"></span><br />
+        <img th:src="@{/myCommission/images/}+${image.path}"/><br />
+    </ul>
+</body>
+</html>

@@ -7,7 +7,7 @@
 <header>
     <h2>Choose type of part</h2>
 </header>
-<form action="#" method="POST" th:action="@{/myRepairs/evaluate}" th:object="${listPartRepair}">
+<form action="#" method="POST" th:action="@{/myRepairs/evaluate}" th:object="${listPartRepair}" enctype="multipart/form-data">
     <ul th:each="partToRepair : ${listPartRepair.partRepair}">
             <select th:name="|partRepair[${partToRepair.index}].value|" >
                 <option th:each="part : ${parts}"
@@ -15,6 +15,7 @@
                         th:text="${part}">
                 </option>
             </select>
+            <input type="file" th:name="|imageList[${partToRepair.index}]|" />
     </ul>
     <button class="button medium" type="submit" name="employeeEvaluateAction" value="saveEvaluate">Save evaluation</button>
 </form>

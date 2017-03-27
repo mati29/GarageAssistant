@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.*;
+import java.nio.file.Files;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class AdminController {
         return "AdminDashboard";
     }
 
-    @RequestMapping(method= RequestMethod.POST,params="adminAction=addExtraRight")
+    @RequestMapping(method = RequestMethod.POST,params="adminAction=addExtraRight")
     public String addExtraRight(Model model) {
         List<Client> clients = clientRepository.findAll();//mozna by na ilosc kupic itd. rozwijanie
         clients = clients.stream().filter(c -> c.getSettings().getAdditionalServiceDemand() || c.getSettings().getCallExtraPartDemand()).collect(Collectors.toList());
@@ -58,7 +59,7 @@ public class AdminController {
         return "ExtraRightPanel";
     }
 
-    @RequestMapping(method= RequestMethod.POST,params="adminAction=setFreeRepair")
+    @RequestMapping(method = RequestMethod.POST,params="adminAction=setFreeRepair")
     public String setFreeCommission(Model model) {
         List<Repair> repairsToAssign = repairRepository.findByEmployeeId(1L);
         Set<Employee> readyEmployees = employeeRepository.findByPost("mechanic");
@@ -69,13 +70,14 @@ public class AdminController {
         return "EmployeeAssignRepair";
     }
 
-    @RequestMapping(method= RequestMethod.POST,params="adminAction=addAccount")
+    @RequestMapping(method = RequestMethod.POST,params="adminAction=addAccount")
     public String addAccount(Model model) {
         model.addAttribute("addedByAdmin",true);
         return "Register";
+        //return "ImageTry";
     }
 
-    @RequestMapping(method= RequestMethod.POST,params="adminAction=confirmAccount")
+    @RequestMapping(method = RequestMethod.POST,params="adminAction=confirmAccount")
     public String confirmAccount(Model model) {
         List<Account> accounts = accountRepository.findByEnabled(false);
         List<Client> clients = new ArrayList<>();

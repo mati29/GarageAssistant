@@ -11,3 +11,6 @@ target/classes/main/java/CarPackage/Repair.class
 *.class
 target/classes/main/java/CarPackage/Client.class
 *.class
+*.jpeg
+*.class
+*.gif

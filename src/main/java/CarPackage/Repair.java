@@ -26,6 +26,9 @@ public class Repair {
     @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL)
     private Set<Part> partSet;
 
+    @OneToMany(mappedBy = "repair",cascade = CascadeType.ALL)
+    private Set<Image> imageSet;
+
     public Repair(){}
 
     public Repair(Employee employee,Commission commission,String description){
@@ -75,5 +78,11 @@ public class Repair {
     }
     public String getDescription(){
         return this.description;
+    }
+    public void setImageSet(Set<Image> imageSet){
+        this.imageSet = imageSet;
+    }
+    public Set<Image> getImageSet(){
+        return this.imageSet;
     }
 }
