@@ -19,6 +19,7 @@ public class Image {
     @JoinColumn(name = "repair_id")
     private Repair repair;
 
+    @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;//what type of part
 

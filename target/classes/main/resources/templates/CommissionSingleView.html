@@ -19,6 +19,7 @@
     <div th:if="${AP} != true">
         <form action="#" method="POST" th:action="@{/myCommission/evaluate}" th:object="${commission}">
             <input type="hidden" name="id" th:value="${commission.id}" />
+            <button type="submit" th:if="${evaluateNeeded}" name="clientEvaluateAction" value="needToRepair">List of failure</button>
             <div th:switch="${evaluateNeeded}">
                 <button type="submit" name="clientEvaluateAction" th:case="'true'" value="evaluateCommission">Evaluate</button>
                 <button type="submit" name="clientEvaluateAction" th:case="*" value="evaluateCommission" th:disabled="disabled">Evaluate</button>

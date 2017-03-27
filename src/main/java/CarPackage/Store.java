@@ -23,6 +23,8 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<Part> partSet;
 
+    @OneToMany(mappedBy = "store",cascade=CascadeType.ALL)
+    private Set<Image> imageSet;
 
     public Set<Part> getPartSet(){
         return this.partSet;
@@ -66,6 +68,10 @@ public class Store {
     public double getPrice(){
         return this.price;
     }
+    public void setImageSet(Set<Image> imageSet){
+        this.imageSet = imageSet;
     }
+    public Set<Image> getImageSet(){
+        return this.imageSet;
     }
 }
