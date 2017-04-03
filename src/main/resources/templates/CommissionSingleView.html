@@ -30,6 +30,10 @@
             <button type="submit" name="clientSpecialAction" value="specialService">Addition Service</button>
         </form>
     </div>
+    <form method="POST" th:action="@{/bills/myBill}" th:if="${BillExpose}">
+        <input type="hidden" name="id" th:value="${commission.id}" /><!--dodać tu blokade gdy dopiero jest bill jakis w modelu cykes-->
+        <button type="submit" name="clientBillAction" value="getBill">Watch Bill</button>
+    </form>
     <form method="POST" th:action="@{/myCommission}">
         <button type="submit" name="clientBackAction" value="toMyCommission">Back</button>
     </form>

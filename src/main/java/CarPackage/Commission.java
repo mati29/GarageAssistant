@@ -78,4 +78,12 @@ public class Commission {
         this.car = car;
     }
 
+    public Bill getBill() {
+        return this.bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
+    }
+
 }

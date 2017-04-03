@@ -88,4 +88,28 @@ public class AdminController {
         return "ConfirmPanel";
     }
 
+    @RequestMapping(method = RequestMethod.POST,params="adminAction=calculateCommission")
+    public String calculateCommission(Model model) {
+        List<Commission> allCommission = commissionRepository.findAll();
+        List<Commission> completedCommission = new ArrayList<>();
+        allCommission.forEach(c -> {
+            if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && !c.getRepairSet().isEmpty())
+                completedCommission.add(c);
+        });
+        model.addAttribute("commissions",completedCommission);
+        return "WriteBillOut";
+    }
+    //załatwi service będzie jeden ciul
+    @RequestMapping(value="/toBill",method = RequestMethod.GET)
+    public String getCommissionToCalculate(Model model) {
+        List<Commission> allCommission = commissionRepository.findAll();
+        List<Commission> completedCommission = new ArrayList<>();
+        allCommission.forEach(c -> {
+            if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && !c.getRepairSet().isEmpty())
+                completedCommission.add(c);
+        });
+        model.addAttribute("commissions",completedCommission);
+        return "WriteBillOut";
+    }
+
 }

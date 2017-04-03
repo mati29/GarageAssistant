@@ -127,6 +127,8 @@ public class CommissionController {
         boolean additionalService = (boolean)request.getSession().getAttribute("AS");
         if(additionalService)
             model.addAttribute("AS",additionalService);
+        if(null != singleCommission.getBill())
+            model.addAttribute("BillExpose",true);
         return "CommissionSingleView";
     }
 

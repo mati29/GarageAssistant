@@ -235,11 +235,11 @@ public class RepairController {
     }
 
         @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=repairDone")
-    public String doneRepair(Map<String, Object> model,@ModelAttribute("repair") Repair selectedRepair) {
+    public String doneRepair(Map<String, Object> model,@ModelAttribute("repair") Repair selectedRepair,boolean noPart) {
         Repair repairedPart = repairRepository.findOne(selectedRepair.getId());
         Set<Part> anyToComplete = new HashSet<>();
         repairedPart.getPartSet().stream().filter(p -> p.getResolved() == false).forEach(p -> anyToComplete.add(p));
-        if(anyToComplete.isEmpty()) {
+        if((!repairedPart.getPartSet().isEmpty() && anyToComplete.isEmpty()) || (repairedPart.getPartSet().isEmpty() && noPart)) {
             model.put("repair",repairedPart);
             return "TimeRepairCost";
             //repairedPart.setAccomplish(true);
@@ -258,7 +258,7 @@ public class RepairController {
     public String calculateRepair(Map<String, Object> model,@ModelAttribute("repair") Repair selectedRepair){//,@ModelAttribute("repair") int hours) {
         Repair repairedPart = repairRepository.findOne(selectedRepair.getId());
         repairedPart.setAccomplish(true);
-        //repairedPart.setHours(hours); already save in model i suppose check maybe
+        repairedPart.setHours(selectedRepair.getHours());
         repairRepository.save(repairedPart);
         return "redirect:/myRepairs";
     }

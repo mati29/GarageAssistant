@@ -14,7 +14,7 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="bill_id_seq")
     @SequenceGenerator(name="bill_id_seq", sequenceName="bill_id_seq", allocationSize=1)
     private Long id;
-    private int price;
+    private byte[] pdf;
 
     @OneToOne
     @JoinColumn(name = "commission_id")
@@ -28,20 +28,20 @@ public class Bill {
         return this.id;
     }
 
-    public void setPrice(int price){
-        this.price = price;
-    }
-
-    public int getPrice(){
-        return this.price;
-    }
-
     public void setCommission(Commission commission){
         this.commission = commission;
     }
 
     public Commission getCommission(){
         return this.commission;
+    }
+
+    public void setPdf(byte[] pdf){
+        this.pdf = pdf;
+    }
+
+    public byte[] getPdf(){
+        return this.pdf;
     }
 
 }

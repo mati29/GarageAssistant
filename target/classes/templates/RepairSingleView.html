@@ -30,7 +30,13 @@
     </form>
     <form method="POST" th:action="@{/myRepairs/repair}" th:object="${repair}">
         <input type="hidden" name="repair" th:value="${repair.id}" />
+        <input type="hidden" name="noPart" th:value="false" />
         <button type="submit" name="employeeRepairAction" value="repairDone">Complete Repair</button>
+    </form>
+    <form method="POST" th:action="@{/myRepairs/repair}" th:object="${repair}">
+        <input type="hidden" name="repair" th:value="${repair.id}" />
+        <input type="hidden" name="noPart" th:value="true" />
+        <button type="submit" name="employeeRepairAction" value="repairDone">Complete Repair(Without part)</button>
     </form>
     <form method="POST" th:action="@{/myRepairs}">
         <button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button>

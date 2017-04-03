@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Write Out Bill for client commission</title>
+</head>
+<body>
+<header>
+    <h2>Please choose commission and click </h2>
+</header>
+    <ul th:each="commission,iter : ${commissions}">
+        <form action="#" method="POST" th:action="@{/bills/newBill}" th:object="${commission}">
+        <input type="hidden" th:name="commission" th:value="${commission.id}" />
+        <br/>ID of commission:<br />
+        <span th:text="${commission.id}"></span><br />
+        <button class="button medium" type="submit" name="adminBillAction" value="exposeBill">To Bill!</button>
+        </form>
+    </ul>
+</body>
+</html>
