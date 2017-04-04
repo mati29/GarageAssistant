@@ -154,13 +154,14 @@ public class CommissionController {
         Commission singleCommission = commissionRepository.findOne(commission.getId());
         Set<Repair> repairSet = singleCommission.getRepairSet();
         Set<Image> images = new HashSet<Image>();
-        //repairSet.stream().forEach(r -> images.addAll(r.getImageSet()));
-        for(Repair r:repairSet){
+        repairSet.stream().forEach(r -> images.addAll(r.getImageSet()));
+        /*for(Repair r:repairSet){
             for(Image i:r.getImageSet()){
                 images.add(i);
             }
-        }
+        }*/
         model.addAttribute("images",images);
+        model.addAttribute("commission",commission);
         return "ImagesOfDamage";
     }
 
@@ -209,6 +210,7 @@ public class CommissionController {
         clientChoosePart.setChosenPart(changeParts);
         model.addAttribute("clientChoosePart",clientChoosePart);
         model.addAttribute("stores",allToChoose);
+        model.addAttribute("commission",commission);
         return "ClientEvaluation";
     }
 

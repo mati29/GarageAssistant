@@ -12,5 +12,9 @@
         <span th:text="${image.store.type}"></span><br />
         <img th:src="@{/myCommission/images/}+${image.path}"/><br />
     </ul>
+<form action="#" method="POST" th:action="@{/myCommission}" th:object="${commission}">
+    <input type="hidden" name="id" th:value="${commission.id}" />
+    <button type="submit" name="clientSelectAction" value="selectCommission">Back to Commission</button>
+</form>
 </body>
 </html>
