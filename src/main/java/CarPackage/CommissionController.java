@@ -215,7 +215,7 @@ public class CommissionController {
     }
 
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=saveEvaluate")
-    public String saveEvaluate(@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart, BindingResult result,Model model) {
+    public String saveEvaluate(Commission commission,@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart, BindingResult result,Model model) {
         //WAZNE TERAZ ZMIANA TYPU NA UNIQUEPARTLIST I UNIQUEPART DZIEKI TEMU NIE ZGUBIE PARTID I MODEL I BRAND LATWIEJ
         //DODAC PARTID W HIDDEN TEZ ZMIANA NAZW WSZYSTKICH W FRONTENDZIE
         UniquePartList uniquePartList = new UniquePartList();
@@ -238,9 +238,10 @@ public class CommissionController {
         if(!uniqueParts.isEmpty()){
             uniquePartList.setUniqueParts(uniqueParts);
             model.addAttribute("uniquePartList",uniquePartList);
+            model.addAttribute("commission",commission);
             return "UniquePartRequirement";
         }
-        return "redirect:/myCommission";
+        return "redirect:/myCommission";//maybe to CommissionSingleView?
     }
 
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=addUnique")

@@ -39,5 +39,9 @@
     </ul>
     <button class="button medium" type="submit" name="clientEvaluateAction" value="addUnique">Send ask for part</button>
 </form>
+<form action="#" method="POST" th:action="@{/myCommission}" th:object="${commission}">
+    <input type="hidden" name="id" th:value="${commission.id}" />
+    <button type="submit" name="clientSelectAction" value="selectCommission">Back to Commission</button>
+</form>
 </body>
 </html>
