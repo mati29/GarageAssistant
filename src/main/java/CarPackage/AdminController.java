@@ -92,8 +92,8 @@ public class AdminController {
     public String calculateCommission(Model model) {
         List<Commission> allCommission = commissionRepository.findAll();
         List<Commission> completedCommission = new ArrayList<>();
-        allCommission.forEach(c -> {
-            if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && !c.getRepairSet().isEmpty())
+        allCommission.forEach(c -> {                                                                                                                                      //just for test delete after release version
+            if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairSet().isEmpty())
                 completedCommission.add(c);
         });
         model.addAttribute("commissions",completedCommission);
@@ -104,8 +104,8 @@ public class AdminController {
     public String getCommissionToCalculate(Model model) {
         List<Commission> allCommission = commissionRepository.findAll();
         List<Commission> completedCommission = new ArrayList<>();
-        allCommission.forEach(c -> {
-            if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && !c.getRepairSet().isEmpty())
+        allCommission.forEach(c -> {                                                                                                                                      //just for test delete after release version
+            if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairSet().isEmpty())
                 completedCommission.add(c);
         });
         model.addAttribute("commissions",completedCommission);

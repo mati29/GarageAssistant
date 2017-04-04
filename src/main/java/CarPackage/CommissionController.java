@@ -248,6 +248,7 @@ public class CommissionController {
             Store uniqueStoreToAdd = new Store();
             uniqueStoreToAdd.setBrand(uniquePart.getBrand());
             uniqueStoreToAdd.setModel(uniquePart.model);
+            String type = storeRepository.findOne((long)uniquePart.getTypeOfStore()).getType();
             uniqueStoreToAdd.setType(storeRepository.findOne((long)uniquePart.getTypeOfStore()).getType());
             partToUnification.setStore(uniqueStoreToAdd);
             storeRepository.save(uniqueStoreToAdd);
@@ -268,6 +269,8 @@ public class CommissionController {
         //Narazie może dorobie wybór pracownika i opisu co i jak zrobione
         Commission commissionToDo = commissionRepository.findOne(commission.getId());
         Repair newRepair = new Repair(employeeRepository.findOne(1L),commissionToDo,"Additional Work Needed");
+        if(null != commissionToDo.getBill())
+            commissionToDo.setAfterCheck(true);
         commissionToDo.getRepairSet().add(newRepair);//styka?
         List<String> addPart = Arrays.asList(partString.split(","));
         Set<Part> partSet = new HashSet<>();
@@ -275,9 +278,9 @@ public class CommissionController {
             Part part = new Part();
             Store store = new Store();
             List<String> brandModel = new ArrayList<String>(Arrays.asList(stringPart.split(":")));
-            brandModel.get(0).replace(" ","");
+            brandModel.set(0,brandModel.get(0).replace(" ",""));
             if(brandModel.size()==3) {
-                store.setType(brandModel.get(0));
+                store.setType(brandModel.get(0).substring(0, 1) + brandModel.get(0).substring(1).toUpperCase());
                 store.setModel(brandModel.get(1));
                 store.setBrand(brandModel.get(2));
                 storeRepository.save(store);

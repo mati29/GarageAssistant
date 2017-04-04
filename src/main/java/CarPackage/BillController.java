@@ -30,8 +30,10 @@ public class BillController {
     public String exposeBill(Commission commission) {
         Commission commissionToCheck =  commissionRepository.findOne(commission.getId());
         Bill billToSave;
-        if(null != commissionToCheck.getBill())
+        if(null != commissionToCheck.getBill()) {
             billToSave = commissionToCheck.getBill();
+            commissionToCheck.setAfterCheck(false);
+        }
         else
             billToSave = new Bill();
         billToSave.setCommission(commissionToCheck);

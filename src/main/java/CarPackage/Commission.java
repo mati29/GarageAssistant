@@ -15,6 +15,7 @@ public class Commission {
     @SequenceGenerator(name="commission_id_seq", sequenceName="commission_id_seq", allocationSize=1)
     private Long id;
     private Date term;
+    private boolean afterCheck;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -52,6 +53,14 @@ public class Commission {
 
     public Date getTerm(){
         return this.term;
+    }
+
+    public void setAfterCheck(boolean afterCheck){
+        this.afterCheck = afterCheck;
+    }
+
+    public boolean getAfterCheck(){
+        return this.afterCheck;
     }
 
     public Client getClient() {

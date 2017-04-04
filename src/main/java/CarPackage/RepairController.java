@@ -73,7 +73,8 @@ public class RepairController {
     @RequestMapping(value="/addRepair", method= RequestMethod.POST,params="employeeAddAction=addRepair")
     public String addRepair(Long commissionId,String description, Long employeeId,Principal principal) {
         Commission commissionNeedRepair = commissionRepository.findOne(commissionId);
-        //if(employeeId!=1){inaczej gdy employee==1 admin przydzieli
+        if(null != commissionNeedRepair.getBill())
+            commissionNeedRepair.setAfterCheck(true);
         Employee employeeToRepair = employeeRepository.findOne(employeeId);
         Repair newRepair = new Repair(employeeToRepair,commissionNeedRepair,description);
         repairRepository.save(newRepair);
