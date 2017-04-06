@@ -23,6 +23,7 @@
         <span th:text="${repair.description}"></span><br />
     </li>
     <form method="POST" th:action="@{/myRepairs/evaluate}">
+        <input type="hidden" name="repair" th:value="${repair.id}" />
         <button type="submit" name="employeeEvaluateAction" value="startEvaluate">Evaluate Repair</button>
     </form>
     <form method="POST" th:action="@{/myRepairs/repair}">

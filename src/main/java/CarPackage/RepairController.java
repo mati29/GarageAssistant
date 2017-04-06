@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.*;
@@ -59,7 +60,7 @@ public class RepairController {
     }
 
     @RequestMapping(value="/addRepair",method= RequestMethod.GET)
-    public String repairs(Map<String, Object> model,Principal principal) {
+    public String repairs(Map<String, Object> model,Principal principal,RedirectAttributes redirectAttrs) {
         Set<Employee> employees = employeeRepository.findAll();
         model.put("employees", employees);
         String username = principal.getName();
@@ -71,14 +72,22 @@ public class RepairController {
     }
 
     @RequestMapping(value="/addRepair", method= RequestMethod.POST,params="employeeAddAction=addRepair")
-    public String addRepair(Long commissionId,String description, Long employeeId,Principal principal) {
+    public String addRepair(Long commissionId,String description, Long employeeId,Principal principal,HttpServletRequest request) {
         Commission commissionNeedRepair = commissionRepository.findOne(commissionId);
         if(null != commissionNeedRepair.getBill())
             commissionNeedRepair.setAfterCheck(true);
         Employee employeeToRepair = employeeRepository.findOne(employeeId);
         Repair newRepair = new Repair(employeeToRepair,commissionNeedRepair,description);
         repairRepository.save(newRepair);
-        return "redirect:/myRepairs";//zmienic tez od wejscia zaleznie
+        String from = request.getSession().getAttribute("from").toString();
+        if(from.equals("dashboard")) {
+            request.getSession().removeAttribute("from");
+            return "redirect:/employeeDashboard";
+        }
+        else {
+            request.getSession().removeAttribute("from");
+            return "redirect:/myRepairs";
+        }
     }
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSelectAction=selectRepair")
@@ -93,8 +102,9 @@ public class RepairController {
     }
 
     @RequestMapping(method=RequestMethod.POST,params="employeeAddAction")
-    public String addNewRepair(RedirectAttributes redirectAttrs) {
+    public String addNewRepair(RedirectAttributes redirectAttrs,HttpServletRequest request) {
         redirectAttrs.addFlashAttribute("from","overview");
+        request.getSession().setAttribute("from","dashboard");
         return "redirect:/myRepairs/addRepair";
     }
 
@@ -108,8 +118,14 @@ public class RepairController {
         return "redirect:/employeeDashboard";
     }
 
+    @RequestMapping(method=RequestMethod.POST,params="employeeBackAction=toMyStore")
+    public String backToStore() {
+        return "redirect:/store";
+    }
+
     @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=startEvaluate")
-    public String startevaluate(Map<String, Object> model) {
+    public String startevaluate(Map<String, Object> model,Repair repair) {
+        model.put("repair",repair);
         return "StartEvaluateRepair";
     }
 

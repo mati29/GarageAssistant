@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        window.onload=function(){
+        var button = document.getElementById('singleButton');
+        button.click();
+        }
+         /*]]>*/
+    </script>
+    <title>Redirect</title>
+</head>
+<body>
+<form name="form" action="#" method="POST" th:action="@{/myCommission}" th:object="${commission}">
+    <input type="hidden" name="id" th:value="${commission.id}" />
+    <input id="singleButton" type="submit" name="clientSelectAction" value="selectCommission">Back to Commission</input>
+</form>
+</body>
+</html>

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -36,13 +38,16 @@ public class EmployeeController {
 
 
     @RequestMapping(method=RequestMethod.POST, params="employeeAction=addRepair")
-    public String addRepair(RedirectAttributes redirectAttrs) {
+    public String addRepair(RedirectAttributes redirectAttrs,HttpServletRequest request) {
         redirectAttrs.addFlashAttribute("from","dashboard");
+        request.getSession().setAttribute("from","dashboard");
         return "redirect:/myRepairs/addRepair";
     }
 
     @RequestMapping(method=RequestMethod.POST, params="employeeAction=addPart")
-    public String addPartStore(Model model) {
+    public String addPartStore(RedirectAttributes redirectAttrs,HttpServletRequest request) {
+        redirectAttrs.addFlashAttribute("from","dashboard");
+        request.getSession().setAttribute("from","dashboard");
         return "redirect:/store/addPart";
     }
 

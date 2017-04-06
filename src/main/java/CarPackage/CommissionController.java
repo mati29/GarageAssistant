@@ -91,7 +91,15 @@ public class CommissionController {
             newRepair.setPartSet(partSet);
         }
         carRepository.save(newCar);
-        return "redirect:/myCommission";
+        String from = request.getSession().getAttribute("from").toString();
+        if(from.equals("dashboard")) {
+            request.getSession().removeAttribute("from");
+            return "redirect:/clientDashboard";
+        }
+        else {
+            request.getSession().removeAttribute("from");
+            return "redirect:/myCommission";
+        }
     }
 
     @RequestMapping(value="/addCommission",method= RequestMethod.GET)
@@ -144,8 +152,9 @@ public class CommissionController {
 
 
     @RequestMapping(method=RequestMethod.POST,params="clientAddAction")
-    public String addNewCommission(RedirectAttributes redirectAttrs) {
+    public String addNewCommission(RedirectAttributes redirectAttrs,HttpServletRequest request) {
         redirectAttrs.addFlashAttribute("from","overview");
+        request.getSession().setAttribute("from","overview");
         return "redirect:/myCommission/addCommission";
     }
 
@@ -241,7 +250,8 @@ public class CommissionController {
             model.addAttribute("commission",commission);
             return "UniquePartRequirement";
         }
-        return "redirect:/myCommission";//maybe to CommissionSingleView?
+        model.addAttribute("commission",commission);
+        return "AutoRedirect";//"redirect:/myCommission";//maybe to CommissionSingleView?
     }
 
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=addUnique")

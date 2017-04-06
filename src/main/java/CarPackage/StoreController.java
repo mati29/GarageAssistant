@@ -3,7 +3,9 @@ package main.java.CarPackage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,9 +31,17 @@ public class StoreController {
     }
 
     @RequestMapping(value="/addPart", method= RequestMethod.POST,params="employeeAddAction=addPart")
-    public String addCommission(Store store,Principal principal) {
+    public String addCommission(Store store,Principal principal,HttpServletRequest request) {
         storeRepository.save(store);
-        return "redirect:/employeeDashboard";
+        String from = request.getSession().getAttribute("from").toString();
+        if(from.equals("dashboard")) {
+            request.getSession().removeAttribute("from");
+            return "redirect:/employeeDashboard";
+        }
+        else {
+            request.getSession().removeAttribute("from");
+            return "redirect:/store";
+        }
     }
 
     @RequestMapping(method= RequestMethod.GET)
@@ -43,6 +53,13 @@ public class StoreController {
         storeList.setStoreList(stores);
         model.put("stores",storeList);
         return "StoresView";
+    }
+
+    @RequestMapping(method=RequestMethod.POST, params="employeeAction=addPart")
+    public String addPartStore(RedirectAttributes redirectAttrs,HttpServletRequest request) {
+        redirectAttrs.addFlashAttribute("from","overview");
+        request.getSession().setAttribute("from","overview");
+        return "redirect:/store/addPart";
     }
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSortAction=sortById")

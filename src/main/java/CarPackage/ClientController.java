@@ -41,8 +41,9 @@ public class ClientController {
 
     @Secured("ROLE_USER")
     @RequestMapping(value="/clientDashboard",method=RequestMethod.POST, params="clientAction=addCommission")
-    public String addCommission(RedirectAttributes redirectAttrs) {
+    public String addCommission(RedirectAttributes redirectAttrs,HttpServletRequest request) {
         redirectAttrs.addFlashAttribute("from","dashboard");
+        request.getSession().setAttribute("from","dashboard");
         return "redirect:/myCommission/addCommission";
     }
 
