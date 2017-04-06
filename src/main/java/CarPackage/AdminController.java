@@ -44,7 +44,7 @@ public class AdminController {
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping(method= RequestMethod.GET)
+    @RequestMapping(method= {RequestMethod.GET,RequestMethod.POST})
     public String getEmployeeDashboard(Model model) {
         return "AdminDashboard";
     }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <script th:inline="javascript">
     /*<![CDATA[*/
@@ -81,5 +82,7 @@
     <button class="button medium" type="submit" name="userRegistrationAction" value="register">Register!</button>
 </form>
 <button th:id="setField" th:if="${addedByAdmin}" type="submit" th:onclick="'addSpecialField();'">Set</button><br/>
+<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/adminDashboard}">Back</a></li>
+<li sec:authorize="isAnonymous()"><a th:href="@{/}">Back</a></li>
 </body>
 </html>

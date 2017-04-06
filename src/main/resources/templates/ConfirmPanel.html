@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Enable client accounts</title>
 </head>
@@ -23,6 +24,9 @@
         </select><br />
     </ul>
     <button class="button medium" type="submit" name="adminConfirmAction" value="setEnable">Set account enable</button>
+</form>
+<form action="#" method="POST" th:action="@{/adminDashboard}">
+    <button type="submit" >Back to Dashboard</button>
 </form>
 </body>
 </html>

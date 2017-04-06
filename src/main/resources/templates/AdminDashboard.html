@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Employee Dashboard</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" th:href="@{/style.css}" />
 </head>
 <body>
-<h2>Employee Dashboard - Choose operation</h2>
+<h2>Admin Dashboard - Choose operation</h2>
 <form method="POST" th:action="@{/adminDashboard}">
     <button type="submit" name="adminAction" value="addAccount">Manage account</button>
     <button type="submit" name="adminAction" value="confirmAccount">Confirm Account</button>

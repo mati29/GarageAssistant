@@ -40,7 +40,7 @@ public class RegistrationController {
         client.setSettings(settings);//new functionality
         clientRepository.save(client);
         rolesRepository.save(new Roles(account.getUsername(),UserType.Client.toString()));
-        return "redirect:/";
+        return "redirect:/adminDashboard";
     }
 
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="adminRegistrationAction=registerEmployee")
@@ -50,7 +50,7 @@ public class RegistrationController {
         employee.setAccount(account);
         employeeRepository.save(employee);
         rolesRepository.save(new Roles(account.getUsername(),UserType.Employee.toString()));
-        return "redirect:/";
+        return "redirect:/adminDashboard";
     }
 
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="adminRegistrationAction=registerAdmin")
@@ -60,7 +60,7 @@ public class RegistrationController {
         admin.setAccount(account);
         adminRepository.save(admin);
         rolesRepository.save(new Roles(account.getUsername(),UserType.Admin.toString()));
-        return "redirect:/";
+        return "redirect:/adminDashboard";
     }
 
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="adminConfirmAction=setEnable")
@@ -69,6 +69,6 @@ public class RegistrationController {
                 .forEach(c -> {Client client = clientRepository.findOne(c.getId());
                                client.getAccount().setEnabled(true);
                                clientRepository.save(client);});
-        return "redirect:/";
+        return "redirect:/adminDashboard";
     }
 }

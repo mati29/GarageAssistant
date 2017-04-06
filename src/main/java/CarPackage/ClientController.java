@@ -30,7 +30,7 @@ public class ClientController {
     }
 
     @Secured("ROLE_USER")
-    @RequestMapping(value="/clientDashboard",method=RequestMethod.GET)
+    @RequestMapping(value="/clientDashboard",method={RequestMethod.GET,RequestMethod.POST})
     public String getClientDashboard(Model model,HttpServletRequest request) {
         /*if(null!=request.getSession().getAttribute("AS")) {
             boolean additionalService = (boolean) request.getSession().getAttribute("AS");
