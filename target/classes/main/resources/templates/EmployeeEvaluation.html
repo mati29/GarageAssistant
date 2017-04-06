@@ -19,5 +19,9 @@
     </ul>
     <button class="button medium" type="submit" name="EmployeeEvaluateAction" value="saveRepair">Save evaluation</button>
 </form>
+<form method="POST" th:action="@{/myRepairs}">
+    <input type="hidden" name="repairSended" th:value="${repair.id}" />
+    <button type="submit" name="employeeSelectAction" value="selectRepair">Back to repair</button>
+</form>
 </body>
 </html>

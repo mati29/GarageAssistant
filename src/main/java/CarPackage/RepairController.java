@@ -130,7 +130,7 @@ public class RepairController {
     }
 
     @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=continueEvaluate")
-    public String continueevaluate(Map<String, Object> model,int count) {
+    public String continueevaluate(Map<String, Object> model,int count,Repair repair) {
         ArrayList<SinglePart> fieldToFill = new ArrayList<SinglePart>();
         //String[] fieldToFill = new String[count];
         for(int i=0;i<count;i++)fieldToFill.add(new SinglePart("",i));
@@ -139,12 +139,13 @@ public class RepairController {
         model.put("listPartRepair",listPartRepair);
         Set<String> parts = new HashSet<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
         model.put("parts", parts);
+        model.put("repair",repair);
         return "EvaluateRepair";
     }
 
     @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=saveEvaluate")
-    public String saveevaluate(ListImage picture, @ModelAttribute("listPartRepair") ListPartRepair listPartRepair/*,BindingResult result*/,@ModelAttribute("selectedRepairId") Long selectedRepairId, Model model) {
-        Repair repair = repairRepository.findOne(selectedRepairId);
+    public String saveevaluate(Repair repairSended,ListImage picture, @ModelAttribute("listPartRepair") ListPartRepair listPartRepair/*,BindingResult result*/,@ModelAttribute("selectedRepairId") Long selectedRepairId, Model model) {
+        Repair repair = repairRepository.findOne(selectedRepairId);//TODO do wyjebania selectedRepairId
         Set<Part> partSet = new HashSet<Part>();
         Set<Image> imageSet = new HashSet<Image>();
         for(int i=0;i<listPartRepair.getPartRepair().size();i++) {
@@ -198,10 +199,12 @@ public class RepairController {
             clientChoosePart.setChosenPart(changeParts);
             model.addAttribute("clientChoosePart",clientChoosePart);
             model.addAttribute("stores",allToChoose);
+            model.addAttribute("repair",repair);
             return "EmployeeEvaluation";
         }
         else
-            return "redirect:/myRepairs";
+            model.addAttribute("repair",repair);
+            return "AutoRedirectSingleRepair";
     }
 
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="EmployeeEvaluateAction=saveRepair")

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        window.onload=function(){
+        var button = document.getElementById('singleButton');
+        button.click();
+        }
+         /*]]>*/
+    </script>
+    <title>Redirect</title>
+</head>
+<body>
+<form name="form" action="#" method="POST" th:action="@{/myRepairs}">
+    <input type="hidden" name="repairSended" th:value="${repair.id}" />
+    <input id="singleButton" type="submit" name="employeeSelectAction" value="selectRepair">Back to Repair</input>
+</form>
+</body>
+</html>
