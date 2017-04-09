@@ -4,25 +4,49 @@
 <head>
     <meta charset="utf-8" />
     <title>Garage Assistant</title>
-    <link rel="stylesheet" th:href="@{/layout.css}" />
-    <link rel="stylesheet" th:href="@{/menu.css}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
 </head>
-<body>
-<header>
-    <h2>Welecome to Garage Assistant</h2>
-    <h6>Produced by Mateusz Wojtyna</h6>
+<body style="background-color:#000066;">
+<header >
+    <h2></h2>
+    <h6></h6>
 </header>
-
-<ul id="nav">
-    <li sec:authorize="isAnonymous()"><a th:href="@{/registration}">Register</a></li>
-    <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Log in</a></li>
-    <li sec:authorize="hasRole('ROLE_WORKER')"><a th:href="@{/employeeDashboard}">Dashboard</a></li>
-    <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/clientDashboard}">Dashboard</a></li>
-    <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/adminDashboard}">Dashboard</a></li>
-    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" method="POST">Log out</a></li>
-    <li><a class="hsubs" href="#">Contact</a></li>
-    <li><a href="#">Next feature</a></li>
-</ul>
-
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Contact</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/}">Home</a></li>
+            <li  sec:authorize="hasRole('ROLE_WORKER')"><a th:href="@{/employeeDashboard}">Dashboard</a></li>
+            <li  sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/clientDashboard}">Dashboard</a></li>
+            <li  sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/adminDashboard}">Dashboard</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li sec:authorize="isAnonymous()"><a th:href="@{/registration}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li sec:authorize="isAnonymous()"><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/login}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <div class="jumbotron" style="background-color:#000033;">
+            <h1 style="color:#CCCCCC">Welcome to Garage Assistant</h1>
+            <p style="color:#999999">Make service a pleasure.</p>
+        </div>
+    </div>
+    <div>
+        <img src="images/logo.png" alt="logo" class="img-responsive center-block"/>
+    </div>
+</main>
+<footer class="page-row">
+    <div class="footer">
+        <p class="text-muted">Produced by Mateusz Wojtyna</p>
+    </div>
+</footer>
 </body>
 </html>

@@ -1,0 +1,51 @@
+.list-group-horizontal .list-group-item {
+    display: inline-block;
+	background-color: #000033;
+    border-color: #CCCCCC;
+    text-color: #CCCCCC;
+}
+.list-group-horizontal .list-group-item {
+	margin-bottom: 0;
+	margin-left:-4px;
+	margin-right: 0;
+	padding: 1% 10%
+}
+.list-group-horizontal .list-group-item:first-child {
+	border-top-right-radius:0;
+	border-bottom-left-radius:10px;
+}
+.list-group-horizontal .list-group-item:last-child {
+	border-top-right-radius:10px;
+	border-bottom-left-radius:0;
+}
+
+a {
+    color: #CCCCCC;
+}
+
+html,
+body { height: 100%; }
+
+body {
+  display: table;
+  width: 100%;
+}
+
+.page-row {
+  display: table-row;
+  height: 1px;
+}
+
+.page-row-expanded { height: 100%; }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 30px;
+  background-color: #000033;
+  text-align: right;
+}
+
+

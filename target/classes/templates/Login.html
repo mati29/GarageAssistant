@@ -1,32 +1,33 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Spitter</title>
-        <link rel="stylesheet"
-              type="text/css"
-              th:href="@{/style.css}">
-        </link>
+        <title>Log on</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     </head>
-    <body>
-            <div id="header"></div>
+    <body style="background-color:#CCCCCC;">
+    <br />
         <div id="content">
             <form name='f' th:action='@{/login}' method='POST'>
-                <table>
-                    <tr><td>User:</td><td>
-                        <input type='text' name='username' value='' /></td></tr>
-                    <tr><td>Password:</td>         <td>
-                        <input type='password' name='password'/></td></tr>
-                    <tr><td colspan='2'>
-                        <button class="button small" type="submit" name="userLoginAction" value="login">Log in</button></td></tr>
-                </table>
+                <div class="input-group col-xs-4 col-md-offset-4 col-xs-offset-4">
+                    <span class="input-group-addon" style="background-color: #000033;border-color: #000033;"><i class="glyphicon glyphicon-user"  style="color:#CCCCCC;background-color: #000033;"></i></span>
+                    <input id="username" type="text" class="form-control" name="username" placeholder="Username" />
+                </div>
+                <div class="input-group col-xs-4 col-md-offset-4 col-xs-offset-4">
+                    <span class="input-group-addon" style="background-color: #000033;border-color: #000033;"><i class="glyphicon glyphicon-lock"  style="color:#CCCCCC;background-color: #000033;"></i></span>
+                    <input id="password" type="password" class="form-control" name="password" placeholder="Password" />
+                </div>
+                <br/>
+                <button class="btn btn-lg col-xs-4 col-md-4 col-md-offset-4 col-xs-offset-4" style="color:#CCCCCC;background-color: #000033;" type="submit" name="userLoginAction" value="login">Log in</button>
+
             </form>
+
             <form th:action='@{/}' method='POST'>
-                <table>
-                    <tr><td>
-                        <button class="button width" type="submit" name="userBackAction" value="back">Back to menu</button></td></tr>
-                </table>
+
+                    <button class="btn btn-sm col-xs-4 col-md-4 col-md-offset-4 col-xs-offset-4" style="color:#CCCCCC;background-color: #000033;" type="submit" name="userBackAction" value="back">Back to menu</button>
+
             </form>
         </div>
-        <div id="footer"></div>
     </body>
 </html>
