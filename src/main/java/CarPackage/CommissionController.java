@@ -50,7 +50,9 @@ public class CommissionController {
         Account account = accountRepository.findByUsername(username);
         Client client = clientRepository.findOne(account.getClient().getId());//to całe
         Set<Commission> clientCommissionSet = client.getCommissionSet();
-        model.put("commissions", clientCommissionSet);
+        List<Commission> commissionsList = clientCommissionSet.stream().collect(Collectors.toList());
+        commissionsList.sort(new CommissionComparator());
+        model.put("commissions", commissionsList );
         return "CommissionsView";
     }
 
