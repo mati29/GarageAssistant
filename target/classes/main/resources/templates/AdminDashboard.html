@@ -2,16 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" th:href="@{/style.css}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
 </head>
-<body>
-<h2>Admin Dashboard - Choose operation</h2>
-<form method="POST" th:action="@{/adminDashboard}">
-    <button type="submit" name="adminAction" value="addAccount">Manage account</button>
-    <button type="submit" name="adminAction" value="confirmAccount">Confirm Account</button>
-    <button type="submit" name="adminAction" value="setFreeRepair">Set repair to employee</button>
-    <button type="submit" name="adminAction" value="addExtraRight">Add extra right to client</button>
-    <button type="submit" name="adminAction" value="calculateCommission">Calculate bill for commission</button>
-</form>
+<body style="background-color:#000066;">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
+            </div>
+            <form method="POST" th:action="@{/adminDashboard}" class="navbar-form navbar-left">
+                <button type="submit" name="adminAction" value="confirmAccount" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-ok" style="color:#000000;"></span>  Confirm Account</button>
+                <button type="submit" name="adminAction" value="addAccount" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-user" style="color:#000000;"></span>  Manage account</button>
+                <button type="submit" name="adminAction" value="addExtraRight" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-transfer" style="color:#000000;"></span>  Add extra right</button>
+            </form>
+            <form method="POST" th:action="@{/adminDashboard}" class="navbar-form navbar-right">
+                <button type="submit" name="adminAction" value="setFreeRepair" class="btn" style="color:#CCCCCC;background-color: #003366;"><span class="glyphicon glyphicon-paperclip" style="color:#CCCCCC;"></span>  Set repair</button>
+                <button type="submit" name="adminAction" value="calculateCommission" class="btn" style="color:#CCCCCC;background-color: #003366;"><span class="glyphicon glyphicon-usd" style="color:#CCCCCC;"></span>  Calculate bill</button>
+            </form>
+        </div>
+    </nav>
+    <main class="page-row page-row-expanded">
+        <div class="container">
+            <div class="jumbotron" style="background-color:#000033;">
+                <h1 style="color:#CCCCCC">Admin Dashboard</h1>
+                <p style="color:#999999">Choose operation.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="page-row">
+        <div class="footer">
+            <p class="text-muted">Produced by Mateusz Wojtyna</p>
+        </div>
+    </footer>
 </body>
 </html>

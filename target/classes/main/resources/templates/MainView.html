@@ -28,7 +28,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li sec:authorize="isAnonymous()"><a th:href="@{/registration}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
             <li sec:authorize="isAnonymous()"><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/login}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
     </div>
 </nav>
