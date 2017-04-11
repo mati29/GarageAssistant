@@ -2,41 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Commission review - single commission</title>
-    <link rel="stylesheet" th:href="@{/style.css}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
+    <link th:href="@{/header.css}" rel="stylesheet" />
 </head>
-<body>
-<h2>Single commission checking</h2>
-<ul>
-    <li>Number plate:<br />
-        <span th:text="${commission.car.numberPlate}"></span><br />
-        Brand:<br />
-        <span th:text="${commission.car.brand}"></span><br />
-        Model:<br />
-        <span th:text="${commission.car.model}"></span><br />
-        Vintage:<br />
-        <span th:text="${commission.car.vintage}"></span><br />
-    </li>
-    <div th:if="${AP} != true">
-        <form action="#" method="POST" th:action="@{/myCommission/evaluate}" th:object="${commission}">
-            <input type="hidden" name="id" th:value="${commission.id}" />
-            <button type="submit" th:if="${evaluateNeeded}" name="clientEvaluateAction" value="needToRepair">List of failure</button>
-            <div th:switch="${evaluateNeeded}">
-                <button type="submit" name="clientEvaluateAction" th:case="'true'" value="evaluateCommission">Evaluate</button>
-                <button type="submit" name="clientEvaluateAction" th:case="*" value="evaluateCommission" th:disabled="disabled">Evaluate</button>
-            </div>
+<body style="background-color:#000066;">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
+        </div>
+        <form method="POST" th:action="@{/myCommission}" class="navbar-form navbar-left">
+            <button type="submit" name="clientBackAction" value="toMyDashboard" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-share-alt" style="color:#000000;"></span>  Dashboard</button>
+            <button type="submit" name="clientBackAction" value="toMyCommission" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-tasks" style="color:#000000;"></span> My commissions</button>
         </form>
-        <form method="POST" th:action="@{/myCommission/specialService}" th:if="${AS}">
+        <form method="POST" th:action="@{/bills/myBill}" th:if="${BillExpose}" class="navbar-form navbar-right">
             <input type="hidden" name="id" th:value="${commission.id}" />
-            <button type="submit" name="clientSpecialAction" value="specialService">Addition Service</button>
+            <button type="submit" name="clientBillAction" value="getBill" class="btn" style="color:#CCCCCC;background-color: #993300;"><span class="glyphicon glyphicon-circle-arrow-down" style="color:#CCCCCC;"></span>  Download Bill</button>
         </form>
+        <div th:if="${AP} != true">
+            <form method="POST" th:action="@{/myCommission/specialService}" th:if="${AS}" class="navbar-form">
+                <input type="hidden" name="id" th:value="${commission.id}" />
+                <button type="submit" name="clientSpecialAction" value="specialService" class="btn" style="color:#CCCCCC;background-color: #003366;"><span class="glyphicon glyphicon-plus" style="color:#CCCCCC;"></span>  Addition Service</button>
+            </form>
+        </div>
     </div>
-    <form method="POST" th:action="@{/bills/myBill}" th:if="${BillExpose}">
-        <input type="hidden" name="id" th:value="${commission.id}" />
-        <button type="submit" name="clientBillAction" value="getBill">Watch Bill</button>
-    </form>
-    <form method="POST" th:action="@{/myCommission}">
-        <button type="submit" name="clientBackAction" value="toMyCommission">Back</button>
-    </form>
-</ul>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <div class="page-header">
+            <h2>Single commission checking</h2>
+        </div>
+        <div class="well well-green col-sm-3 col-xs-6">
+            Number plate:
+        </div>
+        <div class="well well-blue col-sm-3 col-xs-6">
+            <span th:text="${commission.car.numberPlate}"></span>
+        </div>
+        <div class="well well-green col-sm-3 col-xs-6">
+            Brand:
+        </div>
+        <div class="well well-blue col-sm-3 col-xs-6">
+            <span th:text="${commission.car.brand}"></span>
+        </div>
+        <div class="well well-green col-sm-3 col-xs-6">
+            Model:
+        </div>
+        <div class="well well-blue col-sm-3 col-xs-6">
+            <span th:text="${commission.car.model}"></span>
+        </div>
+        <div class="well well-green col-sm-3 col-xs-6">
+            Vintage:
+        </div>
+        <div class="well well-blue col-sm-3 col-xs-6">
+            <span th:text="${commission.car.vintage}"></span>
+        </div>
+            <div th:if="${AP} != true">
+                <form action="#" method="POST" th:action="@{/myCommission/evaluate}" th:object="${commission}">
+                    <input type="hidden" name="id" th:value="${commission.id}" />
+                    <div class="btn-group">
+                        <button type="submit" class="btn" style="color:#CCCCCC;background-color: #6633FF;" th:if="${evaluateNeeded}" name="clientEvaluateAction" value="needToRepair"><span class="glyphicon glyphicon-search" style="color:#000000;"></span>  List of failure</button>
+                        <!--<div th:switch="${evaluateNeeded}">-->
+                            <button th:if="${evaluateNeeded}" type="submit" class="btn" style="color:#CCCCCC;background-color: #000099;" name="clientEvaluateAction"  value="evaluateCommission"><span class="glyphicon glyphicon-play-circle" style="color:3399CC;"></span>  Evaluate</button>
+                            <button th:unless="${evaluateNeeded}" type="submit" class="btn" style="color:#CCCCCC;background-color: #FF6666" name="clientEvaluateAction"  value="evaluateCommission" th:disabled="disabled"><span class="glyphicon glyphicon-remove" style="color:#990000;"></span>  Evaluate</button>
+                        <!--</div>-->
+                    </div>
+                </form>
+            </div>
+    </div>
+    <br/><br/><br/><br/>
+</main>
+<footer class="page-row">
+    <div class="footer">
+        <p class="text-muted">Produced by Mateusz Wojtyna</p>
+    </div>
+</footer>
 </body>
 </html>
