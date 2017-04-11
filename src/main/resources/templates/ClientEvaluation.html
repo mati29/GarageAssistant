@@ -2,27 +2,59 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Commission</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
+    <link th:href="@{/header.css}" rel="stylesheet" />
 </head>
-<body>
-<header>
-    <h2>Choose part to install</h2>
-</header>
-<form action="#" method="POST" th:action="@{/myCommission/evaluate}" th:object="${clientChoosePart}">
-    <ul th:each="part,iter: ${clientChoosePart.chosenPart}">
-        <select th:name="|chosenPart[${iter.index}].storeId|" >
-            <option th:each="store : ${stores[__${iter.index}__]}"
-                    th:value="${store.id}"
-                    th:text="${store.model}">
-            </option>
-        </select>
-        <input type="hidden" th:name="|chosenPart[${iter.index}].partId|" th:value="${clientChoosePart.chosenPart[__${iter.index}__].partId}" />
-        <input type="hidden" name="id" th:value="${commission.id}" />
-    </ul>
-    <button class="button medium" type="submit" name="clientEvaluateAction" value="saveEvaluate">Save evaluation</button>
-</form>
-<form action="#" method="POST" th:action="@{/myCommission}" th:object="${commission}">
-    <input type="hidden" name="id" th:value="${commission.id}" />
-    <button type="submit" name="clientSelectAction" value="selectCommission">Back to Commission</button>
-</form>
+<body style="background-color:#000066;">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
+        </div>
+        <form method="POST" th:action="@{/myCommission}" class="navbar-form navbar-left">
+            <button type="submit" name="clientBackAction" value="toMyDashboard" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-share-alt" style="color:#000000;"></span>  Dashboard</button>
+            <button type="submit" name="clientBackAction" value="toMyCommission" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-tasks" style="color:#000000;"></span> My commissions</button>
+        </form>
+        <form method="POST" th:action="@{/myCommission}"  th:object="${commission}" class="navbar-form">
+            <input type="hidden" name="id" th:value="${commission.id}" />
+            <button type="submit" name="clientSelectAction" value="selectCommission" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-arrow-left" style="color:#000000;"></span> Back to Commission</button>
+        </form>
+    </div>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <div class="page-header">
+            <h2>Choose part to install</h2>
+        </div>
+        <div class="form-group">
+            <form action="#" method="POST" th:action="@{/myCommission/evaluate}" th:object="${clientChoosePart}">
+                <ul th:each="part,iter: ${clientChoosePart.chosenPart}">
+                    <label style="color:#CCCCCC;" for="@{id}+${item.index}}" th:text="@{Choose part of type: }+${stores[__${iter.index}__][0].type}"></label>
+                    <select id="@{id}+${item.index}}" class="form-control" th:name="|chosenPart[${iter.index}].storeId|" >
+                        <option th:each="store : ${stores[__${iter.index}__]}"
+                                th:value="${store.id}"
+                                th:text="${store.model}">
+                        </option>
+                    </select>
+                    <input type="hidden" th:name="|chosenPart[${iter.index}].partId|" th:value="${clientChoosePart.chosenPart[__${iter.index}__].partId}" />
+                    <input type="hidden" name="id" th:value="${commission.id}" />
+                </ul>
+                <button type="submit" name="clientEvaluateAction" value="saveEvaluate" class="btn" style="color:#CCCCCC;background-color: #000033;"><span class="glyphicon glyphicon-file" style="color:#CCCCCC;"></span> Save evaluation</button>
+            </form>
+        </div>
+    </div>
+   <br/><br/><br/><br/>
+</main>
+<footer class="page-row">
+    <div class="footer">
+        <p class="text-muted">Produced by Mateusz Wojtyna</p>
+    </div>
+</footer>
 </body>
 </html>

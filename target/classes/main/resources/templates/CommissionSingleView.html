@@ -67,10 +67,8 @@
                     <input type="hidden" name="id" th:value="${commission.id}" />
                     <div class="btn-group">
                         <button type="submit" class="btn" style="color:#CCCCCC;background-color: #6633FF;" th:if="${evaluateNeeded}" name="clientEvaluateAction" value="needToRepair"><span class="glyphicon glyphicon-search" style="color:#000000;"></span>  List of failure</button>
-                        <!--<div th:switch="${evaluateNeeded}">-->
-                            <button th:if="${evaluateNeeded}" type="submit" class="btn" style="color:#CCCCCC;background-color: #000099;" name="clientEvaluateAction"  value="evaluateCommission"><span class="glyphicon glyphicon-play-circle" style="color:3399CC;"></span>  Evaluate</button>
-                            <button th:unless="${evaluateNeeded}" type="submit" class="btn" style="color:#CCCCCC;background-color: #FF6666" name="clientEvaluateAction"  value="evaluateCommission" th:disabled="disabled"><span class="glyphicon glyphicon-remove" style="color:#990000;"></span>  Evaluate</button>
-                        <!--</div>-->
+                        <button th:if="${evaluateNeeded}" type="submit" class="btn" style="color:#CCCCCC;background-color: #000099;" name="clientEvaluateAction"  value="evaluateCommission"><span class="glyphicon glyphicon-play-circle" style="color:3399CC;"></span>  Evaluate</button>
+                        <button th:unless="${evaluateNeeded}" type="submit" class="btn" style="color:#CCCCCC;background-color: #FF6666" name="clientEvaluateAction"  value="evaluateCommission" th:disabled="disabled"><span class="glyphicon glyphicon-remove" style="color:#990000;"></span>  Evaluate</button>
                     </div>
                 </form>
             </div>
