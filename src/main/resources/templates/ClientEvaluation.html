@@ -39,7 +39,7 @@
                     <select id="@{id}+${item.index}}" class="form-control" th:name="|chosenPart[${iter.index}].storeId|" >
                         <option th:each="store : ${stores[__${iter.index}__]}"
                                 th:value="${store.id}"
-                                th:text="${store.model}">
+                                th:utext="${store.model}+@{:}+${store.price}+@{$}">
                         </option>
                     </select>
                     <input type="hidden" th:name="|chosenPart[${iter.index}].partId|" th:value="${clientChoosePart.chosenPart[__${iter.index}__].partId}" />

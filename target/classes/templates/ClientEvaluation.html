@@ -39,13 +39,13 @@
                     <select id="@{id}+${item.index}}" class="form-control" th:name="|chosenPart[${iter.index}].storeId|" >
                         <option th:each="store : ${stores[__${iter.index}__]}"
                                 th:value="${store.id}"
-                                th:text="${store.model}">
+                                th:utext="${store.model}+@{:}+${store.price}+@{$}">
                         </option>
                     </select>
                     <input type="hidden" th:name="|chosenPart[${iter.index}].partId|" th:value="${clientChoosePart.chosenPart[__${iter.index}__].partId}" />
                     <input type="hidden" name="id" th:value="${commission.id}" />
                 </ul>
-                <button type="submit" name="clientEvaluateAction" value="saveEvaluate" class="btn" style="color:#CCCCCC;background-color: #000033;"><span class="glyphicon glyphicon-file" style="color:#000000;"></span> Save evaluation</button>
+                <button type="submit" name="clientEvaluateAction" value="saveEvaluate" class="btn" style="color:#CCCCCC;background-color: #000033;"><span class="glyphicon glyphicon-file" style="color:#CCCCCC;"></span> Save evaluation</button>
             </form>
         </div>
     </div>
