@@ -70,7 +70,7 @@
                 var button = document.createElement("input");
                 button.type = "button";
                 button.value = "Approve";
-                button.className += ' btn col-sm-8 col-xs-6 col-sm-offset-2 col-xs-offset-3';
+                button.className += ' btn col-sm-12 col-xs-12';
                 button.style.color ="#000066";
                 button.addEventListener('click',appendParts,false)
                 container.appendChild(button);
@@ -140,9 +140,11 @@
             <h2>Please give number of additional part</h2>
         </div>
         <div id="main_area">
-            <input class="form-control" type="text" th:id="partCount" th:name="partCount" value=""/><br />
+            <div class = "col-sm-8 col-xs-6 col-sm-offset-2 col-xs-offset-3">
+                <input class="form-control" type="text" th:id="partCount" th:name="partCount" value=""/><br />
+            </div>
             <button style="color:#000066;" class="btn col-sm-8 col-xs-6 col-sm-offset-2 col-xs-offset-3" type="submit"  th:onclick="|drawPart('${partCount}', '${partsType}')|">Add part description</button><br/>
-            <div id="additionalPartSection"/>
+            <div id="additionalPartSection" class="form-group col-sm-8 col-xs-6 col-sm-offset-2 col-xs-offset-3"/>
             <form action="#" method="POST" th:action="@{/myCommission/specialService}" th:object="${partString}">
                 <input type="hidden" th:name="partString" th:id="partString" />
                 <input type="hidden" name="id" th:value="${commission.id}" />
