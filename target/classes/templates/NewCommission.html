@@ -13,29 +13,40 @@
                 container.removeChild(container.lastChild);
             }
             for (i=0;i<number;i++){
-                // Append a node with a random text
-                container.appendChild(document.createTextNode("Part " + (i+1)));
-                container.appendChild(document.createElement("br"));
-                // Create an <input> element, set its type and name attributes
-                 container.appendChild(document.createTextNode("Brand"));
-                 container.appendChild(document.createElement("br"));
+                var partLabel = document.createElement("Label");
+                partLabel.innerHTML = "Part " + ((+i) + (+1));
+                partLabel.className +=' form-control';
+                container.appendChild(partLabel);
+                var brandLabel = document.createElement("Label");
+                brandLabel.setAttribute("for","brand"+i);
+                brandLabel.innerHTML = "Brand";
+                brandLabel.className +=' form-control';
+                container.appendChild(brandLabel);
                 var input = document.createElement("input");
                 input.type = "text";
                 input.name = "brand" + i;
+                input.id = "brand" + i;
+                input.className += ' form-control';
+                input.style.color ="#000066";
                 container.appendChild(input);
-                // Append a line break
-                container.appendChild(document.createElement("br"));
-                container.appendChild(document.createTextNode("Model"));
-                container.appendChild(document.createElement("br"));
+                var modelLabel = document.createElement("Label");
+                modelLabel.setAttribute("for","model"+i);
+                modelLabel.innerHTML = "Model";
+                modelLabel.className +=' form-control';
+                container.appendChild(modelLabel);
                 var input2 = document.createElement("input");
                 input2.type = "text";
                 input2.name = "model" + i;
+                input2.className += ' form-control';
+                input2.style.color ="#000066";
                 container.appendChild(input2);
             }
-                container.appendChild(document.createElement("br"));
                 var button = document.createElement("input");
                 button.type = "button";
                 button.value = "Approve";
+                button.className += ' btn';
+                button.style.color ="#CCCCCC";
+                button.style.background="#000099";
                 button.addEventListener('click',extendDescription,false)
                 container.appendChild(button);
         }
@@ -59,49 +70,73 @@
          /*]]>*/
     </script>
     <title>Commission</title>
-    <link rel="stylesheet" th:href="@{/style.css}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
+    <link th:href="@{/header.css}" rel="stylesheet" />
 </head>
-<body>
-<header>
-    <h2>Complete commission field and press button Add</h2>
-</header>
-<form method="POST" th:action="@{/myCommission/addCommission}">
-    <label for="numberPlate">Plate number:</label>
-    <input type="text" name="numberPlate"></input><br/>
-    <label for="brand">Brand:</label>
-    <input type="text" name="brand"></input><br/>
-    <label for="model">Model:</label>
-    <input type="text" name="model"></input><br/>
-    <label for="vintage">Vintage:</label>
-    <input type="text" name="vintage"></input><br/>
-    <label for="description">Description of failure:</label>
-    <input type="text" name="description" id="description"></input><br/>
-    <input type="hidden" name="specialService" id="specialService" />
-    <div th:if="${AM} == true">
-        <p>Mechanic will be choose automatically.</p>
+<body style="background-color:#000066;">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
+        </div>
+        <form method="POST" th:action="@{/myCommission}" class="navbar-form navbar-left">
+            <button type="submit" name="clientBackAction" value="toMyDashboard" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-share-alt" style="color:#000000;"></span>  Dashboard</button>
+            <button type="submit" name="clientBackAction" value="toMyCommission" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-tasks" style="color:#000000;"></span> My commissions</button>
+        </form>
+        <form method="POST" th:action="@{/myCommission}" class="navbar-form">
+            <div th:switch="${from}">
+                <p th:case="'overview'"><button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="clientBackAction" value="toMyCommission"><span class="glyphicon glyphicon-arrow-left" style="color:#000000;"></span>Back</button></p>
+                <p th:case="'dashboard'"><button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="clientBackAction" value="toMyDashboard"><span class="glyphicon glyphicon-arrow-left" style="color:#000000;"></span>Back</button></p>
+            </div>
+        </form>
     </div>
-    <div th:unless="${AM} == true">
-        <label for="employee">Choose mechanic:</label>
-        <select name="employeeId" >
-            <option th:each="employee : ${employees}"
-                    th:value="${employee.id}"
-                    th:text="${employee.lastName}">
-            </option>
-        </select>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <div class="page-header">
+            <h2>Complete commission fields and press button Add</h2>
+        </div>
     </div>
-        <button class="button medium" type="submit" name="clientAddAction" value="addCommission">Add!</button>
-</form>
-<label th:if="${AS}">
-    <br/>If you want to demand some additional part,<br/> please write number of it then click GENERATE<br/>
-</label>
-<input type="text" th:id="part" th:name="part" value="" th:if="${AS}"/><br />
-<button type="submit"  th:if="${AS}" th:onclick="'addPart(\'' + ${part} + '\');'">GENERATE</button><br/>
-<div id="additionalSection"/>
-<form method="POST" th:action="@{/myCommission}">
-    <div th:switch="${from}">
-        <p th:case="'overview'"><button type="submit" name="clientBackAction" value="toMyCommission">Back</button></p>
-        <p th:case="'dashboard'"><button type="submit" name="clientBackAction" value="toMyDashboard">Back</button></p>
+    <div id="main_area" class="col-sm-6 col-sm-offset-3 col-xs-10">
+        <div class="well well-blue" th:if="${AS}">
+            If you want to demand some additional part,<br/> please write number of it then click GENERATE
+        </div>
+        <input class="form-control" type="text" th:id="part" th:name="part" value="" th:if="${AS}"/><br />
+        <button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit"  th:if="${AS}" th:onclick="'addPart(\'' + ${part} + '\');'">GENERATE</button><br/>
+        <div id="additionalSection" />
+        <form method="POST" th:action="@{/myCommission/addCommission}">
+            <label class="form-control" for="numberPlate">Plate number:</label>
+            <input class="form-control" type="text" name="numberPlate"></input><br/>
+            <label class="form-control" for="brand">Brand:</label>
+            <input class="form-control" type="text" name="brand"></input><br/>
+            <label class="form-control" for="model">Model:</label>
+            <input class="form-control" type="text" name="model"></input><br/>
+            <label class="form-control" for="vintage">Vintage:</label>
+            <input class="form-control" type="text" name="vintage"></input><br/>
+            <label class="form-control" for="description">Description of failure:</label>
+            <input class="form-control" type="text" name="description" id="description"></input><br/>
+            <input type="hidden" name="specialService" id="specialService" />
+            <div th:if="${AM} == true">
+                <p>Mechanic will be choose automatically.</p>
+            </div>
+            <div th:unless="${AM} == true">
+                <label class="form-control" for="employee">Choose mechanic:</label>
+                <select class="form-control" name="employeeId" >
+                    <option th:each="employee : ${employees}"
+                            th:value="${employee.id}"
+                            th:text="${employee.lastName}">
+                    </option>
+                </select>
+            </div>
+                <button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="clientAddAction" value="addCommission">Add!</button>
+        </form>
     </div>
-</form>
+</main>
 </body>
 </html>

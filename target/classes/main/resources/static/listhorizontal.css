@@ -48,4 +48,14 @@ body {
   text-align: right;
 }
 
+.footer-red {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 30px;
+  background-color:#600001;
+  text-align: right;
+}
+
 
