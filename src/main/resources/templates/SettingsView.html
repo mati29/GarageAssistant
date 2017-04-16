@@ -2,35 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User settings</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
+    <link th:href="@{/header.css}" rel="stylesheet" />
 </head>
-<body>
-<header>
-    <h2>Please check square to set option</h2>
-    <h6>some could be enabled after demand</h6>
-</header>
-    <form action="#" method="POST" th:action="@{/settings}" th:object="${setting}">
-        <div>
-            <input type="checkbox" th:checked="${setting.autoMechanic}" th:name="autoMechanic"/> Automatic mechanic choose
+<body style="background-color:#000066;">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
         </div>
-        <div>
-            <input type="checkbox" th:checked="${setting.autoPart}" th:name="autoPart"/> Automatic part choose
+        <form method="POST" th:action="@{/myCommission}" class="navbar-form navbar-left">
+            <button type="submit" name="clientBackAction" value="toMyDashboard" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-share-alt" style="color:#000000;"></span>  Dashboard</button>
+        </form>
+    </div>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <div class="page-header">
+            <h2>Please check square to set option,<br/>some could be enabled only after demand</h2>
         </div>
-        <div th:if="${setting.additionalService} == true">
-            <input type="checkbox" th:checked="checked" th:disabled="disabled" /> Additional Service
-        </div>
-        <div th:if="${setting.additionalService} == false">
-            <input type="checkbox" th:checked="${setting.additionalServiceDemand}" th:name="additionalServiceDemand"/> Additional Service
-        </div>
-        <div th:if="${setting.callExtraPart} == true">
-            <input type="checkbox" th:checked="checked" th:disabled="disabled" /> Call extra part
-        </div>
-        <div th:if="${setting.callExtraPart} == false">
-            <input type="checkbox" th:checked="${setting.callExtraPartDemand}" th:name="callExtraPartDemand"/> Call extra part
-        </div>
-        <button class="button medium" type="submit" name="clientSettingsAction" value="setOption">Save Option</button>
-    </form>
-<form action="#" method="POST" th:action="@{/clientDashboard}">
-    <button type="submit" >Back to Dashboard</button>
-</form>
+    </div>
+    <div id="main_area">
+        <form action="#" method="POST" th:action="@{/settings}" th:object="${setting}">
+            <div class=" col-sm-offset-2 col-sm-2 col-xs-6">
+                <label class="form-control" for="autoMechanic">Auto-part:</label>
+                <input type="checkbox" th:checked="${setting.autoMechanic}" th:name="autoMechanic"/>
+            </div>
+            <div class="col-sm-2 col-xs-6">
+                <label class="form-control" for="autoPart">Auto-mechanic:</label>
+                <input type="checkbox" th:checked="${setting.autoPart}" th:name="autoPart"/>
+            </div>
+            <div class="col-sm-2 col-xs-6" th:if="${setting.additionalService} == true">
+                <label class="form-control" for="additionalService">Additional service:</label>
+                <input type="checkbox" th:checked="checked" th:disabled="disabled" th:name="additionalService"/>
+            </div>
+            <div class="col-sm-2 col-xs-6" th:if="${setting.additionalService} == false">
+                <label class="form-control" for="additionalServiceDemand">Additional service:</label>
+                <input type="checkbox" th:checked="${setting.additionalServiceDemand}" th:name="additionalServiceDemand"/>
+            </div>
+            <div class="col-sm-2 col-xs-6" th:if="${setting.callExtraPart} == true">
+                <label class="form-control" for="callExtraPart">Call extra part:</label>
+                <input type="checkbox" th:checked="checked" th:disabled="disabled" th:name="callExtraPart"/>
+            </div>
+            <div class="col-sm-2 col-xs-6" th:if="${setting.callExtraPart} == false">
+                <label class="form-control" for="callExtraPartDemand">Call extra part:</label>
+                <input type="checkbox" th:checked="${setting.callExtraPartDemand}" th:name="callExtraPartDemand"/>
+            </div>
+            <button class="btn col-sm-6 col-sm-offset-3 col-xs-offset-1 col-xs-10" type="submit" name="clientSettingsAction" value="setOption">Save Option</button>
+        </form>
+    </div>
+</main>
+<footer class="page-row">
+    <div class="footer">
+        <p class="text-muted">Produced by Mateusz Wojtyna</p>
+    </div>
+</footer>
 </body>
 </html>
