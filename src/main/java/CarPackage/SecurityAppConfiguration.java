@@ -21,8 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityAppConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    //private UserDetailsService userDetailsService;
-    DataSource dataSource;
+    private DataSource dataSource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -35,7 +34,6 @@ public class SecurityAppConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                //.successHandler(afterLogging())
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -44,9 +42,10 @@ public class SecurityAppConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth//.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth
                 .jdbcAuthentication()
                 .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery(
                         "select username, password, enabled " +
                                 "from account where username=?")
