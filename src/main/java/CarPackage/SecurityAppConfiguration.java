@@ -27,8 +27,10 @@ public class SecurityAppConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/employeeDashboard")//do zmiany
-                .authenticated()
+                .antMatchers("/adminDashboard").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/employeeDashboard").access("hasRole('ROLE_WORKER')")//do zmiany
+                .antMatchers("/clientDashboard").access("hasRole('ROLE_USER')")
+                //.authenticated()
                 .anyRequest()
                 .permitAll()
                 .and()
