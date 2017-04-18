@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -283,6 +284,7 @@ public class RepairController {
         return "redirect:/myRepairs";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/setEmployee",method= RequestMethod.POST,params="adminRepairAction=setEmployee")
     public String setEmployee(Map<String, Object> model,@ModelAttribute("repairs") ListRepair repairs){
         repairs.getRepairList().forEach(r->    {

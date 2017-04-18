@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,7 @@ public class RegistrationController {
         return "redirect:/adminDashboard";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="adminRegistrationAction=registerEmployee")
     public String addEmployee(Employee employee,Account account) {
         account.setEnabled(true);
@@ -58,6 +60,7 @@ public class RegistrationController {
         return "redirect:/adminDashboard";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="adminRegistrationAction=registerAdmin")
     public String addAdmin(Admin admin,Account account) {
         account.setEnabled(true);
@@ -69,6 +72,7 @@ public class RegistrationController {
         return "redirect:/adminDashboard";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/registration",method= RequestMethod.POST,params="adminConfirmAction=setEnable")
     public String setEnable(ListClient clients) {
         clients.getClientList().stream().filter(c -> c.getAccount().getEnabled()==true)

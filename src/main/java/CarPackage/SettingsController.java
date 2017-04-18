@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,6 +57,7 @@ public class SettingsController {
         return "SettingsView";
     }
 
+    @Secured("ROLE_USER")
     @RequestMapping(method= RequestMethod.POST,params="clientSettingsAction=setOption")
     public String setOption(@ModelAttribute("setting")Settings settings, Principal principal,HttpServletRequest request){
         String username = principal.getName();
@@ -81,6 +83,7 @@ public class SettingsController {
         return "redirect:/settings";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(method= RequestMethod.POST,params="adminSettingsAction=setExtraRight")
     public String setExtraRight(@ModelAttribute("clients") ListClient clients/*, BindingResult bindingResult*/) {
         clients.getClientList().forEach(c->    {

@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class BillController {
         this.commissionRepository = commissionRepository;
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/newBill",method= RequestMethod.POST,params="adminBillAction=exposeBill")
     public String exposeBill(Commission commission) {
         Commission commissionToCheck =  commissionRepository.findOne(commission.getId());
@@ -42,6 +44,7 @@ public class BillController {
         return "redirect:/adminDashboard/toBill";
     }
 
+    @Secured("ROLE_USER")
     @RequestMapping(value = "/myBill", method = RequestMethod.POST,params="clientBillAction=getBill")
     public ResponseEntity<byte[]> getRegistryReport(Commission commission) {
         Bill bill = billRepository.findOne(commissionRepository.findOne(commission.getId()).getBill().getId());
