@@ -2,36 +2,68 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Commission</title>
-    <link rel="stylesheet" th:href="@{/style.css}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
+    <link th:href="@{/header.css}" rel="stylesheet" />
 </head>
-<body>
-<header>
-    <h2>Complete commission field and press button Add</h2>
-</header>
-<form method="POST" th:action="@{/myRepairs/addRepair}">
-    <label for="commission">Choose commission to enhance repair:</label>
-    <select name="commissionId" >
-        <option th:each="repair : ${repairs}"
-                th:value="${repair.commission.id}"
-                th:text="${repair.commission.car.numberPlate}">
-        </option>
-    </select>
-    <label for="description">Description of failure to resolve:</label>
-    <input type="text" name="description"></input><br/>
-    <label for="employee">Choose worker:</label>
-    <select name="employeeId" >
-        <option th:each="employee : ${employees}"
-                th:value="${employee.id}"
-                th:text="${employee.lastName}">
-        </option>
-    </select>
-    <button class="button medium" type="submit" name="employeeAddAction" value="addRepair">Add!</button>
-</form>
-<form method="POST" th:action="@{/myRepairs}">
-    <div th:switch="${from}">
-        <p th:case="'overview'"><button type="submit" name="employeeBackAction" value="toMyRepairs">Back</button></p>
-        <p th:case="'dashboard'"><button type="submit" name="employeeBackAction" value="toMyDashboard">Back</button></p>
+<body style="background-color:#000066;">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
+        </div>
+        <form method="POST" th:action="@{/myRepairs}" class="navbar-form navbar-left">
+            <button type="submit" name="employeeBackAction" value="toMyDashboard" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-share-alt" style="color:#000000;"></span>  Dashboard</button>
+            <button type="submit" name="employeeBackAction" value="toMyRepairs" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-random" style="color:#000000;"></span> My repairs</button>
+        </form>
+        <form method="POST" th:action="@{/myRepairs}" class="navbar-form">
+            <div th:switch="${from}">
+                <p th:case="'overview'"><button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="employeeBackAction" value="toMyRepairs"><span class="glyphicon glyphicon-arrow-left" style="color:#000000;"></span>Back</button></p>
+                <p th:case="'dashboard'"><button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="employeeBackAction" value="toMyDashboard"><span class="glyphicon glyphicon-arrow-left" style="color:#000000;"></span>Back</button></p>
+            </div>
+        </form>
     </div>
-</form>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <div class="page-header">
+            <h2>Complete repair fields and press button Add</h2>
+        </div>
+    </div>
+    <div id="main_area" class="col-sm-6 col-sm-offset-3 col-xs-10">
+        <form method="POST" th:action="@{/myRepairs/addRepair}">
+            <label class="form-control" for="commissionId">Choose commission to enhance repair:</label>
+            <select class="form-control" name="commissionId" >
+                <option th:each="repair : ${repairs}"
+                        th:value="${repair.commission.id}"
+                        th:text="${repair.commission.car.numberPlate}">
+                </option>
+            </select>
+            <br/>
+            <label class="form-control" for="description">Description of failure to resolve:</label>
+            <input class="form-control" type="text" name="description"></input><br/>
+            <label class="form-control" for="employeeId">Choose worker:</label>
+            <select class="form-control" name="employeeId" >
+                <option th:each="employee : ${employees}"
+                        th:value="${employee.id}"
+                        th:text="${employee.lastName}">
+                </option>
+            </select>
+            <br/>
+            <button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="employeeAddAction" value="addRepair">Add!</button>
+        </form>
+    </div>
+</main>
+<br/><br/><br/>
+<footer class="page-row">
+    <div class="footer">
+        <p class="text-muted">Produced by Mateusz Wojtyna</p>
+    </div>
+</footer>
 </body>
 </html>

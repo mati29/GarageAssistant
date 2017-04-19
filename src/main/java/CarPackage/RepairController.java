@@ -64,6 +64,7 @@ public class RepairController {
     @RequestMapping(value="/addRepair",method= RequestMethod.GET)
     public String repairs(Map<String, Object> model,Principal principal,RedirectAttributes redirectAttrs) {
         List<Employee> employees = employeeRepository.findAll();
+        employees.sort((Employee e1, Employee e2)->(int)(e1.getId()-e2.getId()));
         model.put("employees", employees);
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);

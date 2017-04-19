@@ -2,23 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Repairs - review base</title>
-    <link rel="stylesheet" th:href="@{/style.css}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
 </head>
-<body>
-<h2>My repair base</h2>
-<ul th:each="repair : ${repairs}">
-    <li>
-        ID of repair:<br />
-        <span th:text="${repair.id}"></span><br />
-        <form action="#" method="POST" th:action="@{/myRepairs}" th:object="${repair}">
-            <input type="hidden" name="id" th:value="${repair.id}" />
-            <button type="submit" name="employeeSelectAction" value="selectRepair">Check repair</button>
+<body style="background-color:#000099;">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
+        </div>
+        <form method="POST" th:action="@{/myRepairs}" class="navbar-form navbar-left">
+            <button type="submit" name="employeeBackAction" value="toMyDashboard" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-share-alt" style="color:#000000;"></span>  Dashboard</button>
         </form>
-    </li>
-</ul>
-<form method="POST" th:action="@{/myRepairs}">
-    <button type="submit" name="employeeAddAction" value="addNewRepair">Add Repair</button>
-    <button type="submit" name="employeeBackAction" value="toMyDashboard">Back</button>
-</form>
+        <form method="POST" th:action="@{/myRepairs}" class="navbar-form navbar-right">
+            <button type="submit" name="employeeAddAction" value="addNewRepair" class="btn" style="color:#CCCCCC;background-color: #003366;"><span class="glyphicon glyphicon-wrench" style="color:#CCCCCC;"></span>  Add Repair</button>
+        </form>
+    </div>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <br/><br/><br/><br/>
+        <div class="jumbotron" style="background-color:#000033;">
+            <h1 style="color:#CCCCCC">Repair base</h1>
+            <p style="color:#999999">Check your repairs.</p>
+        </div>
+        <div class="panel-group" id="accordion">
+            <ul th:each="repair,iter : ${repairs}">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" th:href="@{#collapse}+${iter.index}">
+                                <span th:text="${repair.commission.car.numberPlate}"></span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div th:id="@{collapse}+${iter.index}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            No.:<br />
+                            <span th:text="${iter.index}"></span><br />
+                            Description:<br />
+                            <span th:text="${repair.description}"></span><br />
+                            <form action="#" method="POST" th:action="@{/myRepairs}" th:object="${repair}">
+                                <input type="hidden" name="id" th:value="${repair.id}" />
+                                <button type="submit" name="employeeSelectAction" value="selectRepair" class="btn btn-md" style="color:#CCCCCC;background-color: #000099;">Check repair</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+</main>
+<br/><br/><br/>
+<footer class="page-row">
+    <div class="footer">
+        <p class="text-muted">Produced by Mateusz Wojtyna</p>
+    </div>
+</footer>
 </body>
 </html>

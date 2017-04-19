@@ -2,35 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>New Parts</title>
-    <link rel="stylesheet" th:href="@{/style.css}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
+    <link th:href="@{/header.css}" rel="stylesheet" />
 </head>
-<body>
-<header>
-    <h2>Complete requested field and press button Add part(s)</h2>
-</header>
-<form method="POST" th:action="@{/store/addPart}">
-    <label for="model">Model:</label>
-    <input type="text" name="model"></input><br/>
-    <label for="brand">Brand:</label>
-    <input type="text" name="brand"></input><br/>
-    <label for="type">Choose type of new part:</label>
-    <select name="type" >
-        <option th:each="part : ${parts}"
-                th:value="${part}"
-                th:text="${part}">
-        </option>
-    </select>
-    <label for="amount">Amount:</label>
-    <input type="number" step="1" name="amount"></input><br/>
-    <label for="price">Price:</label>
-    <input type="number" step="0.01" name="price"></input><br/>
-    <button class="button medium" type="submit" name="employeeAddAction" value="addPart">Add part(s)</button>
-</form>
-<form method="POST" th:action="@{/myRepairs}">
-    <div th:switch="${from}">
-        <p th:case="'overview'"><button type="submit" name="employeeBackAction" value="toMyStore">Back</button></p>
-        <p th:case="'dashboard'"><button type="submit" name="employeeBackAction" value="toMyDashboard">Back</button></p>
+<body style="background-color:#000066;">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
+        </div>
+        <form method="POST" th:action="@{/myRepairs}" class="navbar-form navbar-left">
+            <button type="submit" name="employeeBackAction" value="toMyDashboard" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-share-alt" style="color:#000000;"></span>  Dashboard</button>
+            <button type="submit" name="employeeBackAction" value="toMyStore" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-calendar" style="color:#000000;"></span> My store</button>
+        </form>
+        <form method="POST" th:action="@{/myRepairs}" class="navbar-form">
+            <div th:switch="${from}">
+                <p th:case="'overview'"><button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="employeeBackAction" value="toMyStore"><span class="glyphicon glyphicon-arrow-left" style="color:#000000;"></span>Back</button></p>
+                <p th:case="'dashboard'"><button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="employeeBackAction" value="toMyDashboard"><span class="glyphicon glyphicon-arrow-left" style="color:#000000;"></span>Back</button></p>
+            </div>
+        </form>
     </div>
-</form>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <div class="page-header">
+            <h2>Complete requested field and press button Add part(s)</h2>
+        </div>
+    </div>
+    <div id="main_area" class="col-sm-6 col-sm-offset-3 col-xs-10">
+        <form method="POST" th:action="@{/store/addPart}">
+            <label class="form-control" for="model">Model:</label>
+            <input class="form-control" type="text" name="model"></input><br/>
+            <label class="form-control" for="brand">Brand:</label>
+            <input class="form-control" type="text" name="brand"></input><br/>
+            <label class="form-control" for="type">Choose type of new part:</label>
+            <select class="form-control" name="type" >
+                <option th:each="part : ${parts}"
+                        th:value="${part}"
+                        th:text="${part}">
+                </option>
+            </select>
+            <br/>
+            <label class="form-control" for="amount">Amount:</label>
+            <input class="form-control" type="number" step="1" name="amount"></input><br/>
+            <label class="form-control" for="price">Price:</label>
+            <input class="form-control" type="number" step="0.01" name="price"></input><br/>
+            <button class="btn" style="color:#CCCCCC;background-color: #000099;" type="submit" name="employeeAddAction" value="addPart">Add part(s)</button>
+        </form>
+    </div>
+</main>
+<br/><br/><br/>
+<footer class="page-row">
+    <div class="footer">
+        <p class="text-muted">Produced by Mateusz Wojtyna</p>
+    </div>
+</footer>
 </body>
 </html>
