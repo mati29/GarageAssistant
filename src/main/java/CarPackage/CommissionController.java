@@ -111,7 +111,8 @@ public class CommissionController {
             model.put("AM", autoMechanic);
         }
         else {
-            Set<Employee> employees = employeeRepository.findByPost("mechanic");
+            List<Employee> employees = employeeRepository.findByPost("mechanic");
+            employees.sort((Employee e1, Employee e2)->(int)(e1.getId()-e2.getId()));
             model.put("employees", employees);
         }
         boolean additionalService = (boolean) request.getSession().getAttribute("AS");
@@ -164,13 +165,9 @@ public class CommissionController {
     public String needToRepair(@Valid @ModelAttribute Commission commission, BindingResult result, Principal principal , Model model,HttpServletRequest request) {
         Commission singleCommission = commissionRepository.findOne(commission.getId());
         Set<Repair> repairSet = singleCommission.getRepairSet();
-        Set<Image> images = new HashSet<Image>();
+        List<Image> images = new ArrayList<Image>();
         repairSet.stream().forEach(r -> images.addAll(r.getImageSet()));
-        /*for(Repair r:repairSet){
-            for(Image i:r.getImageSet()){
-                images.add(i);
-            }
-        }*/
+        images.sort((Image i1, Image i2)->(int)(i1.getId()-i2.getId()));
         model.addAttribute("images",images);
         model.addAttribute("commission",commission);
         return "ImagesOfDamage";
@@ -273,7 +270,7 @@ public class CommissionController {
 
     @RequestMapping(value="/specialService", method= RequestMethod.POST,params="clientSpecialAction=specialService")
     public String additionalService(@Valid @ModelAttribute Commission commission,Model model,Principal principal) {
-        Set<String> parts = new HashSet<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
+        List<String> parts = new ArrayList<>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
         model.addAttribute("partsType", parts);
         model.addAttribute("commission",commission);
         return "AdditionalService";

@@ -46,8 +46,9 @@ public class RepairController {
         Account account = accountRepository.findByUsername(username);
         Employee employee = employeeRepository.findOne(account.getEmployee().getId());
         Set<Repair> repairSet = employee.getRepairSet();//repairRepository.findByEmployee(employee.getId());
-        Set<Repair> repairToComplete = new HashSet<>();
+        List<Repair> repairToComplete = new ArrayList<>();
         repairSet.stream().filter(r -> r.getAccomplish() == false).forEach(r->repairToComplete.add(r));//to avoid complete repair again
+        repairToComplete.sort((Repair r1, Repair r2)->(int)(r1.getId()-r2.getId()));
         model.put("repairs",repairToComplete);
         //List<Car> cars = carRepository.findAll();
         //model.put("cars", cars);//rep nie car
@@ -62,13 +63,15 @@ public class RepairController {
 
     @RequestMapping(value="/addRepair",method= RequestMethod.GET)
     public String repairs(Map<String, Object> model,Principal principal,RedirectAttributes redirectAttrs) {
-        Set<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeRepository.findAll();
         model.put("employees", employees);
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);
         Employee employee = employeeRepository.findOne(account.getEmployee().getId());
         Set<Repair> repairSet = employee.getRepairSet();
-        model.put("repairs",repairSet);
+        List<Repair> repairList = new ArrayList<>(repairSet);
+        repairList.sort((Repair r1, Repair r2)->(int)(r1.getId()-r2.getId()));
+        model.put("repairs",repairList);
         return "NewRepair";
     }
 
@@ -138,7 +141,7 @@ public class RepairController {
         ListPartRepair listPartRepair = new ListPartRepair();
         listPartRepair.setPartRepair(fieldToFill);
         model.put("listPartRepair",listPartRepair);
-        Set<String> parts = new HashSet<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
+        ArrayList<String> parts = new ArrayList<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
         model.put("parts", parts);
         model.put("repair",repair);
         return "EvaluateRepair";
@@ -146,7 +149,7 @@ public class RepairController {
 
     @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=saveEvaluate")
     public String saveevaluate(Repair repairSended,ListImage picture, @ModelAttribute("listPartRepair") ListPartRepair listPartRepair/*,BindingResult result*/,@ModelAttribute("selectedRepairId") Long selectedRepairId, Model model) {
-        Repair repair = repairRepository.findOne(selectedRepairId);//TODO do wyjebania selectedRepairId
+        Repair repair = repairRepository.findOne(selectedRepairId);//TODO to delete selectedRepairId
         Set<Part> partSet = new HashSet<Part>();
         Set<Image> imageSet = new HashSet<Image>();
         for(int i=0;i<listPartRepair.getPartRepair().size();i++) {
@@ -238,7 +241,7 @@ public class RepairController {
         }
         Repair repair = repairRepository.findOne(selectedRepairId);
         Set<Part> parts = repair.getPartSet();
-        Set<Part> partToRepair = new HashSet<>();
+        List<Part> partToRepair = new ArrayList<>();
         parts.stream().filter(p -> p.getStore().getId()>8 && p.getResolved()==false).forEach(p->partToRepair.add(p));
         if(partToRepair.isEmpty())
             model.put("NeedRepair","N");
@@ -258,7 +261,7 @@ public class RepairController {
         @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=repairDone")
     public String doneRepair(Map<String, Object> model,@ModelAttribute("repair") Repair selectedRepair,boolean noPart) {
         Repair repairedPart = repairRepository.findOne(selectedRepair.getId());
-        Set<Part> anyToComplete = new HashSet<>();
+        List<Part> anyToComplete = new ArrayList<>();
         repairedPart.getPartSet().stream().filter(p -> p.getResolved() == false).forEach(p -> anyToComplete.add(p));
         if((!repairedPart.getPartSet().isEmpty() && anyToComplete.isEmpty()) || (repairedPart.getPartSet().isEmpty() && noPart)) {
             model.put("repair",repairedPart);

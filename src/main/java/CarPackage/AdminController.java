@@ -53,6 +53,7 @@ public class AdminController {
     public String addExtraRight(Model model) {
         List<Client> clients = clientRepository.findAll();//mozna by na ilosc kupic itd. rozwijanie
         clients = clients.stream().filter(c -> c.getSettings().getAdditionalServiceDemand() || c.getSettings().getCallExtraPartDemand()).collect(Collectors.toList());
+        clients.sort((Client c1, Client c2)->(int)(c1.getId()-c2.getId()));
         ListClient clientsList = new ListClient();
         clientsList.setClientList(clients);
         model.addAttribute("clients",clientsList);
@@ -62,7 +63,8 @@ public class AdminController {
     @RequestMapping(method = RequestMethod.POST,params="adminAction=setFreeRepair")
     public String setFreeCommission(Model model) {
         List<Repair> repairsToAssign = repairRepository.findByEmployeeId(1L);
-        Set<Employee> readyEmployees = employeeRepository.findByPost("mechanic");
+        List<Employee> readyEmployees = employeeRepository.findByPost("mechanic");
+        readyEmployees.sort((Employee e1, Employee e2)->(int)(e1.getId()-e2.getId()));
         ListRepair repairList = new ListRepair();
         repairList.setRepairList(repairsToAssign);
         model.addAttribute("repairs", repairList);
@@ -83,6 +85,7 @@ public class AdminController {
         List<Client> clients = new ArrayList<>();
         ListClient clientList = new ListClient();
         accounts.stream().forEach(a-> clients.add(a.getClient()));
+        clients.sort((Client c1, Client c2)->(int)(c1.getId()-c2.getId()));
         clientList.setClientList(clients);
         model.addAttribute("clients",clientList);
         return "ConfirmPanel";
@@ -96,6 +99,7 @@ public class AdminController {
             if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairSet().isEmpty())
                 completedCommission.add(c);
         });
+        completedCommission.sort((Commission c1, Commission c2)->(int)(c1.getId()-c2.getId()));
         model.addAttribute("commissions",completedCommission);
         return "WriteBillOut";
     }
@@ -108,6 +112,7 @@ public class AdminController {
             if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairSet().isEmpty())
                 completedCommission.add(c);
         });
+        completedCommission.sort((Commission c1, Commission c2)->(int)(c1.getId()-c2.getId()));
         model.addAttribute("commissions",completedCommission);
         return "WriteBillOut";
     }
