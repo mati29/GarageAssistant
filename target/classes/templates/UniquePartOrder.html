@@ -1,17 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Repair in progress</title>
+    <title>Unique part order</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link th:href="@{/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/listhorizontal.css}" rel="stylesheet" />
+    <link th:href="@{/header.css}" rel="stylesheet" />
 </head>
-<body>
-<header>
-    <h2>Make repair on part need to change</h2>
-</header>
-<form action="#" method="POST" th:action="@{/myRepairs/repair}" th:object="${part}">
-        <span th:text="${part.store.model}"></span><br />
-        <input type="text" th:field="${part.store.price}">Please give a price of part</input>
-        <input type="hidden" th:name="part" th:value="${part.id}" />
-        <button class="button medium" type="submit" name="employeeRepairAction" value="makeRepair">Repair</button>
-</form>
+<body style="background-color:#000066;">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span class="glyphicon glyphicon-home" style="color:#000066;"></span>  Home</a>
+        </div>
+        <form method="POST" th:action="@{/myRepairs}" class="navbar-form navbar-left">
+            <button type="submit" name="employeeBackAction" value="toMyDashboard" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-share-alt" style="color:#000000;"></span>  Dashboard</button>
+            <button type="submit" name="employeeBackAction" value="toMyRepairs" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-random" style="color:#000000;"></span> My repairs</button>
+        </form>
+        <form method="POST" th:action="@{/myRepairs}" class="navbar-form navbar-right">
+            <input type="hidden" name="repairSended" th:value="${repair.id}" />
+            <button type="submit" name="employeeSelectAction" value="selectRepair" class="btn" style="color:#CCCCCC;background-color: #000099;"><span class="glyphicon glyphicon-filter" style="color:#000000;"></span>   Back to repair</button>
+        </form>
+    </div>
+</nav>
+<main class="page-row page-row-expanded">
+    <div class="container">
+        <div class="page-header">
+            <h2>Process unique part</h2>
+        </div>
+        <div id="main_area" class="col-sm-6 col-sm-offset-3 col-xs-10">
+            <form action="#" method="POST" th:action="@{/myRepairs/repair}" th:object="${part}">
+                <span class="well well-black col-sm-9 col-xs-12" th:text="${part.store.model}"></span><br />
+                <input type="text" th:field="${part.store.price}">Please give a price of part</input>
+                <input type="hidden" th:name="part" th:value="${part.id}" />
+                <button class="btn col-sm-6 col-sm-offset-3 col-xs-10" style="color:#CCCCCC;background-color: #000099;" type="submit" name="employeeRepairAction" value="makeRepair"><span class="glyphicon glyphicon-wrench" style="color:#FF3333;"></span>  Repair</button>
+            </form>
+        </div>
+    </div>
+    <br/><br/><br/><br/>
+</main>
+<footer class="page-row">
+    <div class="footer">
+        <p class="text-muted">Produced by Mateusz Wojtyna</p>
+    </div>
+</footer>
 </body>
 </html>

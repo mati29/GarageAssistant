@@ -250,12 +250,14 @@ public class RepairController {
             model.put("NeedRepair","Y");
             model.put("parts", partToRepair);
         }
+        model.put("repair",repair);
         return "RepairInProgress";
     }
 
     @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=saveUnique")
     public String saveUniquePart(Map<String, Object> model,@ModelAttribute("selectedRepairId") Long selectedRepairId,@ModelAttribute("part") Part repairPart) {
         model.put("part",repairPart);
+        model.put("repair",repairRepository.findOne(selectedRepairId));
         return "UniquePartOrder";
     }
 
