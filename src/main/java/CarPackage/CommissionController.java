@@ -49,10 +49,10 @@ public class CommissionController {
         String username = principal.getName();//to chyba autowired dać
         Account account = accountRepository.findByUsername(username);
         Client client = clientRepository.findOne(account.getClient().getId());//to całe
-        Set<Commission> clientCommissionSet = client.getCommissionSet();
-        List<Commission> commissionsList = clientCommissionSet.stream().collect(Collectors.toList());
-        commissionsList.sort((Commission c1, Commission c2)->(int)(c1.getId()-c2.getId()));
-        model.put("commissions", commissionsList );
+        List<Commission> clientCommissionList = client.getCommissionList();
+        //List<Commission> commissionsList = clientCommissionSet.stream().collect(Collectors.toList());
+        //commissionsList.sort((Commission c1, Commission c2)->(int)(c1.getId()-c2.getId()));
+        model.put("commissions", clientCommissionList );
         return "CommissionsView";
     }
 
@@ -73,10 +73,10 @@ public class CommissionController {
             employeeToRepair = employeeRepository.findOne(employeeId);
         }
         Repair newRepair = new Repair(employeeToRepair,newCommission,description);
-        newCommission.setRepairSet(new HashSet<Repair>(Arrays.asList(newRepair)));//bo na start 1 naprawa ogolna pracownik rozdzielie ew.
+        newCommission.setRepairList(new ArrayList<Repair>(Arrays.asList(newRepair)));//bo na start 1 naprawa ogolna pracownik rozdzielie ew.
         if(specialService!=""){
             List<String> addPart = Arrays.asList(specialService.split(","));
-            Set<Part> partSet = new HashSet<>();
+            List<Part> partList = new ArrayList<>();
             for(String stringPart:addPart){
                 Part part = new Part();
                     Store store = new Store();
@@ -87,10 +87,10 @@ public class CommissionController {
                     storeRepository.save(store);
                     part.setStore(store);
                     part.setRepair(newRepair);
-                    partSet.add(part);
+                    partList.add(part);
                 }
             }
-            newRepair.setPartSet(partSet);
+            newRepair.setPartList(partList);
         }
         carRepository.save(newCar);
         String from = request.getSession().getAttribute("from").toString();
@@ -112,7 +112,7 @@ public class CommissionController {
         }
         else {
             List<Employee> employees = employeeRepository.findByPost("mechanic");
-            employees.sort((Employee e1, Employee e2)->(int)(e1.getId()-e2.getId()));
+            //employees.sort((Employee e1, Employee e2)->(int)(e1.getId()-e2.getId()));
             model.put("employees", employees);
         }
         boolean additionalService = (boolean) request.getSession().getAttribute("AS");
@@ -128,8 +128,8 @@ public class CommissionController {
         Commission singleCommission = commissionRepository.findOne(commission.getId());
         model.addAttribute("commission",singleCommission);
         //need refactor number of part in variable no 1-8
-        Set<Part> partToEvaluate = new HashSet<>();
-        singleCommission.getRepairSet().stream().forEach(r -> r.getPartSet().stream().forEach((p) -> {if(p.getStore().getId()<=8 && p.getStore().getId()>=1){partToEvaluate.add(p);} }));
+        List<Part> partToEvaluate = new ArrayList<>();
+        singleCommission.getRepairList().stream().forEach(r -> r.getPartList().stream().forEach((p) -> {if(p.getStore().getId()<=8 && p.getStore().getId()>=1){partToEvaluate.add(p);} }));
         if(!partToEvaluate.isEmpty())
             model.addAttribute("evaluateNeeded","true");
         boolean autoPart = (boolean)request.getSession().getAttribute("AP");
@@ -164,10 +164,10 @@ public class CommissionController {
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="clientEvaluateAction=needToRepair")
     public String needToRepair(@Valid @ModelAttribute Commission commission, BindingResult result, Principal principal , Model model,HttpServletRequest request) {
         Commission singleCommission = commissionRepository.findOne(commission.getId());
-        Set<Repair> repairSet = singleCommission.getRepairSet();
+        List<Repair> repairList = singleCommission.getRepairList();
         List<Image> images = new ArrayList<Image>();
-        repairSet.stream().forEach(r -> images.addAll(r.getImageSet()));
-        images.sort((Image i1, Image i2)->(int)(i1.getId()-i2.getId()));
+        repairList.stream().forEach(r -> images.addAll(r.getImageList()));
+        //images.sort((Image i1, Image i2)->(int)(i1.getId()-i2.getId()));
         model.addAttribute("images",images);
         model.addAttribute("commission",commission);
         return "ImagesOfDamage";
@@ -179,31 +179,31 @@ public class CommissionController {
         // Account account = accountRepository.findByUsername(username);
         //Client client = clientRepository.findOne(account.getClient().getId());
         Commission singleCommission = commissionRepository.findOne(commission.getId());
-        Set<Repair> repairSet = singleCommission.getRepairSet();
-        Set<Part> neededParts = new HashSet<>();
-        Set<Set<Store>> allToChoose = new HashSet<>();
-        for(Repair repair : repairSet){
+        List<Repair> repairList = singleCommission.getRepairList();
+        List<Part> neededParts = new ArrayList<>();
+        List<List<Store>> allToChoose = new ArrayList<>();
+        for(Repair repair : repairList){
             //neededParts.addAll(repair.getPartSet());
-            repair.getPartSet().stream().forEach((p) -> {if(p.getStore().getId()<=8 && p.getStore().getId()>=1){neededParts.add(p);} });
+            repair.getPartList().stream().forEach((p) -> {if(p.getStore().getId()<=8 && p.getStore().getId()>=1){neededParts.add(p);} });
         }//odejmuje amount -1 i gdy 0 kasuje z bazy dla store
         for(Part part : neededParts){
-            Set<Store> storeSet = new HashSet<>();
+            List<Store> storeList = new ArrayList<>();
             switch(part.getStore().getType()){
                 //case "EMPTY": storeSet = storeRepository.findByType("Empty");break; głupota to dodatkowe
-                case "ENGINE": storeSet = storeRepository.findByType("Engine");break;
-                case "TRANSMISSION": storeSet = storeRepository.findByType("Transmission");break;
-                case "TIRES": storeSet = storeRepository.findByType("Tires");break;
-                case "BODY": storeSet = storeRepository.findByType("Body");break;
-                case "LIGHTS": storeSet = storeRepository.findByType("Lights");break;
-                case "EQUIPMENT": storeSet = storeRepository.findByType("Equipment");break;
-                case "BRAKES": storeSet = storeRepository.findByType("Brakes");break;
-                default: storeSet = null;
+                case "ENGINE": storeList = storeRepository.findByType("Engine");break;
+                case "TRANSMISSION": storeList = storeRepository.findByType("Transmission");break;
+                case "TIRES": storeList= storeRepository.findByType("Tires");break;
+                case "BODY": storeList = storeRepository.findByType("Body");break;
+                case "LIGHTS": storeList = storeRepository.findByType("Lights");break;
+                case "EQUIPMENT": storeList = storeRepository.findByType("Equipment");break;
+                case "BRAKES": storeList = storeRepository.findByType("Brakes");break;
+                default: storeList = null;
             }
-            storeSet.add(storeRepository.findByType("EMPTY").iterator().next());//na rzecz obslugi pustego
+            storeList.add(storeRepository.findByType("EMPTY").iterator().next());//na rzecz obslugi pustego
             boolean extraPart = (boolean)request.getSession().getAttribute("EP");
             if(extraPart)
-                storeSet.add(storeRepository.findByType("UNIQUE").iterator().next());
-            allToChoose.add(storeSet);
+                storeList.add(storeRepository.findByType("UNIQUE").iterator().next());
+            allToChoose.add(storeList);
         }
         //if(allToChoose.isEmpty()) logika dla późniejszego zastosowania gdy dodatkowe czesci do wybrania
         //ale wkladam nulle wiec moze nie zadziala
@@ -283,9 +283,9 @@ public class CommissionController {
         Repair newRepair = new Repair(employeeRepository.findOne(1L),commissionToDo,"Additional Work Needed");
         if(null != commissionToDo.getBill())
             commissionToDo.setAfterCheck(true);
-        commissionToDo.getRepairSet().add(newRepair);//styka?
+        commissionToDo.getRepairList().add(newRepair);//styka?
         List<String> addPart = Arrays.asList(partString.split(","));
-        Set<Part> partSet = new HashSet<>();
+        List<Part> partList = new ArrayList<>();
         for(String stringPart:addPart){
             Part part = new Part();
             Store store = new Store();
@@ -298,10 +298,10 @@ public class CommissionController {
                 storeRepository.save(store);
                 part.setStore(store);
                 part.setRepair(newRepair);
-                partSet.add(part);
+                partList.add(part);
             }
         }
-        newRepair.setPartSet(partSet);
+        newRepair.setPartList(partList);
         repairRepository.save(newRepair);
         return "redirect:/myCommission";
     }

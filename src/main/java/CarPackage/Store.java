@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,16 +22,16 @@ public class Store {
     double price;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private Set<Part> partSet;
+    private List<Part> partList;
 
     @OneToMany(mappedBy = "store",cascade=CascadeType.ALL)
-    private Set<Image> imageSet;
+    private List<Image> imageList;
 
-    public Set<Part> getPartSet(){
-        return this.partSet;
+    public List<Part> getPartList(){
+        return this.partList;
     }
-    public void setPartSet(Set<Part> partSet){
-        this.partSet = partSet;
+    public void setPartList(List<Part> partList){
+        this.partList = partList;
     }
     public void setId(Long Id){
         this.id = id;
@@ -68,10 +69,10 @@ public class Store {
     public double getPrice(){
         return this.price;
     }
-    public void setImageSet(Set<Image> imageSet){
-        this.imageSet = imageSet;
+    public void setImageList(List<Image> imageList){
+        this.imageList = imageList;
     }
-    public Set<Image> getImageSet(){
-        return this.imageSet;
+    public List<Image> getImageList(){
+        return this.imageList;
     }
 }

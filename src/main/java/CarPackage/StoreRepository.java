@@ -12,6 +12,6 @@ import java.util.Set;
  * Created by Mati on 2016-12-23.
  */
 public interface StoreRepository extends CrudRepository<Store, Long> {
-    public Set<Store> findByType(String type);
+    public List<Store> findByType(String type);
     public List<Store> findAll();
 }

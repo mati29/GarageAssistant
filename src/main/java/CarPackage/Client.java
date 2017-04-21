@@ -29,7 +29,7 @@ public class Client {
     private Account account;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private Set<Commission> commissionSet;
+    private List<Commission> commissionList;
 
     public Client(){
     }
@@ -74,12 +74,12 @@ public class Client {
         return this.email;
     }
 
-    public Set<Commission> getCommissionSet() {
-        return commissionSet;
+    public List<Commission> getCommissionList() {
+        return commissionList;
     }
 
-    public void setCommissionSet(Set<Commission> commissionSet) {
-        this.commissionSet = commissionSet;
+    public void setCommissionList(List<Commission> commissionList) {
+        this.commissionList = commissionList;
     }
 
     public void setAccount(Account account){

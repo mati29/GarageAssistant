@@ -96,7 +96,7 @@ public class AdminController {
         List<Commission> allCommission = commissionRepository.findAll();
         List<Commission> completedCommission = new ArrayList<>();
         allCommission.forEach(c -> {                                                                                                                                      //just for test delete after release version
-            if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairSet().isEmpty())
+            if(c.getRepairList().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairList().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairList().isEmpty())
                 completedCommission.add(c);
         });
         completedCommission.sort((Commission c1, Commission c2)->(int)(c1.getId()-c2.getId()));
@@ -109,7 +109,7 @@ public class AdminController {
         List<Commission> allCommission = commissionRepository.findAll();
         List<Commission> completedCommission = new ArrayList<>();
         allCommission.forEach(c -> {                                                                                                                                      //just for test delete after release version
-            if(c.getRepairSet().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairSet().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairSet().isEmpty())
+            if(c.getRepairList().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairList().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairList().isEmpty())
                 completedCommission.add(c);
         });
         completedCommission.sort((Commission c1, Commission c2)->(int)(c1.getId()-c2.getId()));

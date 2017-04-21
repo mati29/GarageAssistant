@@ -44,10 +44,10 @@ public class ClientBill {
         int partPos=1;
         double commissionTotal = 0d;
 
-        for (Repair repair: commission.getRepairSet()) {
+        for (Repair repair: commission.getRepairList()) {
             double partTotal = 0d;
 
-            for(Part part: repair.getPartSet()){
+            for(Part part: repair.getPartList()){
                 Store store = part.getStore();
                 PartBillDTO partElem = new PartBillDTO(partPos,store.getBrand() +" "+ store.getModel(),store.getPrice(),repairPos);
                 partTotal+=partElem.getPartTotal();

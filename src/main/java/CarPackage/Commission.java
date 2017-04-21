@@ -2,6 +2,7 @@ package main.java.CarPackage;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,7 +27,7 @@ public class Commission {
     private Car car;
 
     @OneToMany(mappedBy = "commission",cascade = CascadeType.ALL)
-    private Set<Repair> repairSet;
+    private List<Repair> repairList;
 
     @OneToOne(mappedBy = "commission",cascade = CascadeType.ALL)
     private Bill bill;
@@ -71,12 +72,12 @@ public class Commission {
         this.client = client;
     }
 
-    public Set<Repair> getRepairSet() {
-        return this.repairSet;
+    public List<Repair> getRepairList() {
+        return this.repairList;
     }
 
-    public void setRepairSet(Set<Repair> repairSet) {
-        this.repairSet = repairSet;
+    public void setRepairList(List<Repair> repairList) {
+        this.repairList = repairList;
     }
 
     public Car getCar() {

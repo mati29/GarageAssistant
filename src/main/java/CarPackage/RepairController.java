@@ -45,10 +45,10 @@ public class RepairController {
         String username = principal.getName();//to chyba autowired dać
         Account account = accountRepository.findByUsername(username);
         Employee employee = employeeRepository.findOne(account.getEmployee().getId());
-        Set<Repair> repairSet = employee.getRepairSet();//repairRepository.findByEmployee(employee.getId());
+        List<Repair> repairList = employee.getRepairList();//repairRepository.findByEmployee(employee.getId());
         List<Repair> repairToComplete = new ArrayList<>();
-        repairSet.stream().filter(r -> r.getAccomplish() == false).forEach(r->repairToComplete.add(r));//to avoid complete repair again
-        repairToComplete.sort((Repair r1, Repair r2)->(int)(r1.getId()-r2.getId()));
+        repairList.stream().filter(r -> r.getAccomplish() == false).forEach(r->repairToComplete.add(r));//to avoid complete repair again
+        //repairToComplete.sort((Repair r1, Repair r2)->(int)(r1.getId()-r2.getId()));
         model.put("repairs",repairToComplete);
         //List<Car> cars = carRepository.findAll();
         //model.put("cars", cars);//rep nie car
@@ -64,14 +64,14 @@ public class RepairController {
     @RequestMapping(value="/addRepair",method= RequestMethod.GET)
     public String repairs(Map<String, Object> model,Principal principal,RedirectAttributes redirectAttrs) {
         List<Employee> employees = employeeRepository.findAll();
-        employees.sort((Employee e1, Employee e2)->(int)(e1.getId()-e2.getId()));
+        //employees.sort((Employee e1, Employee e2)->(int)(e1.getId()-e2.getId()));
         model.put("employees", employees);
         String username = principal.getName();
         Account account = accountRepository.findByUsername(username);
         Employee employee = employeeRepository.findOne(account.getEmployee().getId());
-        Set<Repair> repairSet = employee.getRepairSet();
-        List<Repair> repairList = new ArrayList<>(repairSet);
-        repairList.sort((Repair r1, Repair r2)->(int)(r1.getId()-r2.getId()));
+        List<Repair> repairList = employee.getRepairList();
+        //List<Repair> repairList = new ArrayList<>(repairSet);
+        //repairList.sort((Repair r1, Repair r2)->(int)(r1.getId()-r2.getId()));
         model.put("repairs",repairList);
         return "NewRepair";
     }
@@ -151,8 +151,8 @@ public class RepairController {
     @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=saveEvaluate")
     public String saveevaluate(Repair repairSended,ListImage picture, @ModelAttribute("listPartRepair") ListPartRepair listPartRepair/*,BindingResult result*/,@ModelAttribute("selectedRepairId") Long selectedRepairId, Model model) {
         Repair repair = repairRepository.findOne(selectedRepairId);//TODO to delete selectedRepairId
-        Set<Part> partSet = new HashSet<Part>();
-        Set<Image> imageSet = new HashSet<Image>();
+        List<Part> partList = new ArrayList<Part>();
+        List<Image> imageList = new ArrayList<Image>();
         for(int i=0;i<listPartRepair.getPartRepair().size();i++) {
             Store store;
             switch(listPartRepair.getPartRepair().get(i).value){
@@ -168,34 +168,34 @@ public class RepairController {
             }
             Image newImage = new Image(repair,store);
             newImage.setPath(ImageSaver.saveImage(picture.getImageList().get(i),newImage,i));
-            imageSet.add(newImage);
+            imageList.add(newImage);
             Part newPart = new Part(repair,store);
-            partSet.add(newPart);
+            partList.add(newPart);
         }
-        repair.setImageSet(imageSet);
-        repair.setPartSet(partSet);
+        repair.setImageList(imageList);
+        repair.setPartList(partList);
         repairRepository.save(repair);
         //jeszcze wydobyc id z repaira a jego przesylac jakos albo autowired i juz
         if(true==repair.getCommission().getClient().getSettings().getAutoPart()) {
-            Set<Set<Store>> allToChoose = new HashSet<>();
-            for(Part singlePart : repair.getPartSet()){
-                Set<Store> storeSet = new HashSet<>();
+            List<List<Store>> allToChoose = new ArrayList<>();
+            for(Part singlePart : repair.getPartList()){
+                List<Store> storeList = new ArrayList<>();
                 switch(singlePart.getStore().getType()){
                     //case "EMPTY": storeSet = storeRepository.findByType("Empty");break;
-                    case "ENGINE": storeSet = storeRepository.findByType("Engine");break;
-                    case "TRANSMISSION": storeSet = storeRepository.findByType("Transmission");break;
-                    case "TIRES": storeSet = storeRepository.findByType("Tires");break;
-                    case "BODY": storeSet = storeRepository.findByType("Body");break;
-                    case "LIGHTS": storeSet = storeRepository.findByType("Lights");break;
-                    case "EQUIPMENT": storeSet = storeRepository.findByType("Equipment");break;
-                    case "BRAKES": storeSet = storeRepository.findByType("Brakes");break;
-                    default: storeSet = null;
+                    case "ENGINE": storeList = storeRepository.findByType("Engine");break;
+                    case "TRANSMISSION": storeList = storeRepository.findByType("Transmission");break;
+                    case "TIRES": storeList = storeRepository.findByType("Tires");break;
+                    case "BODY": storeList = storeRepository.findByType("Body");break;
+                    case "LIGHTS": storeList = storeRepository.findByType("Lights");break;
+                    case "EQUIPMENT": storeList = storeRepository.findByType("Equipment");break;
+                    case "BRAKES": storeList = storeRepository.findByType("Brakes");break;
+                    default: storeList = null;
                 }
-                storeSet.add(storeRepository.findByType("EMPTY").iterator().next());//na rzecz obslugi pustego
-                allToChoose.add(storeSet);
+                storeList.add(storeRepository.findByType("EMPTY").iterator().next());//na rzecz obslugi pustego
+                allToChoose.add(storeList);
             }
             ArrayList<ChangePart> changeParts = new ArrayList<>();
-            for(Part part : repair.getPartSet()) {
+            for(Part part : repair.getPartList()) {
                 ChangePart partToChange = new ChangePart();
                 partToChange.setPartId(part.getId());
                 changeParts.add(partToChange);
@@ -241,7 +241,7 @@ public class RepairController {
             else model.put("storeEmpty","Y");
         }
         Repair repair = repairRepository.findOne(selectedRepairId);
-        Set<Part> parts = repair.getPartSet();
+        List<Part> parts = repair.getPartList();
         List<Part> partToRepair = new ArrayList<>();
         parts.stream().filter(p -> p.getStore().getId()>8 && p.getResolved()==false).forEach(p->partToRepair.add(p));
         if(partToRepair.isEmpty())
@@ -265,8 +265,8 @@ public class RepairController {
     public String doneRepair(Map<String, Object> model,@ModelAttribute("repair") Repair selectedRepair,boolean noPart) {
         Repair repairedPart = repairRepository.findOne(selectedRepair.getId());
         List<Part> anyToComplete = new ArrayList<>();
-        repairedPart.getPartSet().stream().filter(p -> p.getResolved() == false).forEach(p -> anyToComplete.add(p));
-        if((!repairedPart.getPartSet().isEmpty() && anyToComplete.isEmpty()) || (repairedPart.getPartSet().isEmpty() && noPart)) {
+        repairedPart.getPartList().stream().filter(p -> p.getResolved() == false).forEach(p -> anyToComplete.add(p));
+        if((!repairedPart.getPartList().isEmpty() && anyToComplete.isEmpty()) || (repairedPart.getPartList().isEmpty() && noPart)) {
             model.put("repair",repairedPart);
             return "TimeRepairCost";
             //repairedPart.setAccomplish(true);

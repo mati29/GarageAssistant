@@ -4,6 +4,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +26,7 @@ public class Employee {//extends Client{
     private String email;
     private String post;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private Set<Repair> repairSet;
+    private List<Repair> repairList;
 
     @OneToOne(mappedBy = "employee",cascade=CascadeType.ALL)
     private Account account;
@@ -89,12 +90,12 @@ public class Employee {//extends Client{
         return this.post;
     }
 
-    public Set<Repair> getRepairSet() {
-        return repairSet;
+    public List<Repair> getRepairList() {
+        return repairList;
     }
 
-    public void setRepairSet(Set<Repair> repairSet) {
-        this.repairSet = repairSet;
+    public void setRepairList(List<Repair> repairList) {
+        this.repairList = repairList;
     }
 
     public Account getAccount(){

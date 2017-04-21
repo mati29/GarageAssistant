@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,10 +25,10 @@ public class Repair {
     private Commission commission;
 
     @OneToMany(mappedBy = "repair", cascade = CascadeType.ALL)
-    private Set<Part> partSet;
+    private List<Part> partList;
 
     @OneToMany(mappedBy = "repair",cascade = CascadeType.ALL)
-    private Set<Image> imageSet;
+    private List<Image> imageList;
 
     public Repair(){}
 
@@ -67,11 +68,11 @@ public class Repair {
     public void setCommission(Commission commission){
         this.commission = commission;
     }
-    public Set<Part> getPartSet(){
-        return this.partSet;
+    public List<Part> getPartList(){
+        return this.partList;
     }
-    public void setPartSet(Set<Part> partSet){
-        this.partSet = partSet;
+    public void setPartList(List<Part> partList){
+        this.partList = partList;
     }
     public void setDescription(String description){
         this.description = description;
@@ -79,10 +80,10 @@ public class Repair {
     public String getDescription(){
         return this.description;
     }
-    public void setImageSet(Set<Image> imageSet){
-        this.imageSet = imageSet;
+    public void setImageList(List<Image> imageList){
+        this.imageList = imageList;
     }
-    public Set<Image> getImageSet(){
-        return this.imageSet;
+    public List<Image> getImageList(){
+        return this.imageList;
     }
 }

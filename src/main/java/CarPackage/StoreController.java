@@ -25,7 +25,7 @@ public class StoreController {
     @RequestMapping(value="/addPart",method= RequestMethod.GET)
     public String parts(Map<String, Object> model) {
         //String[] toParts = Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new);
-        Set<String> parts = new HashSet<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
+        List<String> parts = new ArrayList<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
         model.put("parts", parts);
         return "NewPart";
     }
