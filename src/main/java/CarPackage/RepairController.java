@@ -149,7 +149,7 @@ public class RepairController {
     }
 
     @RequestMapping(value="/evaluate",method= RequestMethod.POST,params="employeeEvaluateAction=saveEvaluate")
-    public String saveevaluate(Repair repairSended,ListImage picture, @ModelAttribute("listPartRepair") ListPartRepair listPartRepair/*,BindingResult result*/,@ModelAttribute("selectedRepairId") Long selectedRepairId, Model model) {
+    public String saveevaluate(/*Repair repairSended,*/ListImage picture, @ModelAttribute("listPartRepair") ListPartRepair listPartRepair/*,BindingResult result*/,@ModelAttribute("selectedRepairId") Long selectedRepairId, Model model) {
         Repair repair = repairRepository.findOne(selectedRepairId);//TODO to delete selectedRepairId
         List<Part> partList = new ArrayList<Part>();
         List<Image> imageList = new ArrayList<Image>();

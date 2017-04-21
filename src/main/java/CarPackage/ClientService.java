@@ -21,6 +21,18 @@ public class ClientService {
         this.accountService = accountService;
     }
 
+    public String getClientFirstName(Client client){
+        return client.getFirstName();
+    }
+
+    public String getClientLastName(Client client){
+        return client.getLastName();
+    }
+
+    public String getClientFullName(Client client){
+        return getClientLastName(client) + getClientFirstName(client);
+    }
+
     public List<Client> getAllClient(){
         return clientRepository.findAll();
     }

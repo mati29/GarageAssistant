@@ -18,45 +18,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/bills")
 public class BillController {
 
-    private CommissionRepository commissionRepository;
-    private BillRepository billRepository;
+    private BillService billService;
+    private CommissionService commissionService;
 
     @Autowired
-    public BillController(BillRepository billRepository,CommissionRepository commissionRepository) {
-        this.billRepository = billRepository;
-        this.commissionRepository = commissionRepository;
+    public BillController(BillService billService,CommissionService commissionService) {
+        this.billService = billService;
+        this.commissionService = commissionService;
     }
 
     @Secured("ROLE_ADMIN")
     @RequestMapping(value="/newBill",method= RequestMethod.POST,params="adminBillAction=exposeBill")
     public String exposeBill(Commission commission) {
-        Commission commissionToCheck =  commissionRepository.findOne(commission.getId());
-        Bill billToSave;
-        if(null != commissionToCheck.getBill()) {
-            billToSave = commissionToCheck.getBill();
-            commissionToCheck.setAfterCheck(false);
-        }
-        else
-            billToSave = new Bill();
-        billToSave.setCommission(commissionToCheck);
-        billToSave.setPdf(ClientBill.makeBill(billToSave));
-        billRepository.save(billToSave);//|| DATA NIE DZIALA
+        billService.createBill(commissionService.getCommissionById(commission.getId()));
         return "redirect:/adminDashboard/toBill";
     }
 
     @Secured("ROLE_USER")
     @RequestMapping(value = "/myBill", method = RequestMethod.POST,params="clientBillAction=getBill")
     public ResponseEntity<byte[]> getRegistryReport(Commission commission) {
-        Bill bill = billRepository.findOne(commissionRepository.findOne(commission.getId()).getBill().getId());
-        byte[] pdfBill = bill.getPdf();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));                                                                //na jego osobiste id
-        String filename = bill.getCommission().getClient().getLastName()+bill.getCommission().getClient().getFirstName()+bill.getCommission().getId()+"Bill.pdf";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<>(pdfBill, headers, HttpStatus.OK);
-        return response;
+        return billService.getBillEntity(commissionService.getCommissionById(commission.getId()));
     }
 
 
