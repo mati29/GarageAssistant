@@ -24,23 +24,19 @@ import java.util.stream.Collectors;
 @RequestMapping("/adminDashboard")
 public class AdminController {
 
-    private AccountRepository accountRepository;
-    private EmployeeRepository employeeRepository;
-    private RepairRepository repairRepository;
-    private CommissionRepository commissionRepository;
-    private PartRepository partRepository;
-    private StoreRepository storeRepository;
-    private ClientRepository clientRepository;
+    private AdminService adminService;
+    private EmployeeService employeeService;
+    private ClientService clientService;
+    private RepairService repairService;
+    private CommissionService commissionService;
 
     @Autowired
-    public AdminController(CarRepository carRepository,AccountRepository accountRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository,CommissionRepository commissionRepository,PartRepository partRepository,StoreRepository storeRepository,ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
-        this.accountRepository = accountRepository;
-        this.employeeRepository = employeeRepository;
-        this.repairRepository = repairRepository;
-        this.commissionRepository = commissionRepository;
-        this.partRepository = partRepository;
-        this.storeRepository = storeRepository;
+    public AdminController(AdminService adminService,EmployeeService employeeService,ClientService clientService,RepairService repairService,CommissionService commissionService) {
+        this.adminService = adminService;
+        this.employeeService = employeeService;
+        this.clientService = clientService;
+        this.repairService = repairService;
+        this.commissionService = commissionService;
     }
 
     @Secured("ROLE_ADMIN")
@@ -51,24 +47,14 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.POST,params="adminAction=addExtraRight")
     public String addExtraRight(Model model) {
-        List<Client> clients = clientRepository.findAll();//mozna by na ilosc kupic itd. rozwijanie
-        clients = clients.stream().filter(c -> c.getSettings().getAdditionalServiceDemand() || c.getSettings().getCallExtraPartDemand()).collect(Collectors.toList());
-        clients.sort((Client c1, Client c2)->(int)(c1.getId()-c2.getId()));
-        ListClient clientsList = new ListClient();
-        clientsList.setClientList(clients);
-        model.addAttribute("clients",clientsList);
+        model.addAttribute("clients",adminService.getExtraRightClient());
         return "ExtraRightPanel";
     }
 
     @RequestMapping(method = RequestMethod.POST,params="adminAction=setFreeRepair")
     public String setFreeCommission(Model model) {
-        List<Repair> repairsToAssign = repairRepository.findByEmployeeId(1L);
-        List<Employee> readyEmployees = employeeRepository.findByPost("mechanic");
-        readyEmployees.sort((Employee e1, Employee e2)->(int)(e1.getId()-e2.getId()));
-        ListRepair repairList = new ListRepair();
-        repairList.setRepairList(repairsToAssign);
-        model.addAttribute("repairs", repairList);
-        model.addAttribute("employees", readyEmployees);
+        model.addAttribute("repairs" , repairService.getReadyRepair());
+        model.addAttribute("employees" , employeeService.getMechanicList());
         return "EmployeeAssignRepair";
     }
 
@@ -76,44 +62,23 @@ public class AdminController {
     public String addAccount(Model model) {
         model.addAttribute("addedByAdmin",true);
         return "Register";
-        //return "ImageTry";
     }
 
     @RequestMapping(method = RequestMethod.POST,params="adminAction=confirmAccount")
     public String confirmAccount(Model model) {
-        List<Account> accounts = accountRepository.findByEnabled(false);
-        List<Client> clients = new ArrayList<>();
-        ListClient clientList = new ListClient();
-        accounts.stream().forEach(a-> clients.add(a.getClient()));
-        clients.sort((Client c1, Client c2)->(int)(c1.getId()-c2.getId()));
-        clientList.setClientList(clients);
-        model.addAttribute("clients",clientList);
+        model.addAttribute("clients" , clientService.getUnconfirmedClient());
         return "ConfirmPanel";
     }
 
     @RequestMapping(method = RequestMethod.POST,params="adminAction=calculateCommission")
     public String calculateCommission(Model model) {
-        List<Commission> allCommission = commissionRepository.findAll();
-        List<Commission> completedCommission = new ArrayList<>();
-        allCommission.forEach(c -> {                                                                                                                                      //just for test delete after release version
-            if(c.getRepairList().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairList().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairList().isEmpty())
-                completedCommission.add(c);
-        });
-        completedCommission.sort((Commission c1, Commission c2)->(int)(c1.getId()-c2.getId()));
-        model.addAttribute("commissions",completedCommission);
+        model.addAttribute("commissions",commissionService.getCompletedCommission());
         return "WriteBillOut";
     }
-    //załatwi service będzie jeden ciul
+
     @RequestMapping(value="/toBill",method = RequestMethod.GET)
     public String getCommissionToCalculate(Model model) {
-        List<Commission> allCommission = commissionRepository.findAll();
-        List<Commission> completedCommission = new ArrayList<>();
-        allCommission.forEach(c -> {                                                                                                                                      //just for test delete after release version
-            if(c.getRepairList().stream().filter(r -> r.getAccomplish() == true).count() == c.getRepairList().stream().count() && (null== c.getBill() || c.getAfterCheck()) && !c.getRepairList().isEmpty())
-                completedCommission.add(c);
-        });
-        completedCommission.sort((Commission c1, Commission c2)->(int)(c1.getId()-c2.getId()));
-        model.addAttribute("commissions",completedCommission);
+        model.addAttribute("commissions",commissionService.getCompletedCommission());
         return "WriteBillOut";
     }
 

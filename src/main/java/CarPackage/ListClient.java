@@ -16,4 +16,10 @@ public class ListClient {
     public void setClientList(List<Client> clientList) {
         this.clientList = clientList;
     }
+
+    public ListClient(){}
+
+    public ListClient(List<Client> clientList){
+        this.clientList = clientList;
+    }
 }

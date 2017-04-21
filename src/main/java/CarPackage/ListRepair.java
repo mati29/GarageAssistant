@@ -15,4 +15,10 @@ public class ListRepair {
     public void setRepairList(List<Repair> repairList) {
         this.repairList = repairList;
     }
+
+    public ListRepair() {}
+
+    public ListRepair(List<Repair> repairList){
+        this.repairList = repairList;
+    }
 }
