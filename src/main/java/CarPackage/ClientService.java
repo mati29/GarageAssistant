@@ -1,6 +1,7 @@
 package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class ClientService {
 
-    ClientRepository clientRepository;
-    AccountService accountService;
-    SettingsService settingsService;
+    private ClientRepository clientRepository;
+    private AccountService accountService;
+    private SettingsService settingsService;
+    private RolesService rolesService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public void setClientRepository(ClientRepository clientRepository){
@@ -29,6 +32,16 @@ public class ClientService {
     @Autowired
     public void setSettingsService(SettingsService settingsService){
         this.settingsService = settingsService;
+    }
+
+    @Autowired
+    public void setRolesService(RolesService rolesService){
+        this.rolesService = rolesService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder){
+        this.passwordEncoder = passwordEncoder;
     }
 
     public String getClientFirstName(Client client){
@@ -83,6 +96,43 @@ public class ClientService {
 
     public void saveClient(Client client){
         clientRepository.save(client);
+    }
+
+    public void setAccount(Client client,Account account){
+        client.setAccount(account);
+    }
+
+    public void setSettings(Client client,Settings settings){
+        client.setSettings(settings);
+    }
+
+    public Account getAccountFromClient(Client client){
+        return client.getAccount();
+    }
+
+    public void registerClient(Account account,Client client,boolean createByAdmin){
+        if(createByAdmin)
+            accountService.setEnabled(account,true);
+        Settings settings = new Settings();
+        settingsService.setClient(settings,client);
+        accountService.setClient(account,client);
+        accountService.setPassword(account,passwordEncoder.encode(accountService.getPassword(account)));
+        setAccount(client,account);
+        setSettings(client,settings);
+        saveClient(client);
+        rolesService.saveRole(account,UserType.Client.toString());
+    }
+
+    public void setClientsEnable(ListClient listClient){
+        getClientsFromList(listClient)
+                .stream()
+                .filter(c -> accountService.getEnabled(getAccountFromClient(c))==true)
+                .forEach(c -> {
+                                Client client = getClientFromId(c.getId());
+                                accountService.setEnabled(getAccountFromClient(client),true);
+                                saveClient(client);
+                              }
+                        );
     }
 
 }

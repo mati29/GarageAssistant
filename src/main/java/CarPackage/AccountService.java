@@ -29,4 +29,36 @@ public class AccountService {
     public Client getClientFromAccount(Account account){
         return account.getClient();
     }
+
+    public void setEnabled(Account account,boolean status){
+        account.setEnabled(status);
+    }
+
+    public void setClient(Account account,Client client){
+        account.setClient(client);
+    }
+
+    public void setEmployee(Account account,Employee employee){
+        account.setEmployee(employee);
+    }
+
+    public void setAdmin(Account account,Admin admin){
+        account.setAdmin(admin);
+    }
+
+    public void setPassword(Account account,String password){
+        account.setPassword(password);
+    }
+
+    public String getPassword(Account account){
+        return account.getPassword();
+    }
+
+    public String getUsernameFromAccount(Account account){
+        return account.getUsername();
+    }
+
+    public boolean getEnabled(Account account){
+        return account.getEnabled();
+    }
 }

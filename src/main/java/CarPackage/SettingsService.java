@@ -25,6 +25,10 @@ public class SettingsService {
         this.settingsRepository = settingsRepository;
     }
 
+    public void setClient(Settings settings,Client client){
+        settings.setClient(client);
+    }
+
 
     public void setOptionForUser(Settings changedSettings,Settings clientSettings, HttpServletRequest request){
         if(getAdditionalServiceDemandFromSettings(changedSettings)!=getAdditionalServiceDemandFromSettings(clientSettings)) {
