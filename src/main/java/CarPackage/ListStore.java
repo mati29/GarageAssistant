@@ -15,4 +15,10 @@ public class ListStore {
     public void setStoreList(List<Store> storeList) {
         this.storeList = storeList;
     }
+
+    public ListStore() {}
+
+    public ListStore(List<Store> storeList){
+        this.storeList = storeList;
+    }
 }

@@ -16,42 +16,38 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/store")
 public class StoreController {
-    private StoreRepository storeRepository;
+    private StoreService storeService;
 
-    public StoreController(StoreRepository storeRepository){
-        this.storeRepository = storeRepository;
+    public StoreController(StoreService storeService){
+        this.storeService = storeService;
     }
 
     @RequestMapping(value="/addPart",method= RequestMethod.GET)
     public String parts(Map<String, Object> model) {
-        //String[] toParts = Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new);
-        List<String> parts = new ArrayList<String>(Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
-        model.put("parts", parts);
+        model.put("parts", Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
         return "NewPart";
     }
 
     @RequestMapping(value="/addPart", method= RequestMethod.POST,params="employeeAddAction=addPart")
     public String addCommission(Store store,Principal principal,HttpServletRequest request) {
-        storeRepository.save(store);
-        String from = request.getSession().getAttribute("from").toString();
+        storeService.saveStore(store);
+        String backToCalledFrom = backTo(request.getSession().getAttribute("from").toString());
+        request.getSession().removeAttribute("from");
+        return backToCalledFrom;
+    }
+
+    private String backTo(String from){
         if(from.equals("dashboard")) {
-            request.getSession().removeAttribute("from");
             return "redirect:/employeeDashboard";
         }
         else {
-            request.getSession().removeAttribute("from");
             return "redirect:/store";
         }
     }
 
     @RequestMapping(method= RequestMethod.GET)
     public String getStore(Map<String, Object> model) {
-        List<Store> stores = storeRepository.findAll();                         //unique not approve by Employee!
-        stores = stores.stream().filter(s -> !s.getType().matches("[A-Z]*") && s.getPrice()!=0D).collect(Collectors.toList());
-        stores.sort(new StoreComparator());
-        ListStore storeList = new ListStore();
-        storeList.setStoreList(stores);
-        model.put("stores",storeList);
+        model.put("stores",storeService.getListStore());
         return "StoresView";
     }
 
@@ -64,81 +60,42 @@ public class StoreController {
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSortAction=sortById")
     public String sortById(Map<String, Object> model,ListStore stores) {
-        stores.getStoreList().sort(new Comparator<Store>() {
-            @Override
-            public int compare(Store store1, Store store2) {
-                if(store1.getId()>store2.getId())
-                    return 1;
-                if(store1.getId()<store2.getId())
-                    return -1;
-                else return 0;
-            }
-        });
+        storeService.storeSortById(storeService.getStoreFromList(stores));//czy posortuje to czy tylko wewnatrz
         model.put("stores",stores);
         return "StoresView";
     }
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSortAction=sortByModel")
     public String sortByModel(Map<String, Object> model,ListStore stores) {
-        stores.getStoreList().sort(new Comparator<Store>() {
-            @Override
-            public int compare(Store store1, Store store2) {
-                return store1.getModel().compareTo(store2.getModel());
-            }
-        });
+        storeService.storeSortByModel(storeService.getStoreFromList(stores));
         model.put("stores",stores);
         return "StoresView";
     }
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSortAction=sortByBrand")
     public String sortByBrand(Map<String, Object> model,ListStore stores) {
-        stores.getStoreList().sort(new Comparator<Store>() {
-            @Override
-            public int compare(Store store1, Store store2) {
-                return store1.getBrand().compareTo(store2.getBrand());
-            }
-        });
+        storeService.storeSortByBrand(storeService.getStoreFromList(stores));
         model.put("stores",stores);
         return "StoresView";
     }
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSortAction=sortByPrice")
     public String sortByPrice(Map<String, Object> model,ListStore stores) {
-        stores.getStoreList().sort(new Comparator<Store>() {
-            @Override
-            public int compare(Store store1, Store store2) {
-                if(store1.getPrice()>store2.getPrice())
-                    return 1;
-                if(store1.getPrice()==store2.getPrice())
-                    return 0;
-                else
-                    return -1;
-            }
-        });
+        storeService.storeSortByPrice(storeService.getStoreFromList(stores));
         model.put("stores",stores);
         return "StoresView";
     }
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSortAction=sortByAmount")
     public String sortByAmount(Map<String, Object> model,ListStore stores) {
-        stores.getStoreList().sort(new Comparator<Store>() {
-            @Override
-            public int compare(Store store1, Store store2) {
-                if(store1.getAmount()>store2.getAmount())
-                    return 1;
-                if(store1.getAmount()==store2.getAmount())
-                    return 0;
-                else
-                    return -1;
-            }
-        });
+        storeService.storeSortByAmount(storeService.getStoreFromList(stores));
         model.put("stores",stores);
         return "StoresView";
     }
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSortAction=sortByType")
     public String sortByType(Map<String, Object> model,ListStore stores) {
-        stores.getStoreList().sort(new StoreComparator());
+        storeService.storeSortByType(storeService.getStoreFromList(stores));
         model.put("stores",stores);
         return "StoresView";
     }
