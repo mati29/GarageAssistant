@@ -17,9 +17,13 @@ public class BillService {
     private BillRepository billRepository;
 
     @Autowired
-    public BillService(CommissionService commissionService,BillRepository billRepository){
-        this.commissionService = commissionService;
+    public void setBillRepository(BillRepository billRepository){
         this.billRepository = billRepository;
+    }
+
+    @Autowired
+    public void setCommissionService(CommissionService commissionService){
+        this.commissionService = commissionService;
     }
 
     public ResponseEntity<byte[]> getBillEntity(Commission commission){

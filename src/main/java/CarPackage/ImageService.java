@@ -14,9 +14,17 @@ public class ImageService {
     StoreService storeService;
 
     @Autowired
-    public ImageService(ImageRepository imageRepository,RepairService repairService,StoreService storeService){
+    public void setImageRepository(ImageRepository imageRepository){
         this.imageRepository = imageRepository;
+    }
+
+    @Autowired
+    public void setRepairService(RepairService repairService){
         this.repairService = repairService;
+    }
+
+    @Autowired
+    public void setStoreService(StoreService storeService){
         this.storeService = storeService;
     }
 

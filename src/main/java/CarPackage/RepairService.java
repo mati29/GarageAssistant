@@ -14,7 +14,7 @@ public class RepairService {
     private RepairRepository repairRepository;
 
     @Autowired
-    public RepairService(RepairRepository repairRepository){
+    public void setRepairRepository(RepairRepository repairRepository){
         this.repairRepository = repairRepository;
     }
 

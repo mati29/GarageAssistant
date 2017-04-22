@@ -14,11 +14,21 @@ public class ClientService {
 
     ClientRepository clientRepository;
     AccountService accountService;
+    SettingsService settingsService;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository,AccountService accountService){
+    public void setClientRepository(ClientRepository clientRepository){
         this.clientRepository = clientRepository;
+    }
+
+    @Autowired
+    public void setAccountService(AccountService accountService){
         this.accountService = accountService;
+    }
+
+    @Autowired
+    public void setSettingsService(SettingsService settingsService){
+        this.settingsService = settingsService;
     }
 
     public String getClientFirstName(Client client){
@@ -42,4 +52,37 @@ public class ClientService {
         accountService.getUnconfirmedAccount().stream().forEach(a-> clients.add(a.getClient()));
         return new ListClient(clients);
     }
+
+    public Settings getSettingsFromUsername(String username){
+        return getSettingsFromClient(accountService.getClientFromAccount(accountService.getAccountFromUsername(username)));
+    }
+
+    public Settings getSettingsFromClient(Client client){
+        return client.getSettings();
+    }
+
+    public void setClientExtraRight(ListClient listClient){
+        getClientsFromList(listClient)
+                .forEach
+                        (c->
+                                {
+                                    Client client = getClientFromId(c.getId());
+                                    settingsService.rechangeDemandSettings(getSettingsFromClient(client));
+                                    saveClient(client);
+                                }
+                        );
+    }
+
+    public Client getClientFromId(long id){
+        return clientRepository.findOne(id);
+    }
+
+    public List<Client> getClientsFromList(ListClient listClient){
+        return listClient.getClientList();
+    }
+
+    public void saveClient(Client client){
+        clientRepository.save(client);
+    }
+
 }

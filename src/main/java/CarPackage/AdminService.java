@@ -16,7 +16,7 @@ public class AdminService {
     private ClientService clientService;
 
     @Autowired
-    public AdminService(ClientService clientService){
+    public void setClientService(ClientService clientService){
         this.clientService = clientService;
     }
 

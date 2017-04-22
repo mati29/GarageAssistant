@@ -14,11 +14,19 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     @Autowired
-    public AccountService(AccountRepository accountRepository){
+    public void setAccountRepository(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
     }
 
     public List<Account> getUnconfirmedAccount(){
         return accountRepository.findByEnabled(false);
+    }
+
+    public Account getAccountFromUsername(String username){
+        return accountRepository.findByUsername(username);
+    }
+
+    public Client getClientFromAccount(Account account){
+        return account.getClient();
     }
 }

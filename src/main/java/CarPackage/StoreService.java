@@ -15,7 +15,7 @@ public class StoreService {
     private StoreRepository storeRepository;
 
     @Autowired
-    public StoreService(StoreRepository storeRepository){
+    public void setStoreRepository(StoreRepository storeRepository){
         this.storeRepository = storeRepository;
     }
 

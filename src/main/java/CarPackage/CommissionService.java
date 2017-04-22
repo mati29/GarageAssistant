@@ -16,8 +16,12 @@ public class CommissionService {
     private ClientService clientService;
 
     @Autowired
-    public CommissionService(CommissionRepository commissionRepository,ClientService clientService){
+    public void setCommissionRepository(CommissionRepository commissionRepository){
         this.commissionRepository = commissionRepository;
+    }
+
+    @Autowired
+    public void setClientService(ClientService clientService){
         this.clientService = clientService;
     }
 
