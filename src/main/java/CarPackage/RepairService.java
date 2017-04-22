@@ -26,4 +26,12 @@ public class RepairService {
         return new ListRepair(getFreeRepair());
     }
 
+    public Repair getRepairFromImage(Image image){
+        return image.getRepair();
+    }
+
+    public long getRepairId(Repair repair){
+        return repair.getId();
+    }
+
 }

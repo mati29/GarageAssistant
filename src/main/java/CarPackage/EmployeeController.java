@@ -20,11 +20,6 @@ import java.util.Map;
 @RequestMapping("/employeeDashboard")
 public class EmployeeController {
 
-    //@Autowired
-    //public CarController(CarRepository carRepository) {
-        //this.carRepository = carRepository;
-    //} potem bedzie autowired ale user
-
     @Secured("ROLE_WORKER")
     @RequestMapping(method=RequestMethod.GET)
     public String getEmployeeDashboard(Model model) {

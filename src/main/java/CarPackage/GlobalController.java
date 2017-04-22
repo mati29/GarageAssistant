@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/")
 public class GlobalController {
+
     @RequestMapping(value="/registration",method= RequestMethod.GET)
     public String registration(Model model) {
         return "Register";

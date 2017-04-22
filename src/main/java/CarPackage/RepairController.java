@@ -28,9 +28,10 @@ public class RepairController {
     private CommissionRepository commissionRepository;
     private PartRepository partRepository;
     private StoreRepository storeRepository;
+    private ImageSaver imageSaver;
 
     @Autowired
-    public RepairController(CarRepository carRepository,AccountRepository accountRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository,CommissionRepository commissionRepository,PartRepository partRepository,StoreRepository storeRepository) {
+    public RepairController(ImageSaver imageSaver,CarRepository carRepository,AccountRepository accountRepository,EmployeeRepository employeeRepository,RepairRepository repairRepository,CommissionRepository commissionRepository,PartRepository partRepository,StoreRepository storeRepository) {
         //this.carRepository = carRepository;
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
@@ -38,6 +39,7 @@ public class RepairController {
         this.commissionRepository = commissionRepository;
         this.partRepository = partRepository;
         this.storeRepository = storeRepository;
+        this.imageSaver = imageSaver;
     }
 
     @RequestMapping(method= RequestMethod.GET)
@@ -167,7 +169,7 @@ public class RepairController {
                 default: store = null;
             }
             Image newImage = new Image(repair,store);
-            newImage.setPath(ImageSaver.saveImage(picture.getImageList().get(i),newImage,i));
+            newImage.setPath(imageSaver.saveImage(picture.getImageList().get(i),newImage,i));
             imageList.add(newImage);
             Part newPart = new Part(repair,store);
             partList.add(newPart);

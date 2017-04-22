@@ -50,15 +50,20 @@ public class BillService {
     }
 
     public void createBill(Commission commission){
-        Bill billToSave;
-        if(commissionService.checkBill(commission)) {
-            billToSave = commissionService.getOneBill(commission);
-            commissionService.setAfterCheck(commission);
-        }
-        else
-            billToSave = new Bill();
+        Bill billToSave = newOrExist(commission);
         billToSave.setCommission(commission);
         billToSave.setPdf(ClientBill.makeBill(billToSave));
         billRepository.save(billToSave);
+    }
+
+    public Bill newOrExist(Commission commission){
+        Bill billToBeSave;
+        if(commissionService.checkBill(commission)) {
+            billToBeSave = getBillFromCommission(commission);
+            commissionService.setAfterCheck(commission);
+        }
+        else
+            billToBeSave = new Bill();
+        return billToBeSave;
     }
 }

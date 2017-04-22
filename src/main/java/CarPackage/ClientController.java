@@ -18,24 +18,9 @@ import java.util.Map;
 @Controller
 public class ClientController {
 
-    private ClientRepository clientRepository;//trzeba bedzie autowired user employee np.
-    private AccountRepository accountRepository;
-    private RolesRepository rolesRepository;
-
-    @Autowired
-    public ClientController(ClientRepository clientRepository,AccountRepository accountRepository,RolesRepository rolesRepository) {
-        this.clientRepository = clientRepository;
-        this.accountRepository = accountRepository;
-        this.rolesRepository = rolesRepository;
-    }
-
     @Secured("ROLE_USER")
     @RequestMapping(value="/clientDashboard",method={RequestMethod.GET,RequestMethod.POST})
     public String getClientDashboard(Model model,HttpServletRequest request) {
-        /*if(null!=request.getSession().getAttribute("AS")) {
-            boolean additionalService = (boolean) request.getSession().getAttribute("AS");
-            model.addAttribute("AS",additionalService);
-        }*///do późniejszego updatu
         return "ClientDashboard";
     }
 
