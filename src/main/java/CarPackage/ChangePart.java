@@ -20,4 +20,9 @@ public class ChangePart {
     public Long getStoreId() {
         return storeId;
     }
+
+    public ChangePart() {}
+    public ChangePart(Long partId){
+        this.partId = partId;
+    }
 }

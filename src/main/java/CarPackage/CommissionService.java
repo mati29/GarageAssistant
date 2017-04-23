@@ -25,6 +25,13 @@ public class CommissionService {
         this.clientService = clientService;
     }
 
+    public Commission getCommissionFromIdWithCheckBill(long id){
+        Commission commissionToCheck= commissionRepository.findOne(id);
+        if(checkBill(commissionToCheck))
+            setAfterCheck(commissionToCheck,true);
+        return commissionToCheck;
+    }
+
     public long getId(Commission commission){
         return commission.getId();
     }
@@ -45,8 +52,8 @@ public class CommissionService {
         return commission.getBill();
     }
 
-    public void setAfterCheck(Commission commission){
-        commission.setAfterCheck(false);
+    public void setAfterCheck(Commission commission,boolean status){
+        commission.setAfterCheck(status);
     }
 
     public Commission getCommissionById(long id){

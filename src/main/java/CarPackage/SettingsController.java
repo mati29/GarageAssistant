@@ -21,23 +21,13 @@ import java.util.Set;
 @RequestMapping("/settings")
 public class SettingsController {
 
-    private ClientRepository clientRepository;
-    private AccountRepository accountRepository;
-    private RolesRepository rolesRepository;
-    private SettingsRepository settingsRepository;
-
     private SettingsService settingsService;
     private ClientService clientService;
 
     @Autowired
-    public SettingsController(SettingsService settingsService,ClientService clientService,  ClientRepository clientRepository,AccountRepository accountRepository,RolesRepository rolesRepository,SettingsRepository settingsRepository) {
+    public SettingsController(SettingsService settingsService,ClientService clientService) {
         this.settingsService = settingsService;
         this.clientService = clientService;
-
-        this.clientRepository = clientRepository;
-        this.accountRepository = accountRepository;
-        this.rolesRepository = rolesRepository;
-        this.settingsRepository = settingsRepository;
     }
 
     @RequestMapping(method= RequestMethod.GET)

@@ -2,6 +2,7 @@ package main.java.CarPackage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Mati on 2017-04-22.
@@ -45,7 +46,7 @@ public class ImageService {
     }
 
     public String getStoreTypeFromService(Image image){
-        return storeService.getStoreType(getStoreFromService(image));
+        return storeService.getStoreTypeNormalized(getStoreFromService(image));
     }
 
     public Repair getRepairFromService(Image image){
@@ -54,5 +55,9 @@ public class ImageService {
 
     public Store getStoreFromService(Image image){
         return storeService.getStoreFromImage(image);
+    }
+
+    public MultipartFile getImageFileFromListById(ListImage listImage, int id){
+        return listImage.getImageList().get(id);
     }
 }

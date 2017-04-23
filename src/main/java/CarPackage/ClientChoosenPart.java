@@ -14,4 +14,9 @@ public class ClientChoosenPart {
     public ArrayList<ChangePart> getChosenPart() {
         return chosenPart;
     }
+
+    public ClientChoosenPart() {}
+    public ClientChoosenPart(ArrayList<ChangePart> chosenPart){
+        this.chosenPart = chosenPart;
+    }
 }

@@ -17,6 +17,9 @@ public class AccountService {
     public void setAccountRepository(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
     }
+    public Employee getEmployeeFromAccount(Account account){
+        return account.getEmployee();
+    }
 
     public List<Account> getUnconfirmedAccount(){
         return accountRepository.findByEnabled(false);

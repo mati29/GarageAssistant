@@ -37,6 +37,10 @@ public class EmployeeService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public List<Employee> getAllWorkers(){
+        return employeeRepository.findAll();
+    }
+
     public void setAccount(Employee employee,Account account){
         employee.setAccount(account);
     }
@@ -56,5 +60,21 @@ public class EmployeeService {
         setAccount(employee,account);
         saveEmployee(employee);
         rolesService.saveRole(account,UserType.Employee.toString());
+    }
+
+    public List<Repair> getRepairsFromEmployee(Employee employee){
+        return employee.getRepairList();
+    }
+
+    public Employee getEmployeeFromId(long id){
+        return employeeRepository.findOne(id);
+    }
+
+    public long getEmployeeId(Employee employee){
+        return employee.getId();
+    }
+
+    public boolean checkDefaultEmployee(Employee employee){
+        return getEmployeeId(employee)==1L?true:false;
     }
 }

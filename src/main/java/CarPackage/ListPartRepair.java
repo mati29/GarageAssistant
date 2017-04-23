@@ -15,13 +15,10 @@ public class ListPartRepair {
     public void setPartRepair(ArrayList<SinglePart> partRepair) {
         this.partRepair = partRepair;
     }
-    /*private String[] partRepair;
 
-    public String[] getPartRepair() {
-        return partRepair;
-    }
+    public ListPartRepair() {}
 
-    public void setPartRepair(String[] partRepair) {
+    public ListPartRepair(ArrayList<SinglePart> partRepair) {
         this.partRepair = partRepair;
-    }*/
+    }
 }

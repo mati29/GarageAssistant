@@ -3,6 +3,7 @@ package main.java.CarPackage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,12 +20,20 @@ public class StoreService {
         this.storeRepository = storeRepository;
     }
 
+    public Store getStoreFromId(Long id){
+        return storeRepository.findOne(id);
+    }
+
     public Store getStoreFromImage(Image image){
         return image.getStore();
     }
 
-    public String getStoreType(Store store){
+    public String getStoreTypeNormalized(Store store){
         return store.getType().toLowerCase();
+    }
+
+    public String getStoreType(Store store){
+        return store.getType();
     }
 
     public void saveStore(Store store){
@@ -97,6 +106,76 @@ public class StoreService {
 
     public int getAmountFromStore(Store store){
         return store.getAmount();
+    }
+
+    public void setUniqueAmount(Store store){
+        store.setAmount(1);
+    }
+
+    public void setAmount(Store store,int amount){
+        store.setAmount(amount);
+    }
+
+    public boolean checkDefault(ChangePart part){
+        return part.getStoreId()==1?true:false;
+
+    }
+
+    public Store getStoreFromChangePart(ChangePart part){
+        return storeRepository.findOne(part.getStoreId());
+    }
+
+    public void orderUniquePartIfNecessary(Store store){
+        if(getStoreType(store).matches("[A-Z]+"))
+            setUniqueAmount(store);
+    }
+
+    public boolean isPartInStore(Store store){
+        if(getAmountFromStore(store)>=1){
+            setAmount(store,getAmountFromStore(store)-1);
+            return true;
+        }
+        else
+            return false;
+
+    }
+
+    public Store getStoreFromType(String type){
+        Store store;
+        switch(type){
+            case "Engine": store = getStoreFromId(2L);break;
+            case "Transmission": store = getStoreFromId(3L);break;
+            case "Tires": store = getStoreFromId(4L);break;
+            case "Body": store = getStoreFromId(5L);break;
+            case "Lights": store = getStoreFromId(6L);break;
+            case "Equipment": store = getStoreFromId(7L);break;
+            case "Brakes": store = getStoreFromId(8L);break;
+            default: store = null;
+        }
+        return store;
+    }
+    public List<Store> getAllStoreFromType(String type){
+        List<Store> storeList = new ArrayList<>();
+        switch(type){
+            case "ENGINE": storeList = getStoresByType("Engine");break;
+            case "TRANSMISSION": storeList = getStoresByType("Transmission");break;
+            case "TIRES": storeList = getStoresByType("Tires");break;
+            case "BODY": storeList = getStoresByType("Body");break;
+            case "LIGHTS": storeList = getStoresByType("Lights");break;
+            case "EQUIPMENT": storeList = getStoresByType("Equipment");break;
+            case "BRAKES": storeList = getStoresByType("Brakes");break;
+            default: storeList = null;
+        }
+        storeList.add(selectEmpty());
+        return storeList;
+    }
+
+    public List<Store> getStoresByType(String type){
+        return storeRepository.findByType(type);
+    }
+
+    public Store selectEmpty(){
+        return storeRepository.findByType("EMPTY").iterator().next();
     }
 
 }

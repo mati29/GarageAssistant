@@ -64,7 +64,7 @@ public class BillService {
         Bill billToBeSave;
         if(commissionService.checkBill(commission)) {
             billToBeSave = getBillFromCommission(commission);
-            commissionService.setAfterCheck(commission);
+            commissionService.setAfterCheck(commission,false);
         }
         else
             billToBeSave = new Bill();
