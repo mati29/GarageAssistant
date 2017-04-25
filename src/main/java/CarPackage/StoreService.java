@@ -14,10 +14,16 @@ import java.util.stream.Collectors;
 public class StoreService {
 
     private StoreRepository storeRepository;
+    private PartService partService;
 
     @Autowired
     public void setStoreRepository(StoreRepository storeRepository){
         this.storeRepository = storeRepository;
+    }
+
+    @Autowired
+    public void setPartService(PartService partService){
+        this.partService = partService;
     }
 
     public Store getStoreFromId(Long id){
@@ -74,7 +80,7 @@ public class StoreService {
     }
 
     public List<Store> storeSortByPrice(List<Store> stores){
-        stores.sort((s1,s2)->(int)(getPriceFromStore(s1)-getPriceFromStore(s2)));//possible problematic int from double
+        stores.sort((s1,s2)->(int)((getPriceFromStore(s1)-getPriceFromStore(s2))*100));
         return stores;
     }
 
@@ -88,7 +94,7 @@ public class StoreService {
         return stores;
     }
 
-    public long getIdFromStore(Store store){
+    public Long getIdFromStore(Store store){
         return store.getId();
     }
 
@@ -116,8 +122,26 @@ public class StoreService {
         store.setAmount(amount);
     }
 
+    public void setBrand(Store store,String brand){
+        store.setBrand(brand);
+    }
+
+    public void setModel(Store store,String model){
+        store.setModel(model);
+    }
+
+    public void setType(Store store,String type){
+        store.setType(type);
+    }
+
+
     public boolean checkDefault(ChangePart part){
         return part.getStoreId()==1?true:false;
+
+    }
+
+    public boolean checkUnique(ChangePart part){
+        return part.getStoreId()==0?true:false;
 
     }
 
@@ -178,4 +202,32 @@ public class StoreService {
         return storeRepository.findByType("EMPTY").iterator().next();
     }
 
+    public Store selectUnique(){
+        return storeRepository.findByType("UNIQUE").iterator().next();
+    }
+
+    public void addUniquePart(ArrayList<UniquePart> uniqueParts){
+        uniqueParts
+                .forEach(
+                            uniquePart ->
+                                            {
+                                                Store uniqueStoreToAdd = new Store();
+                                                setBrand(uniqueStoreToAdd,partService.getBrandFromUniquePart(uniquePart));
+                                                setModel(uniqueStoreToAdd,partService.getModelFromUniquePart(uniquePart));
+                                                setType(uniqueStoreToAdd,partService.getTypeFromUniquePart(uniquePart));
+                                                Part partMakeUnique = partService.getPartFromId(partService.getPartIdFromUniquePart(uniquePart));
+                                                partService.setStore(partMakeUnique,uniqueStoreToAdd);
+                                                saveStore(uniqueStoreToAdd);
+                                            }
+                        )
+                ;
+    }
+
+    public Store saveCustomPart(Store store,String type,String model,String brand){
+        setType(store,type);
+        setModel(store,model);
+        setBrand(store,brand);
+        saveStore(store);
+        return store;
+    }
 }

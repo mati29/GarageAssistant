@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -88,7 +89,7 @@ public class RepairService {
         return image.getRepair();
     }
 
-    public long getRepairId(Repair repair){
+    public Long getRepairId(Repair repair){
         return repair.getId();
     }
 
@@ -162,6 +163,18 @@ public class RepairService {
         saveRepair(repairedDone);
     }
 
+    public boolean anyPartFromRepairsNeedEvaluation(List<Repair> repairList){
+        List<Part> partNeedToEvaluate = new ArrayList<>();
+        repairList.forEach(repair -> partNeedToEvaluate.addAll(partService.partNeedEvaluation(getPartFromRepair(repair))));
+        return !partNeedToEvaluate.isEmpty();
+    }
+
+    public List<Part> partFromRepairNeedEvaluation(List<Repair> repairList){
+        List<Part> partNeedToEvaluate = new ArrayList<>();
+        repairList.forEach(repair -> partNeedToEvaluate.addAll(partService.partNeedEvaluation(getPartFromRepair(repair))));
+        return partNeedToEvaluate;
+    }
+
     public Employee getEmployeeFromRepair(Repair repair){
         return repair.getEmployee();
     }
@@ -223,6 +236,30 @@ public class RepairService {
 
     public Commission getCommissionFromRepair(Repair repair){
         return repair.getCommission();
+    }
+
+    public void customRepairSave(Repair repair,String codedPart){
+
+        List<String> addPart = Arrays.asList(codedPart.split(","));
+        List<Part> partList = new ArrayList<>();
+        addPart
+                .forEach(
+                            stringPart->
+                                    {
+                                        Part part = new Part();
+                                        Store store = new Store();
+                                        List<String> brandModel = new ArrayList<String>(Arrays.asList(stringPart.split(":")));
+                                        brandModel.set(0,brandModel.get(0).replace(" ",""));
+                                        if(brandModel.size()==3) {
+                                            partService.setStore(part,storeService.saveCustomPart(store,brandModel.get(0).substring(0, 1) + brandModel.get(0).substring(1).toUpperCase(),brandModel.get(1),brandModel.get(2)));
+                                            partService.setRepair(part,repair);
+                                            partList.add(part);
+                                        }
+                                    }
+                        )
+                ;
+        setPartList(repair,partList);
+        saveRepair(repair);
     }
 
 }

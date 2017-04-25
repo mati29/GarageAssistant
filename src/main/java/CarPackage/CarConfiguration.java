@@ -30,7 +30,6 @@ public class CarConfiguration extends GlobalMethodSecurityConfiguration{
         dataSourceConfig.setDriverClassName("org.postgresql.Driver");
         dataSourceConfig.setUrl("jdbc:postgresql://127.0.0.1:5432/postgres");
         dataSourceConfig.setUsername("postgres");
-        //dataSourceConfig.setValidationQuery("SELECT 1");
         dataSourceConfig.setPassword("postgres");
 
         return dataSourceConfig;
@@ -54,39 +53,9 @@ public class CarConfiguration extends GlobalMethodSecurityConfiguration{
         return adapter;
     }
 
-    /*@Bean public SpringTemplateEngine templateEngine(TemplateResolver templateResolver) {
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver);
-        templateEngine.addDialect(securityDialect());
-        return templateEngine;
-    }*/
-
     @Bean
     public SpringSecurityDialect securityDialect() {
         return new SpringSecurityDialect();
     }
-
-
-
-    /*@Bean
-    public SpringResourceTemplateResolver templateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setPrefix("classpath:/templates/");
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML5");
-        resolver.setCacheable(false);
-        return resolver;
-    }
-
-    @Bean
-    public ThymeleafViewResolver viewResolver()
-    {
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine(templateResolver()));
-        //viewResolver.setOrder(1);
-        viewResolver.setCharacterEncoding("UTF-8");
-        return viewResolver;
-    }*/
-
 
 }

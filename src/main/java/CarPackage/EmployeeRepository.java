@@ -13,7 +13,7 @@ import java.util.Set;
  */
 @Repository
 interface EmployeeRepository extends CrudRepository<Employee, Long> {
-    //@Query(value = "select e.id,e.firstName,e.lastName,e.phoneNumber,e.email,e.post from employee e where e.post = :post",nativeQuery = true)
+
     List<Employee> findByPost(/*@Param("post")*/ String post);
     List<Employee> findAll();
 }

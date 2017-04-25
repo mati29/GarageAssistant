@@ -1,5 +1,6 @@
 package main.java.CarPackage;
 
+import org.hibernate.type.CharacterNCharType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,26 @@ public class PartService {
         part.setResolved(status);
     }
 
+    public Long getPartIdFromUniquePart(UniquePart uniquePart){
+        return (long)uniquePart.getPartId();
+    }
+
+    public String getModelFromUniquePart(UniquePart uniquePart){
+        return uniquePart.getModel();
+    }
+
+    public String getBrandFromUniquePart(UniquePart uniquePart){
+        return uniquePart.getBrand();
+    }
+
+    public String getTypeFromUniquePart(UniquePart uniquePart){
+        return storeService.getStoreType(storeService.getStoreFromId((long)uniquePart.getTypeOfStore()));
+    }
+
+    public ArrayList<UniquePart> getUniquePartsFromUniquePartList(UniquePartList uniquePartList){
+        return uniquePartList.getUniqueParts();
+    }
+
     public boolean isSavePartProperly(Part part){
         Part repairedPart = getPartFromId(getId(part));
         storeService.orderUniquePartIfNecessary(getStoreFromPart(repairedPart));
@@ -106,6 +127,16 @@ public class PartService {
         return allToChoose;
     }
 
+    public List<List<Store>> allPartToChoseAndUnique(List<Part> partList){
+        List<List<Store>> allToChoose = new ArrayList<>();
+        for(Part singlePart : partList){
+            List<Store> storeList = storeService.getAllStoreFromType(storeService.getStoreType(getStoreFromPart(singlePart)));
+            storeList.add(storeService.selectUnique());
+            allToChoose.add(storeList);
+        }
+        return allToChoose;
+    }
+
     public ArrayList<ChangePart> getChangePartList(List<Part> partList){
         ArrayList<ChangePart> changeParts = new ArrayList<>();
         partList
@@ -118,5 +149,62 @@ public class PartService {
                         )
                 ;
         return changeParts;
+    }
+
+    public ArrayList<ChangePart> getChangePartListFromClientChoosenPart(ClientChoosenPart clientChoosenPart){
+        return clientChoosenPart.getChosenPart();
+    }
+
+    public List<Part> partNeedEvaluation(List<Part> partList){
+        List<Part> partToEvaluation = new ArrayList<>();
+        partList
+                .forEach(
+                            part ->
+                                {
+                                    if(partNoEvaluated(part))
+                                    {
+                                        partToEvaluation.add(part);
+                                    }
+                                }
+                        )
+                ;
+            return partToEvaluation;
+    }
+
+    public boolean partNoEvaluated(Part part){
+        return storeService.getIdFromStore(getStoreFromPart(part))<=8 && storeService.getIdFromStore(getStoreFromPart(part))>=1;
+    }
+
+    public Long getChangePartId(ChangePart changePart){
+        return changePart.getPartId();
+    }
+
+    public ArrayList<UniquePart> partCanSaveOrUnique(List<ChangePart> changePartList){
+        ArrayList<UniquePart> uniqueParts = new ArrayList<>();
+        changePartList.forEach(
+                                changePart ->
+                                                {
+                                                    if(!storeService.checkDefault(changePart)){
+                                                        if(storeService.checkUnique(changePart)){
+                                                            Part partToSearch = getPartFromChangePart(changePart);
+                                                            UniquePart uniquePart = new UniquePart();
+                                                            uniquePart.setTypeOfStore(storeService.getIdFromStore(getStoreFromPart(partToSearch)).intValue());
+                                                            uniquePart.setPartId(getChangePartId(changePart).intValue());
+                                                            uniqueParts.add(uniquePart);
+                                                        }
+                                                        else{
+                                                            Part partToSave = getPartFromChangePart(changePart);
+                                                            setStore(partToSave,storeService.getStoreFromChangePart(changePart));
+                                                            savePart(partToSave);
+                                                        }
+                                                    }
+                                                }
+                                )
+                        ;
+        return uniqueParts;
+    }
+
+    public void setRepair(Part part,Repair repair){
+        part.setRepair(repair);
     }
 }

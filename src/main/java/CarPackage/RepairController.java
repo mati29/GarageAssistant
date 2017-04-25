@@ -38,7 +38,7 @@ public class RepairController {
         return "RepairsView";
     }
 
-    @RequestMapping(method=RequestMethod.POST,params="userBackAction")//w zaleznosci czy admin itd. do ktorego ma dostep zabl metod wedlug role!
+    @RequestMapping(method=RequestMethod.POST,params="userBackAction")
     public String back() {
         return "redirect:/employeeDashboard";
     }
@@ -46,7 +46,7 @@ public class RepairController {
     @RequestMapping(value="/addRepair",method= RequestMethod.GET)
     public String repairs(Map<String, Object> model,Principal principal,RedirectAttributes redirectAttrs) {
         model.put("employees", employeeService.getAllWorkers());
-        model.put("repairs",repairService.getActiveRepairForEmployeeFromUsername(principal.getName()));//check if not problematic change from employeeRepository.findOne(account.getEmployee().getId()) for account.getEmployee()
+        model.put("repairs",repairService.getActiveRepairForEmployeeFromUsername(principal.getName()));
         return "NewRepair";
     }
 
@@ -68,7 +68,7 @@ public class RepairController {
     }
 
     @RequestMapping(method= RequestMethod.POST,params="employeeSelectAction=selectRepair")
-    public String selectCommission(@Valid @ModelAttribute("repairSended") Repair repair, BindingResult result, Model model) {
+    public String selectCommission(@Valid @ModelAttribute("repairSended") Repair repair, Model model) {
         model.addAttribute("repair",repairService.getRepairFromId(repairService.getRepairId(repair)));
         model.addAttribute("selectedRepairId", repairService.getRepairId(repair));
         return "RepairSingleView";
@@ -125,7 +125,7 @@ public class RepairController {
     }
 
     @RequestMapping(value="/evaluate", method= RequestMethod.POST,params="EmployeeEvaluateAction=saveRepair")
-    public String saveRepair(@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart, BindingResult result) {
+    public String saveRepair(@ModelAttribute("clientChoosePart") ClientChoosenPart clientChoosePart) {
         repairService.savePartInRepair(clientChoosePart.chosenPart);
         return "redirect:/myRepairs";
     }
@@ -170,14 +170,14 @@ public class RepairController {
     }
 
     @RequestMapping(value="/repair",method= RequestMethod.POST,params="employeeRepairAction=timeEvaluate")
-    public String calculateRepair(Map<String, Object> model,@ModelAttribute("repair") Repair selectedRepair){//,@ModelAttribute("repair") int hours) {
+    public String calculateRepair(@ModelAttribute("repair") Repair selectedRepair){
         repairService.calculateRepair(selectedRepair);
         return "redirect:/myRepairs";
     }
 
     @Secured("ROLE_ADMIN")
     @RequestMapping(value="/setEmployee",method= RequestMethod.POST,params="adminRepairAction=setEmployee")
-    public String setEmployee(Map<String, Object> model,@ModelAttribute("repairs") ListRepair repairs){
+    public String setEmployee(@ModelAttribute("repairs") ListRepair repairs){
         repairService.setEmployeesForFreeRepairs(repairs);
         return "redirect:/adminDashboard";
     }

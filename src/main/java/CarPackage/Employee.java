@@ -11,8 +11,7 @@ import java.util.Set;
  * Created by Mati on 2016-12-03.
  */
 @Entity(name="employee")
-//@Inheritance(strategy= InheritanceType.JOINED)
-public class Employee {//extends Client{
+public class Employee {
 
     @Id
     //@GeneratedValue(strategy= GenerationType.AUTO)

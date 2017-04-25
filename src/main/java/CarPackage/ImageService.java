@@ -4,15 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Mati on 2017-04-22.
  */
 @Service
 public class ImageService {
 
-    ImageRepository imageRepository;
-    RepairService repairService;
-    StoreService storeService;
+    private ImageRepository imageRepository;
+    private RepairService repairService;
+    private StoreService storeService;
+    private CommissionService commissionService;
 
     @Autowired
     public void setImageRepository(ImageRepository imageRepository){
@@ -29,6 +35,11 @@ public class ImageService {
         this.storeService = storeService;
     }
 
+    @Autowired
+    public void setCommissionService(CommissionService commissionService){
+        this.commissionService = commissionService;
+    }
+
     public String createInitialImageName(Image image){
        return createRepairId(image)+createStoreType(image);
     }
@@ -41,7 +52,7 @@ public class ImageService {
         return "type"+getStoreTypeFromService(image);
     }
 
-    public long getRepairIdFromService(Image image){
+    public Long getRepairIdFromService(Image image){
         return repairService.getRepairId(getRepairFromService(image));
     }
 
@@ -59,5 +70,15 @@ public class ImageService {
 
     public MultipartFile getImageFileFromListById(ListImage listImage, int id){
         return listImage.getImageList().get(id);
+    }
+
+    public List<Image> getImageListFromRepair(Repair repair){
+        return repair.getImageList();
+    }
+
+    public List<Image> getAllImageFromCommission(Commission commission){
+        List<Image> images = new ArrayList<Image>();
+        commissionService.getRepairListFromCommission(commission).forEach(repair -> images.addAll(getImageListFromRepair(repair)));
+        return images;
     }
 }

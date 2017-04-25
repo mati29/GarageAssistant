@@ -15,4 +15,10 @@ public class UniquePartList {
     public void setUniqueParts(ArrayList<UniquePart> uniqueParts) {
         this.uniqueParts = uniqueParts;
     }
+
+    public UniquePartList() {}
+
+    public UniquePartList(ArrayList<UniquePart> uniqueParts){
+        this.uniqueParts = uniqueParts;
+    }
 }

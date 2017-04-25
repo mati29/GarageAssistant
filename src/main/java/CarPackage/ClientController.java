@@ -20,7 +20,7 @@ public class ClientController {
 
     @Secured("ROLE_USER")
     @RequestMapping(value="/clientDashboard",method={RequestMethod.GET,RequestMethod.POST})
-    public String getClientDashboard(Model model,HttpServletRequest request) {
+    public String getClientDashboard() {
         return "ClientDashboard";
     }
 

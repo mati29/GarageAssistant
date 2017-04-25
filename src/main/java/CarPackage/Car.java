@@ -19,8 +19,6 @@ public class Car {
 
     @OneToOne(mappedBy = "car",cascade=CascadeType.ALL)
     private Commission commission;
-    //next owner etc...
-    //specify like engike, brakes bla, bla for mechanic
 
     public void setId(Long id){
         this.id = id;
@@ -67,13 +65,6 @@ public class Car {
     }
     public Commission getCommision(){
         return this.commission;
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-                "Car[id=%d, numberPlate='%s', brand='%s', model='%s', vintage='%s']",
-                id, numberPlate, brand, model, vintage);
     }
 
 }

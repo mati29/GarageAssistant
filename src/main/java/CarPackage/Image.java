@@ -21,7 +21,7 @@ public class Image {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    private Store store;//what type of part
+    private Store store;
 
     public Image(){
 

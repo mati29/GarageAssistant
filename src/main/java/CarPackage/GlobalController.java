@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class GlobalController {
 
     @RequestMapping(value="/registration",method= RequestMethod.GET)
-    public String registration(Model model) {
+    public String registration() {
         return "Register";
     }
 
     @RequestMapping(value="/login",method= RequestMethod.GET)
-    public String login(Model model) {
+    public String login() {
         return "Login";
     }
 
     @RequestMapping(method= RequestMethod.GET)
-    public String mainView(Model model) {
+    public String mainView() {
         return "MainView";
     }
     @RequestMapping(value="/",method=RequestMethod.POST,params="userBackAction")

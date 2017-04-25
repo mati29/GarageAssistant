@@ -77,4 +77,8 @@ public class EmployeeService {
     public boolean checkDefaultEmployee(Employee employee){
         return getEmployeeId(employee)==1L?true:false;
     }
+
+    public Employee getDefaultEmployee(){
+        return employeeRepository.findOne(1L);
+    }
 }

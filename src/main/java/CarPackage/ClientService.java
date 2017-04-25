@@ -94,6 +94,10 @@ public class ClientService {
         return listClient.getClientList();
     }
 
+    public List<Commission> getCommissionFromClient(Client client){
+        return client.getCommissionList();
+    }
+
     public void saveClient(Client client){
         clientRepository.save(client);
     }

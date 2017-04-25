@@ -29,7 +29,7 @@ public class StoreController {
     }
 
     @RequestMapping(value="/addPart", method= RequestMethod.POST,params="employeeAddAction=addPart")
-    public String addCommission(Store store,Principal principal,HttpServletRequest request) {
+    public String addCommission(Store store,HttpServletRequest request) {
         storeService.saveStore(store);
         String backToCalledFrom = backTo(request.getSession().getAttribute("from").toString());
         request.getSession().removeAttribute("from");

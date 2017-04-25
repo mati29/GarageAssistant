@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
 
 /**
  * Created by Mati on 2017-03-26.
@@ -13,7 +14,7 @@ import java.io.*;
 @Component
 public class ImageSaver {
 
-    ImageService imageService;
+    private ImageService imageService;
 
     @Autowired
     public ImageSaver(ImageService imageService){
@@ -53,6 +54,23 @@ public class ImageSaver {
             directory.mkdirs();
         }
         return directory;
+    }
+
+    final String getImagePathName(String imageName){
+        String directory = new File("images").getAbsolutePath();
+        String[] fileandFileType = imageName.split("`");
+        return directory+File.separator+fileandFileType[0]+"."+fileandFileType[1];
+    }
+
+    final File getFileFromPathName(String pathName){
+        return new File(pathName);
+    }
+    final byte[] getImageBytes(File serverFile) throws IOException{
+        return Files.readAllBytes(serverFile.toPath());
+    }
+
+    final byte[] getImageInByteFromImageName(String imageName) throws IOException{
+        return getImageBytes(getFileFromPathName(getImagePathName(imageName)));
     }
 
 }
