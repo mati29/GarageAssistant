@@ -25,12 +25,10 @@
             <input type="hidden" name="id" th:value="${commission.id}" />
             <button type="submit" name="clientBillAction" value="getBill" class="btn" style="color:#CCCCCC;background-color: #993300;"><span class="glyphicon glyphicon-circle-arrow-down" style="color:#CCCCCC;"></span>  Download Bill</button>
         </form>
-        <div th:if="${AP} != true">
-            <form method="POST" th:action="@{/myCommission/specialService}" th:if="${AS}" class="navbar-form">
-                <input type="hidden" name="id" th:value="${commission.id}" />
-                <button type="submit" name="clientSpecialAction" value="specialService" class="btn" style="color:#CCCCCC;background-color: #003366;"><span class="glyphicon glyphicon-plus" style="color:#CCCCCC;"></span>  Addition Service</button>
-            </form>
-        </div>
+        <form method="POST" th:action="@{/myCommission/specialService}" th:if="${AS}" class="navbar-form">
+            <input type="hidden" name="id" th:value="${commission.id}" />
+            <button type="submit" name="clientSpecialAction" value="specialService" class="btn" style="color:#CCCCCC;background-color: #003366;"><span class="glyphicon glyphicon-plus" style="color:#CCCCCC;"></span>  Addition Service</button>
+        </form>
     </div>
 </nav>
 <main class="page-row page-row-expanded">
@@ -62,16 +60,16 @@
         <div class="well well-blue col-sm-3 col-xs-6">
             <span th:text="${commission.car.vintage}"></span>
         </div>
-            <div th:if="${AP} != true">
+
                 <form action="#" method="POST" th:action="@{/myCommission/evaluate}" th:object="${commission}">
                     <input type="hidden" name="id" th:value="${commission.id}" />
                     <div class="btn-group">
-                        <button type="submit" class="btn" style="color:#CCCCCC;background-color: #6633FF;" th:if="${evaluateNeeded}" name="clientEvaluateAction" value="needToRepair"><span class="glyphicon glyphicon-search" style="color:#000000;"></span>  List of failure</button>
-                        <button th:if="${evaluateNeeded}" type="submit" class="btn" style="color:#CCCCCC;background-color: #000099;" name="clientEvaluateAction"  value="evaluateCommission"><span class="glyphicon glyphicon-play-circle" style="color:3399CC;"></span>  Evaluate</button>
-                        <button th:unless="${evaluateNeeded}" type="submit" class="btn" style="color:#CCCCCC;background-color: #FF6666" name="clientEvaluateAction"  value="evaluateCommission" th:disabled="disabled"><span class="glyphicon glyphicon-remove" style="color:#990000;"></span>  Evaluate</button>
+                        <button type="submit" class="btn" style="color:#CCCCCC;background-color: #6633FF;" th:if="${ImagesExpose}" name="clientEvaluateAction" value="needToRepair"><span class="glyphicon glyphicon-search" style="color:#000000;"></span>  List of failure</button>
+                        <button th:if="${evaluateNeeded}" th:unless="${AP}==true"  type="submit" class="btn" style="color:#CCCCCC;background-color: #000099;" name="clientEvaluateAction"  value="evaluateCommission"><span class="glyphicon glyphicon-play-circle" style="color:3399CC;"></span>  Evaluate</button>
+                        <button th:unless="${evaluateNeeded}" th:if="${AP}==false" type="submit" class="btn" style="color:#CCCCCC;background-color: #FF6666" name="clientEvaluateAction"  value="evaluateCommission" th:disabled="disabled"><span class="glyphicon glyphicon-remove" style="color:#990000;"></span>  Evaluate</button>
                     </div>
                 </form>
-            </div>
+
     </div>
     <br/><br/><br/><br/>
 </main>

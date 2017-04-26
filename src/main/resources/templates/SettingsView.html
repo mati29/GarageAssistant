@@ -31,11 +31,11 @@
     <div id="main_area">
         <form action="#" method="POST" th:action="@{/settings}" th:object="${setting}">
             <div class=" col-sm-offset-2 col-sm-2 col-xs-6">
-                <label class="form-control" for="autoMechanic">Auto-part:</label>
+                <label class="form-control" for="autoMechanic">Auto-mechanic:</label>
                 <input type="checkbox" th:checked="${setting.autoMechanic}" th:name="autoMechanic"/>
             </div>
             <div class="col-sm-2 col-xs-6">
-                <label class="form-control" for="autoPart">Auto-mechanic:</label>
+                <label class="form-control" for="autoPart">Auto-part:</label>
                 <input type="checkbox" th:checked="${setting.autoPart}" th:name="autoPart"/>
             </div>
             <div class="col-sm-2 col-xs-6" th:if="${setting.additionalService} == true">

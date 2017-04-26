@@ -82,7 +82,7 @@ public class CommissionController {
     }
 
     @RequestMapping(/*value="/addCommission", */method= RequestMethod.POST,params="clientSelectAction=selectCommission")
-    public String selectCommission(@Valid @ModelAttribute("commissionSended") Commission commission, Model model,HttpServletRequest request) {
+    public String selectCommission(@Valid @ModelAttribute("commissionSended") Commission commission,BindingResult result, Model model,HttpServletRequest request) {
         model.addAttribute("commission",commissionService.getCommissionById(commissionService.getId(commission)));
         if(repairService.anyPartFromRepairsNeedEvaluation(commissionService.getRepairListFromCommission(commissionService.getCommissionById(commissionService.getId(commission)))))
             model.addAttribute("evaluateNeeded","true");
@@ -94,6 +94,9 @@ public class CommissionController {
             model.addAttribute("AS",additionalService);
         if(commissionService.checkBill(commissionService.getCommissionById(commissionService.getId(commission))))
             model.addAttribute("BillExpose",true);
+        if(!imageService.getAllImageFromCommission(commissionService.getCommissionById(commissionService.getId(commission))).isEmpty()){
+            model.addAttribute("ImagesExpose",true);
+        }
         return "CommissionSingleView";
     }
 
@@ -155,7 +158,7 @@ public class CommissionController {
 
     @RequestMapping(value="/specialService", method= RequestMethod.POST,params="clientSpecialAction=specialService")
     public String additionalService(@Valid @ModelAttribute Commission commission,Model model) {
-        model.addAttribute("partsType",Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new));
+        model.addAttribute("partsType",Arrays.asList(Arrays.stream(TypePart.values()).map(TypePart::name).toArray(String[]::new)));
         model.addAttribute("commission",commission);
         return "AdditionalService";
     }
