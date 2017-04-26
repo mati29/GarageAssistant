@@ -50,8 +50,18 @@
                                 <span th:text="${client.firstName}"></span><br />
                                 <input type="hidden" th:field="*{clientList[__${iter.index}__].id}" />
                                 <input type="hidden" th:field="*{clientList[__${iter.index}__].settings}" />
-                                <input type="checkbox" th:checked="${client.settings.additionalService}" th:field="*{clientList[__${iter.index}__].settings.additionalService}"/> Additional Service<br />
-                                <input type="checkbox" th:checked="${client.settings.callExtraPart}" th:field="*{clientList[__${iter.index}__].settings.callExtraPart}"/> Call extra part<br />
+                                <div th:if="${client.settings.additionalServiceDemand}">
+                                    <input type="checkbox" th:checked="${client.settings.additionalService}" th:field="*{clientList[__${iter.index}__].settings.additionalService}"/> Additional Service<br />
+                                </div>
+                                <div th:if="${client.settings.additionalService}" th:unless="${client.settings.additionalServiceDemand}">
+                                    <input type="checkbox" th:checked="${client.settings.additionalService}" th:field="*{clientList[__${iter.index}__].settings.additionalService}"/> Additional Service<br />
+                                </div>
+                                <div th:if="${client.settings.callExtraPartDemand}">
+                                    <input type="checkbox" th:checked="${client.settings.callExtraPart}" th:field="*{clientList[__${iter.index}__].settings.callExtraPart}"/> Call extra part<br />
+                                </div>
+                                <div th:if="${client.settings.callExtraPart}" th:unless="${client.settings.callExtraPartDemand}">
+                                    <input type="checkbox" th:checked="${client.settings.callExtraPart}" th:field="*{clientList[__${iter.index}__].settings.callExtraPart}"/> Call extra part<br />
+                                </div>
                             </div>
                         </div>
                     </div>

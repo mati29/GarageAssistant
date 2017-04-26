@@ -19,6 +19,7 @@ public class AdminService {
     private AccountService accountService;
     private PasswordEncoder passwordEncoder;
     private RolesService rolesService;
+    private SettingsService settingsService;
 
     @Autowired
     public void setClientService(ClientService clientService){
@@ -41,6 +42,11 @@ public class AdminService {
     }
 
     @Autowired
+    public void setSettingsService(SettingsService settingsService){
+        this.settingsService = settingsService;
+    }
+
+    @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder){
         this.passwordEncoder = passwordEncoder;
     }
@@ -51,7 +57,12 @@ public class AdminService {
                         clientService
                                 .getAllClient()
                                 .stream()
-                                .filter(c -> c.getSettings().getAdditionalServiceDemand() || c.getSettings().getCallExtraPartDemand())
+                                .filter(c ->
+                                            settingsService.getAdditionalServiceDemandFromSettings(clientService.getSettingsFromClient(c))
+                                         || settingsService.getCallExtraPartDemandFromSettings(clientService.getSettingsFromClient(c))
+                                         || (!settingsService.getAdditionalServiceDemandFromSettings(clientService.getSettingsFromClient(c)) && settingsService.getAdditionalServiceFromSettings(clientService.getSettingsFromClient(c)))
+                                         || (!settingsService.getCallExtraPartDemandFromSettings(clientService.getSettingsFromClient(c)) && settingsService.getCallExtraPartFromSettings(clientService.getSettingsFromClient(c)))
+                                )
                                 .collect(Collectors.toList())
                                 )
                              );
