@@ -118,6 +118,10 @@
                 If you want to add simple client press "Register!" button
                 <button class="btn" style="color:#CCCCCC;background-color:#000099;" type="submit" name="userRegistrationAction" value="register">Register!</button>
             </div>
+            <div id="registrationSection" class="well well-blue" th:unless="${addedByAdmin}">
+                To end registration please click "Register!" button
+                <button class="btn" style="color:#CCCCCC;background-color:#000099;" type="submit" name="userRegistrationAction" value="register">Register!</button>
+            </div>
         </form>
     <br/>
 </div>
